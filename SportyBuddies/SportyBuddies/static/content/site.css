@@ -1,7 +1,7 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #70bcd7b3;
+    background-color: white;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -41,3 +41,180 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+/*User Profile*/
+.profile-container {
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-box {
+    background: #83CEEB;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    border-radius: 40px;
+    padding: 40px;
+}
+
+.profile-pic {
+    width: 250px;
+    border-radius: 50%;
+    background: #fff;
+    padding: 6px;
+}
+
+.upload {
+    position: relative;
+}
+
+    .upload img {
+        border-radius: 50%;
+    }
+
+    .upload .round {
+        position: relative;
+        bottom: 40px;
+        right: -200px;
+        background: #76E4FA;
+        width: 32px;
+        height: 32px;
+        line-height: 33px;
+        text-align: center;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+        .upload .round input[type = "file"] {
+            position: absolute;
+            transform: scale(2);
+            opacity: 0;
+        }
+
+            .upload .round input[type = "file"]:hover {
+                animation: grow 0.5s;
+            }
+
+
+
+input[type=file]::-webkit-file-upload-button {
+    cursor: pointer;
+}
+
+section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.tile {
+    margin-top: 5px;
+    height: 100px;
+    width: 80px;
+    position: relative;
+}
+
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    outline: none;
+}
+
+    input[type="checkbox"]:after {
+        position: absolute;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 400;
+        content: "\f111";
+        font-size: 12px;
+        top: 2px;
+        left: 2px;
+        color: #e2e6f3;
+    }
+
+    input[type="checkbox"]:hover {
+        transform: scale(1.08);
+    }
+
+    input[type="checkbox"]:checked {
+        border: 3px solid #76E4FA;
+    }
+
+        input[type="checkbox"]:checked:after {
+            font-weight: 900;
+            content: "\f058";
+            color: #76E4FA;
+        }
+
+.profile-label {
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+}
+
+    .profile-label .fas {
+        font-size: 30px;
+        color: #2c2c51;
+    }
+
+input[type="checkbox"]:checked + .profile-label .fas {
+    animation: grow 0.5s;
+}
+
+.profile-label .img {
+    font-size: 30px;
+    color: #2c2c51;
+}
+
+input[type="checkbox"]:checked + .profile-label .img {
+    animation: grow 0.5s;
+}
+
+@keyframes grow {
+    50% {
+        font-size: 45px;
+    }
+}
+
+.profile-label h6 {
+    font-family: "Poppins",sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: #7b7b93;
+}
+
+h1 {
+    margin-top: 5px;
+    font-family: "Poppins",sans-serif;
+}
+
+.scrollable-container {
+    padding: 2px;
+    height: 150px;
+    overflow-y: scroll;
+}
+
+    .scrollable-container::-webkit-scrollbar {
+        display: none;
+    }

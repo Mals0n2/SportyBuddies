@@ -142,3 +142,23 @@ def about():
         year=datetime.now().year,
         message='Your application description page.'
     )
+
+@app.route('/')
+@app.route('/user_profile')
+def user_profile():
+    if current_user.is_authenticated==False:
+        return redirect(url_for('home'))
+
+    cursor = db.cursor()
+
+    cursor.execute("SELECT username FROM users WHERE id = %s", (current_user.id,))
+
+    username = cursor.fetchone()[0]
+
+    cursor.close()
+
+
+    return render_template(
+        'user_profile.html',
+       result = username
+    )

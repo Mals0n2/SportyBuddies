@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!--Font-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<div class="profile-container">
+    <div class="profile-box">
+        <div class="upload">
+            <img src="/static/photos/masno.png" class="profile-pic">
+            <div class="round">
+                <input type="file" />
+                <i class="fa fa-camera"></i>
+            </div>
+        </div>
+        <h1>{{result}}</h1>
+        <p>Wybierz swoje zainteresowania</p>
+        <div class="scrollable-container">
+            <section>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="running">
+                    <label class="profile-label" for="running">
+                        <i class="fas fa-running"></i>
+                        <h6>Bieganie</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="biking">
+                    <label class="profile-label" for="biking">
+                        <i class="fas fa-biking"></i>
+                        <h6>Jazda na rowerze</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="swimming">
+                    <label class="profile-label" for="swimming">
+                        <i class="fas fa-swimmer"></i>
+                        <h6>Plywanie</h6>
+                    </label>
+                </div>
+            </section>
+            <section>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="gym">
+                    <label class="profile-label" for="gym">
+                        <i class="fas fa-dumbbell"></i>
+                        <h6>Silownia</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="soccer">
+                    <label class="profile-label" for="soccer">
+                        <i class="fas fa-futbol"></i>
+                        <h6>Pilka nozna</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="basketball">
+                    <label class="profile-label" for="basketball">
+                        <i class="fas fa-basketball"></i>
+                        <h6>Koszykowka</h6>
+                    </label>
+                </div>
+            </section>
+            <section>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="volleyball">
+                    <label class="profile-label" for="volleyball">
+                        <i class="fas fa-volleyball"></i>
+                        <h6>Siatkowka</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="walk">
+                    <label class="profile-label" for="walk">
+                        <i class="fas fa-person-walking"></i>
+                        <h6>Spacer</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="bowling">
+                    <label class="profile-label" for="bowling">
+                        <i class="fas fa-bowling-ball"></i>
+                        <h6>Kregle</h6>
+                    </label>
+                </div>
+            </section>
+            <section>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="baseball">
+                    <label class="profile-label" for="baseball">
+                        <i class="fas fa-baseball-ball"></i>
+                        <h6>Baseball</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="golf">
+                    <label class="profile-label" for="golf">
+                        <i class="fas fa-golf-ball"></i>
+                        <h6>Golf</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="skating">
+                    <label class="profile-label" for="skating">
+                        <i class="fas fa-skating"></i>
+                        <h6>Lyzwy</h6>
+                    </label>
+                </div>
+            </section>
+            <section>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="skiing">
+                    <label class="profile-label" for="skiing">
+                        <i class="fas fa-skiing"></i>
+                        <h6>Jazda na naratach</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="snowboard">
+                    <label class="profile-label" for="snowboard">
+                        <i class="fas fa-snowboarding"></i>
+                        <h6>Snowboard</h6>
+                    </label>
+                </div>
+                <div class="tile">
+                    <input type="checkbox" name="sports" id="table-tennis">
+                    <label class="profile-label" for="table-tennis">
+                        <i class="fas fa-table-tennis"></i>
+                        <h6>Tenis stolowy</h6>
+                    </label>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var maxChecked = 3;
+        var checkedCheckboxes = [];
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkedCheckboxes.push(this);
+
+                    if (checkedCheckboxes.length > maxChecked) {
+                        checkedCheckboxes[0].checked = false;
+                        checkedCheckboxes.shift();
+                    }
+                } else {
+                    checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+{% endblock %}
