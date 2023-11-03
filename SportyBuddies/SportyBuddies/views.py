@@ -147,7 +147,7 @@ def about():
 @app.route('/user_profile')
 def user_profile():
     if current_user.is_authenticated==False:
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
     cursor = db.cursor()
 
