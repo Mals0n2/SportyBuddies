@@ -2,12 +2,6 @@
 
 {% block content %}
 
-{% if current_user.is_authenticated %}
-<h1>You are logged in</h1>{{user_info}}
-<a href="/logout">Logout</a>
-{% else %}
-<h1>You are not logged in</h1>
-{% endif %}
 
 <div class="jumbotron">
     <h1>Witaj</h1>
