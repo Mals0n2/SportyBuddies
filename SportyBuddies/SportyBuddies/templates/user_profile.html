@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Include jQuery library -->
+{{user_sports}}
 
 <div class="profile-container">
     <div class="profile-box">
@@ -20,21 +22,21 @@
         <div class="scrollable-container">
             <section>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="running">
+                    <input type="checkbox" name="sports" id="running" data-sport-id="1" {% if user_sports[0] %} checked {% endif%}>
                     <label class="profile-label" for="running">
                         <i class="fas fa-running"></i>
                         <h6>Bieganie</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="biking">
+                    <input type="checkbox" name="sports" id="biking" data-sport-id="2" {% if user_sports[1] %} checked {% endif%}>
                     <label class="profile-label" for="biking">
                         <i class="fas fa-biking"></i>
                         <h6>Jazda na rowerze</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="swimming">
+                    <input type="checkbox" name="sports" id="swimming" data-sport-id="3" {% if user_sports[2] %} checked {% endif%}>
                     <label class="profile-label" for="swimming">
                         <i class="fas fa-swimmer"></i>
                         <h6>Plywanie</h6>
@@ -43,21 +45,21 @@
             </section>
             <section>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="gym">
+                    <input type="checkbox" name="sports" id="gym" data-sport-id="4" {% if user_sports[3] %} checked {% endif%}>
                     <label class="profile-label" for="gym">
                         <i class="fas fa-dumbbell"></i>
                         <h6>Silownia</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="soccer">
+                    <input type="checkbox" name="sports" id="soccer" data-sport-id="5" {% if user_sports[4] %} checked {% endif%}>
                     <label class="profile-label" for="soccer">
                         <i class="fas fa-futbol"></i>
                         <h6>Pilka nozna</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="basketball">
+                    <input type="checkbox" name="sports" id="basketball" data-sport-id="6" {% if user_sports[5] %} checked {% endif%}>
                     <label class="profile-label" for="basketball">
                         <i class="fas fa-basketball"></i>
                         <h6>Koszykowka</h6>
@@ -66,21 +68,21 @@
             </section>
             <section>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="volleyball">
+                    <input type="checkbox" name="sports" id="volleyball" data-sport-id="7" {% if user_sports[6] %} checked {% endif%}>
                     <label class="profile-label" for="volleyball">
                         <i class="fas fa-volleyball"></i>
                         <h6>Siatkowka</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="walk">
+                    <input type="checkbox" name="sports" id="walk" data-sport-id="8" {% if user_sports[7] %} checked {% endif%}>
                     <label class="profile-label" for="walk">
                         <i class="fas fa-person-walking"></i>
                         <h6>Spacer</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="bowling">
+                    <input type="checkbox" name="sports" id="bowling" data-sport-id="9" {% if user_sports[8] %} checked {% endif%}>
                     <label class="profile-label" for="bowling">
                         <i class="fas fa-bowling-ball"></i>
                         <h6>Kregle</h6>
@@ -89,21 +91,21 @@
             </section>
             <section>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="baseball">
+                    <input type="checkbox" name="sports" id="baseball" data-sport-id="10" {% if user_sports[9] %} checked {% endif%}>
                     <label class="profile-label" for="baseball">
                         <i class="fas fa-baseball-ball"></i>
                         <h6>Baseball</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="golf">
+                    <input type="checkbox" name="sports" id="golf" data-sport-id="11" {% if user_sports[10] %} checked {% endif%}>
                     <label class="profile-label" for="golf">
                         <i class="fas fa-golf-ball"></i>
                         <h6>Golf</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="skating">
+                    <input type="checkbox" name="sports" id="skating" data-sport-id="12" {% if user_sports[11] %} checked {% endif%}>
                     <label class="profile-label" for="skating">
                         <i class="fas fa-skating"></i>
                         <h6>Lyzwy</h6>
@@ -112,21 +114,21 @@
             </section>
             <section>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="skiing">
+                    <input type="checkbox" name="sports" id="skiing" data-sport-id="13" {% if user_sports[12] %} checked {% endif%}>
                     <label class="profile-label" for="skiing">
                         <i class="fas fa-skiing"></i>
                         <h6>Jazda na naratach</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="snowboard">
+                    <input type="checkbox" name="sports" id="snowboard" data-sport-id="14" {% if user_sports[13] %} checked {% endif%}>
                     <label class="profile-label" for="snowboard">
                         <i class="fas fa-snowboarding"></i>
                         <h6>Snowboard</h6>
                     </label>
                 </div>
                 <div class="tile">
-                    <input type="checkbox" name="sports" id="table-tennis">
+                    <input type="checkbox" name="sports" id="table-tennis" data-sport-id="15" {% if user_sports[14] %} checked {% endif%}>
                     <label class="profile-label" for="table-tennis">
                         <i class="fas fa-table-tennis"></i>
                         <h6>Tenis stolowy</h6>
@@ -154,6 +156,27 @@
                     }
                 } else {
                     checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('input[type="checkbox"]').change(function () {
+            var isChecked = $(this).is(":checked");
+            var sportId = $(this).data("sport-id");
+
+            // Send an AJAX request to update the database
+            $.ajax({
+                type: "POST",
+                url: "/update_user_sports",
+                data: {
+                    sportId: sportId,
+                    isChecked: isChecked
+                },
+                success: function (data) {
+                    // Handle the response if needed
                 }
             });
         });

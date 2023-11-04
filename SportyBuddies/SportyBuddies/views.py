@@ -1,6 +1,8 @@
+from calendar import c
 from datetime import datetime
+from operator import iand
 from SportyBuddies import app
-from flask import render_template,request, redirect, url_for
+from flask import jsonify, render_template,request, redirect, url_for
 from flask_login import LoginManager,login_user, logout_user, current_user
 import mysql.connector
 
@@ -10,7 +12,7 @@ db = mysql.connector.connect(
     host = "localhost",
     user = "root",
     passwd = "",
-    database = "flaskdb"
+    database = "sportybuddies"
 )
 app.secret_key = "secret"
  
@@ -46,7 +48,7 @@ class User:
 def load_user(user_id):
     cursor = db.cursor()
     
-    cursor.execute("SELECT id FROM users WHERE id = %s", (user_id,))
+    cursor.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
     user = cursor.fetchone()
     
     cursor.close()
@@ -54,7 +56,56 @@ def load_user(user_id):
         return User(user[0])
     return None
  
+@app.route('/')
+@app.route('/user_profile')
+def user_profile():
+    if current_user.is_authenticated==False:
+        return redirect(url_for('login'))
+
+    cursor = db.cursor()
+
+    cursor.execute("SELECT name FROM users WHERE user_id = %s", (current_user.id,))
+    username = cursor.fetchone()[0]
+
+    cursor.execute("SELECT sport_id FROM user_sports WHERE user_id = %s", (current_user.id,))
+    results=cursor.fetchall()
+    user_sports=[result[0] if result[0]>0 else 0 for result in results[:15]]
+    
+    sports=[0]*15
+    
+    for i in user_sports:
+        if i>0:
+            sports[i-1]=i
+            
+
+
+    cursor.close()
+
+
+    return render_template(
+        'user_profile.html',
+       result = username,
+       user_sports=sports,
+    )
  
+
+@app.route('/update_user_sports',methods=['POST'])
+def update_user_sports():
+    sport_id = request.form.get('sportId')
+    is_checked = request.form.get('isChecked')
+    
+    cursor = db.cursor()
+    if is_checked == 'true':
+        cursor.execute("INSERT INTO user_sports (user_id,sport_id) VALUES (%s,%s)", 
+                       (current_user.id,sport_id))
+    else:
+        cursor.execute("DELETE FROM user_sports WHERE user_id = %s AND sport_id=%s", 
+                       (current_user.id,sport_id))
+        
+    db.commit()
+    cursor.close()
+    return jsonify({'status': 'success'})
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -70,7 +121,7 @@ def register():
 
         
         cursor = db.cursor()
-        cursor.execute("INSERT INTO users (email, password, username, age, gender, description) VALUES (%s, %s, %s, %s, %s, %s)",
+        cursor.execute("INSERT INTO users (email, password, name, age, gender, info) VALUES (%s, %s, %s, %s, %s, %s)",
                        (email, password, username, age, gender, description))
         db.commit()
         cursor.close()
@@ -90,7 +141,7 @@ def login():
         password = request.form['password']
 
         cursor = db.cursor()
-        cursor.execute("SELECT id FROM users WHERE username = %s AND password = %s", (username, password))
+        cursor.execute("SELECT user_id FROM users WHERE name = %s AND password = %s", (username, password))
         user_id = cursor.fetchone()
         cursor.close()
         if user_id:
@@ -112,7 +163,7 @@ def logout():
 def home():
     if current_user.is_authenticated:
         cursor = db.cursor()
-        cursor.execute("SELECT username FROM users WHERE id = %s", (current_user.id,))
+        cursor.execute("SELECT name FROM users WHERE user_id = %s", (current_user.id,))
         username = cursor.fetchone()[0]
         cursor.close()
     else:
@@ -143,22 +194,3 @@ def about():
         message='Your application description page.'
     )
 
-@app.route('/')
-@app.route('/user_profile')
-def user_profile():
-    if current_user.is_authenticated==False:
-        return redirect(url_for('login'))
-
-    cursor = db.cursor()
-
-    cursor.execute("SELECT username FROM users WHERE id = %s", (current_user.id,))
-
-    username = cursor.fetchone()[0]
-
-    cursor.close()
-
-
-    return render_template(
-        'user_profile.html',
-       result = username
-    )
