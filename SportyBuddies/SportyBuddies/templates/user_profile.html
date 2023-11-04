@@ -146,12 +146,18 @@
         var checkedCheckboxes = [];
 
         checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkedCheckboxes.push(this);
+            }
+        });
+
+        checkboxes.forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
                 if (this.checked) {
                     checkedCheckboxes.push(this);
 
                     if (checkedCheckboxes.length > maxChecked) {
-                        checkedCheckboxes[0].checked = false;
+                        this.checked = false;
                         checkedCheckboxes.shift();
                     }
                 } else {
