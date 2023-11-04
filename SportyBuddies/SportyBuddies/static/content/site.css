@@ -336,3 +336,173 @@ h1 {
     .register-link p a:hover {
         text-decoration: underline;
     }
+
+/*Register*/
+
+.register-body{
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: white;
+}
+
+.register-container {
+    max-width: 700px;
+    width: 100%;
+    background: #83CEEB;
+    padding: 25px 30px;
+    border-radius: 10px;
+}
+
+.register-container .register-title{
+    font-size: 35px;
+    font-weight: 500;
+    color: white;
+    position: relative;
+}
+
+.register-container .register-title::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    background: white;
+}
+
+    .register-container form .user-details {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 20px 0 12px 0;
+    }
+
+form .user-details .input-box-register{
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+}
+.user-details .input-box-register .details{
+    display: block;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.user-details .input-box-register input {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 16px;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+.user-details .input-box-register input:focus,
+.user-details .input-box-register input:valid{
+    border-color: white;
+}
+
+form .gender-details .gender-title{
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+}
+
+form .gender-details .category {
+    display: flex;
+    width: 80%;
+    margin: 14px 0;
+    justify-content: space-between;
+}
+
+.gender-details .category label{
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 15px;
+    font-weight: 100;
+}
+
+.gender-details .category .dot {
+    height: 18px;
+    width: 18px;
+    background: white;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 5px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#dot-1:checked ~ .category label .one,
+#dot-2:checked ~ .category label .two {
+    border-color: #53affb;
+}
+
+form input[type="radio"]{
+    display: none;
+}
+form .register-button{
+    height: 45px;
+    width: 260px;
+    margin: 50px;
+    margin-right: 30px;
+    align-items: center;
+
+}
+
+form .register-button input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: #83CEEB;
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 30px;
+    letter-spacing: 1px;
+    background: white;
+}
+
+@media (max-width: 584px) {
+    .register-container{
+        max-width: 100%;
+    }
+    form .user-details .input-box-register{
+        margin-bottom: 15px;
+        width: 100%;
+    }
+    form .gender-details .category {
+        width: 100%;
+    }
+    .register-container form .user-details {
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+    .user-details::-webkit-scrollbar{
+        width: 0;
+    }
+    }
+.user-details .input-box-register textarea {
+    width: 100%;
+    height: 100px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 16px;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+    color: black;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+    .user-details .input-box-register textarea:focus {
+        border-color: white;
+    }
