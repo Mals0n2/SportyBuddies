@@ -350,6 +350,7 @@ h1 {
 }
 
 .register-container {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     max-width: 700px;
     width: 100%;
     background: #83CEEB;
