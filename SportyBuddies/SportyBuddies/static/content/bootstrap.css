@@ -4373,8 +4373,9 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-brand {
     float: left;
     padding: 15px 15px;
-    font-size: 18px;
+    font-size: 30px;
     line-height: 20px;
+    font-family: "Poppins",sans-serif;
 }
 
     .navbar-brand:hover,
@@ -4455,12 +4456,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 @media (min-width: 768px) {
     .navbar-nav {
-        float: left;
+        float: right;
         margin: 0;
     }
 
         .navbar-nav > li {
-            float: left;
+            float: right;
         }
 
             .navbar-nav > li > a {
@@ -4582,7 +4583,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
         .navbar-default .navbar-brand:hover,
         .navbar-default .navbar-brand:focus {
-            color: #5e5e5e;
+            color: #000;
             background-color: transparent;
         }
 
@@ -4692,17 +4693,17 @@ textarea.input-group-sm > .input-group-btn > .btn {
     }
 
 .navbar-inverse {
-    background-color: #0084cd;
-    border-color: #069fff;
+    background: #83CEEB;
+    border-color: #83CEEB;
 }
 
     .navbar-inverse .navbar-brand {
-        color: #040731;
+        color: #fff;
     }
 
         .navbar-inverse .navbar-brand:hover,
         .navbar-inverse .navbar-brand:focus {
-            color: #ffffff;
+            color: #fff;
             background-color: transparent;
         }
 
