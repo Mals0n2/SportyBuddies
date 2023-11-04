@@ -11,11 +11,19 @@
 <div class="profile-container">
     <div class="profile-box">
         <div class="upload">
-            <img src="/static/photos/masno.png" class="profile-pic">
+            <img src="{{ url_for('get_user_photo') }}" class="profile-pic">
             <div class="round">
-                <input type="file" />
-                <i class="fa fa-camera"></i>
+                <form method="POST" action="/upload_photo" enctype="multipart/form-data" id="uploadPhotoForm">
+                    <input type="file" name="photo" id="photoInput">
+                    <i class="fa fa-camera"></i>
+                </form>
             </div>
+            <script>
+                // Automatically submit the form when a file is selected
+                document.getElementById('photoInput').addEventListener('change', function () {
+                    document.getElementById('uploadPhotoForm').submit();
+                });
+            </script>
         </div>
         <h1>{{result}}</h1>
         <p>Wybierz swoje zainteresowania</p>
