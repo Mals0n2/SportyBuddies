@@ -1,8 +1,7 @@
-from calendar import c
+import base64
 from datetime import datetime
-from operator import iand
 from SportyBuddies import app
-from flask import jsonify, render_template,request, redirect, url_for
+from flask import Response, jsonify, render_template,request, redirect, url_for
 from flask_login import LoginManager,login_user, logout_user, current_user
 import mysql.connector
 
@@ -56,7 +55,25 @@ def load_user(user_id):
         return User(user[0])
     return None
  
-@app.route('/')
+@app.route('/upload_photo',methods=['POST'])
+def upload_photo():
+    
+    if 'photo' not in request.files:
+        return redirect(request.url)
+    photo = request.files['photo']
+    
+    if photo.filename == '':
+        return redirect(request.url)
+    
+    if photo:
+        photo_data = photo.read()
+        cursor=db.cursor()
+        cursor.execute("UPDATE users SET photo=%s WHERE user_id=%s", (photo_data,current_user.id))
+        db.commit()
+        cursor.close()
+    
+    return redirect(url_for('user_profile'))
+
 @app.route('/user_profile')
 def user_profile():
     if current_user.is_authenticated==False:
@@ -70,24 +87,27 @@ def user_profile():
     cursor.execute("SELECT sport_id FROM user_sports WHERE user_id = %s", (current_user.id,))
     results=cursor.fetchall()
     user_sports=[result[0] if result[0]>0 else 0 for result in results[:15]]
-    
     sports=[0]*15
-    
     for i in user_sports:
         if i>0:
             sports[i-1]=i
             
-
-
-    cursor.close()
-
 
     return render_template(
         'user_profile.html',
        result = username,
        user_sports=sports,
     )
- 
+
+@app.route('/get_user_photo')
+def get_user_photo():
+    cursor = db.cursor()
+    cursor.execute("SELECT photo FROM users WHERE user_id = %s", (current_user.id,))
+    photo_data=cursor.fetchone()[0]
+    cursor.close()
+
+    # Return the photo as a response
+    return Response(photo_data, content_type='image/jpeg')  # Adjust content_type as needed
 
 @app.route('/update_user_sports',methods=['POST'])
 def update_user_sports():
