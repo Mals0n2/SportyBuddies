@@ -2,15 +2,31 @@
 
 {% block content %}
 
-<h1>Login to your account</h1>
-<form action="#" method="post">
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" required><br><br>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<div class="login-container">
+    <div class="login-wrapper">
+        <form action="#" method="post">
+            <h1>Zaloguj si&eogon;</h1>
+            <div class="input-box">
+                <input type="text" placeholder="Nazwa" name="username" id="username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Has&lstrok;o" name="password" id="password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="remember-forgot">
+                <label><input type="checkbox">Zapami&eogon;taj mnie</label>
+            </div>
 
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required><br><br>
-
-    <input type="submit" value="Login">
-</form>
-
+            <input type="submit" class="btn" value="Zaloguj">
+            <div class="register-link">
+                <p>Nie masz konta? <a href="{{ url_for('register') }}">Zarejestruj si&eogon;</a></p>
+            </div>
+            <div class="remember-forgot">
+                <a href="#">Zapomnia&lstrok;e&sacute; has&lstrok;a?</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
