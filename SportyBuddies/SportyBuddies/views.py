@@ -117,10 +117,10 @@ def update_user_sports():
     cursor = db.cursor()
     if is_checked == 'true':
         cursor.execute("INSERT INTO user_sports (user_id,sport_id) VALUES (%s,%s)", 
-                       (current_user.id,sport_id))
+                       (current_user.id,sport_id),)
     else:
         cursor.execute("DELETE FROM user_sports WHERE user_id = %s AND sport_id=%s", 
-                       (current_user.id,sport_id))
+                       (current_user.id,sport_id),)
         
     db.commit()
     cursor.close()
