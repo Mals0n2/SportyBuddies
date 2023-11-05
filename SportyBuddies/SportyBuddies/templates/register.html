@@ -15,7 +15,7 @@
                 </div>
                 <div class="input-box-register">
                     <span class="details">Email</span>
-                    <input type="email" name="email" id="email" placeholder="Wprowad&zacute; sw&oacute;j Email" required>
+                    <input type="email" name="email" id="email" required oninput="validateEmail()" placeholder="Wprowad&zacute; sw&oacute;j Email" required>
                 </div>
                 <div class="input-box-register">
                     <span class="details">Has&lstrok;o</span>
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="register-button">
-                    <input type="submit" value="Zarejestruj si&eogon;" id="submitBtn">
+                    <input type="submit"  class="btn" value="Zarejestruj si&eogon;" id="submitBtn">
                 </div>
 
             </div>
@@ -70,11 +70,26 @@
         var confirmPassword = document.getElementById("password_confirm").value;
         var submitButton = document.getElementById("submitBtn");
 
-        if (password === confirmPassword) {
+        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/;
+        if (passw.test(password) )
+        {
             submitButton.disabled = false;
         } else {
             submitButton.disabled = true;
         }
+    }
+
+    function validateEmail() {
+        var email = document.getElementById("email").value;
+        var submitButton = document.getElementById("submitBtn");
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        console.log(reg.test(email));
+        if (!reg.test(email)) {
+            submitButton.disabled = true;
+        } else {
+            submitButton.disabled = false;
+        }
+
     }
 
     function validateForm() {
