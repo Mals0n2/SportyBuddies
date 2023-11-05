@@ -65,6 +65,8 @@
 
 
 <script>
+    var emailvalidation
+    var passwordvalidation
     function validatePassword() {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("password_confirm").value;
@@ -73,9 +75,9 @@
         var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/;
         if (passw.test(password) )
         {
-            submitButton.disabled = false;
+            passwordvalidation = true;
         } else {
-            submitButton.disabled = true;
+            passwordvalidation = false;
         }
     }
 
@@ -85,9 +87,9 @@
         var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         console.log(reg.test(email));
         if (!reg.test(email)) {
-            submitButton.disabled = true;
+            emailvalidation = false;
         } else {
-            submitButton.disabled = false;
+            emailvalidation = true;
         }
 
     }
@@ -98,6 +100,14 @@
 
         if (password !== confirmPassword) {
             alert("Passwords do not match");
+            return false;
+        }
+        if (!passwordvalidation) {
+            alert("nieprawidlowe haslo. haslo musi zawierac jedna duza , jedna mala litera , jedna liczbe oraz co najmniej 8 znakow ale nie wiecej niz 32");
+            return false;
+        }
+        if (!emailvalidation) {
+            alert("nieprawidlowy email");
             return false;
         }
 
