@@ -190,12 +190,17 @@ def logout():
     logout_user()
     return redirect(url_for("home"))
 
+@app.route("/logged")
+def logged():
+    return render_template("mainpagelogged.html", title="Home Page", year=datetime.now().year)
 
 @app.route("/")
-@app.route("/home")
 def home():
     return render_template("index.html", title="Home Page", year=datetime.now().year)
 
+@app.route("/home")
+def home_page():
+    return render_template("index.html", title="Home Page", year=datetime.now().year)
 
 @app.route("/contact")
 def contact():

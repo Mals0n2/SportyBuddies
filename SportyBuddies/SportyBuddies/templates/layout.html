@@ -21,7 +21,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                {% if not current_user.is_authenticated %}
                 <a href="{{ url_for('home') }}" class="navbar-brand">SportyBuddies</a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logged') }}" class="navbar-brand">SportyBuddies</a>
+                {% endif %}
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
