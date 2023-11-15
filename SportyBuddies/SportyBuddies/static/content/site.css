@@ -7,7 +7,6 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: white;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -198,7 +197,6 @@ body {
 .profile-container {
     width: 100%;
     height: 100vh;
-    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -376,7 +374,6 @@ h1 {
     justify-content: center;
     align-items: center;
     min-height: 80vh;
-    background: white;
 }
 
 .login-wrapper {
@@ -484,6 +481,11 @@ h1 {
     }
 
 /*Register*/
+.input-control .error {
+    color: #ff3860;
+    font-size: 9px;
+    height: 13px;
+}
 
 .register-body{
     font-family: "Poppins", sans-serif;
@@ -492,7 +494,6 @@ h1 {
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background: white;
 }
 
 .register-container {
@@ -603,7 +604,7 @@ form .register-button{
 
 }
 
-form .register-button input{
+form .register-button .new-button{
     height: 100%;
     width: 100%;
     outline: none;

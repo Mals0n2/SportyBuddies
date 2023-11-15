@@ -195,11 +195,8 @@ def logged():
     return render_template("mainpagelogged.html", title="Home Page", year=datetime.now().year)
 
 @app.route("/")
-def home():
-    return render_template("index.html", title="Home Page", year=datetime.now().year)
-
 @app.route("/home")
-def home_page():
+def home():
     return render_template("index.html", title="Home Page", year=datetime.now().year)
 
 @app.route("/contact")
