@@ -2,11 +2,96 @@
 
 {% block content %}
 
+<div class="index-container">
+    <div class="row">
+        <div class="welcome">
+            <h1>
+                SportyBuddies
+            </h1>
+            <p>
+                Twoje miejsce, gdzie pasja do sportu spotyka sie z towarzystwem. Nasza platforma laczy ludzi, ktorzy kochaja aktywnosc fizyczna i szukaja partnera do wspolnych treningow. Dzieki naszej innowacyjnej technologii, dopasowujemy Cie z osobami, ktore dziela Twoje zainteresowania sportowe i mieszkaja w Twojej okolicy.
+            </p>
+            <a href="{{url_for('user_profile')}}" target="_blank" class="button">Zaczynajmy</a>
+        </div>
+    </div>
+</div>
 
-<div class="jumbotron">
-    <h1>Witaj</h1>
-    <p class="lead">SportyBuddies - Twoje miejsce, gdzie pasja do sportu spotyka sie z towarzystwem. Nasza platforma laczy ludzi, ktorzy kochaja aktywnosc fizyczna i szukaja partnera do wspolnych treningow. Dzieki naszej innowacyjnej technologii, dopasowujemy Cie z osobami, ktore dziela Twoje zainteresowania sportowe i mieszkaja w Twojej okolicy.</p>
-    <p class="text-right"><a href="{{ url_for('login') }}" class="btn btn-primary btn-large">Zaczynajmy <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></p>
+<!--how-it-works-->
+<div class="how-it-works">
+    <h2 class="title">Jak to dziala</h2>
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <img src="https://picsum.photos/200/300" alt="">
+                <p>Dostosuj preferencje sportowe</p>
+            </div>
+            <div class="col-3">
+                <img src="https://picsum.photos/200/300" alt="">
+                <p>Znajdz oodpowiedniego partnera</p>
+            </div>
+            <div class="col-3">
+                <img src="https://picsum.photos/200/300" alt="">
+                <p>Czatuj i planuj trening</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--sport-category-->
+<div class="sport-category">
+    <h2 class="title">Kategorie sportowe</h2>
+    <div class="small-container">
+        <div class="row">
+            <div class="col-6">
+                <img src="https://picsum.photos/300/300" alt="">
+                <p>Pilka nozna</p>
+            </div>
+            <div class="col-6">
+                <img src="https://picsum.photos/300/300" alt="">
+                <p>Silownia</p>
+            </div>
+            <div class="col-6">
+                <img src="https://picsum.photos/300/300" alt="">
+                <p>Bieganie</p>
+            </div>
+            <div class="col-6">
+                <img src="https://picsum.photos/300/300" alt="">
+                <p>Plywanie</p>
+            </div>
+            <div class="col-6">
+                <img src="https://picsum.photos/300/300" alt="">
+                <p>Plywanie</p>
+            </div>
+            <div class="col-6">
+                <img src="https://picsum.photos/300/300" alt="">
+                <p>Plywanie</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--opinions-->
+<div class="opinions">
+    <h2 class="title">Opinie</h2>
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <p>"Dzieki tej aplikacji moje treningi staly sie bardziej urozmaicone i efektywne."</p>
+                <img src="https://picsum.photos/300/300" alt="">
+                <h3>Jakub</h3>
+            </div>
+            <div class="col-3">
+                <p>"Dzieki tej aplikacji moje treningi staly sie bardziej urozmaicone i efektywne."</p>
+                <img src="https://picsum.photos/300/300" alt="">
+                <h3>Tomasz</h3>
+            </div>
+            <div class="col-3">
+                <p>"Dzieki tej aplikacji moje treningi staly sie bardziej urozmaicone i efektywne."</p>
+                <img src="https://picsum.photos/300/300" alt="">
+                <h3>Dawid</h3>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

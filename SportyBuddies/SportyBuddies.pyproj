@@ -17,6 +17,7 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>SportyBuddies</Name>
     <RootNamespace>SportyBuddies</RootNamespace>
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

@@ -48,6 +48,152 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+
+/*index page*/
+a {
+    color: inherit;
+}
+
+    a:visited {
+        color: #76E4FA;
+    }
+
+body {
+    background-color: #76E4FA;
+    color: white;
+}
+
+
+.index-container {
+    max-width: 90%;
+    margin: 150px auto;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.small-container {
+    margin: auto;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.welcome {
+    width: 60%;
+    min-width: 300px;
+    text-align: center;
+}
+
+    .welcome h1 {
+        font-size: 50px;
+        font-weight: 900;
+        color: #2c2c51;
+    }
+
+    .welcome p {
+        font-size: 20px;
+    }
+
+.button {
+    display: inline-block;
+    background-color: #2c2c51;
+    padding: 8px 30px;
+    margin: 30px 0;
+    border-radius: 30px;
+}
+
+.title {
+    text-align: center;
+    margin: 0 auto 80px;
+    position: relative;
+    line-height: 60px;
+    color: #2c2c51;
+    font-size: 50px;
+}
+
+.col-3 {
+    flex-basis: 30%;
+}
+
+    .col-3 p {
+        font-size: 20px;
+        margin: 12px 0;
+    }
+
+.col-6 {
+    flex-basis: 16%;
+    padding: 30px;
+}
+
+.col-12 {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.col-4 {
+    flex-basis: 25%;
+    padding: 10px;
+    min-width: 200px;
+    margin-bottom: 50px;
+}
+
+    .col-4 p {
+        text-align: center;
+        font-size: 20px;
+    }
+
+/*how-it-works*/
+.how-it-works {
+    margin: 70px 0;
+    text-align: center;
+}
+
+    .how-it-works p {
+        font-size: 27px;
+    }
+
+/*sport-category*/
+.sport-category {
+    margin: 100px 0;
+}
+
+    .sport-category img {
+        width: 100%;
+        border-radius: 15px;
+    }
+
+    .sport-category p {
+        font-size: 20px;
+        text-align: center;
+    }
+
+
+/*opinions*/
+.opinions {
+    padding-top: 100px;
+}
+
+    .opinions .col-3 {
+        text-align: center;
+        padding: 50px 20px;
+        box-shadow: 0 0 35px 2px #2c2c51;
+        cursor: pointer;
+    }
+
+    .opinions img {
+        width: 50px;
+        margin-top: 20px;
+        border-radius: 50%;
+    }
+
+    .opinions .col-3 h3 {
+        color: #2c2c51;
+    }
+
 /*User Profile*/
 .profile-container {
     width: 100%;
