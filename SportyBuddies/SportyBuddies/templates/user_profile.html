@@ -24,7 +24,14 @@
                 });
             </script>
         </div>
-        <h1>{{result}}, {{age}}</h1>
+        <h1>
+            {% if gender == 'Kobieta' %}
+            <span class="female-circle"><i class="icon fas fa-venus"></i></span>
+            {% else %}
+            <span class="male-circle"><i class="icon fas fa-mars"></i></span>
+            {% endif %}
+            {{ result }}, {{ age }}
+        </h1>
         <p>Wybierz swoje zainteresowania</p>
         <div class="scrollable-container">
             <section>

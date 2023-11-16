@@ -86,6 +86,9 @@ def user_profile():
     
     cursor.execute("SELECT age FROM users WHERE user_id = %s", (current_user.id,))
     user_age = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT gender FROM users WHERE user_id = %s", (current_user.id,))
+    user_gender = cursor.fetchone()[0]
 
     cursor.execute(
         "SELECT sport_id FROM user_sports WHERE user_id = %s", (current_user.id,)
@@ -102,6 +105,7 @@ def user_profile():
         result=username,
         user_sports=sports,
           age = user_age,
+          gender = user_gender
     )
 
 @app.route("/mainpagelogged")
@@ -166,7 +170,7 @@ def register():
         username = request.form["username"]
         email = request.form["email"]
         age = request.form["age"]
-        gender = request.form["gender"]
+        gender = request.form.get("gender")
         description = request.form["description"]
         password = request.form["password"]
 

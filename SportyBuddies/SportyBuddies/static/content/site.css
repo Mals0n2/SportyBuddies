@@ -368,6 +368,39 @@ h1 {
     .scrollable-container::-webkit-scrollbar {
         display: none;
     }
+
+.female-circle {
+    width: 30px;
+    height: 30px;
+    background-color: #FFDAFF;
+    border: 1px solid white;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.icon {
+    color: white;
+    font-size: 20px;
+}
+
+
+
+.male-circle {
+    width: 30px;
+    height: 30px;
+    background-color: #A8DAFF;
+    border: 1px solid white;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
 /*Login*/
 .login-container {
     display: flex;
@@ -698,23 +731,31 @@ form .register-button .new-button{
 }
 
 .small-circle {
+    font-size: 55px;
     width: 80px;
     height: 80px;
-    background-color: black;
+    background-color: white;
+    color: #00FF7F;
+    text-align: center;
+    align-items: center;
     border-radius: 50%;
     margin-bottom: 5px;
     margin-top: 30px;
-    border: 2px solid blue;
+    border: 3px solid #83CEEB;
 }
 
 .small-circle2 {
+    font-size: 55px;
+    color: #DC143C;
     width: 80px;
     height: 80px;
-    background-color: black;
+    text-align: center;
+    align-items: center;
+    background-color: white;
     border-radius: 50%;
     margin-bottom: 30px;
     margin-top: 30px;
-    border: 2px solid blue;
+    border: 3px solid #83CEEB;
 }
 
 .white-square {
