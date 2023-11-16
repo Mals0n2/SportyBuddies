@@ -120,11 +120,16 @@ def mainpagelogged():
     
     cursor.execute("SELECT age FROM users WHERE user_id = %s", (current_user.id,))
     user_age = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT sports.iconlink FROM sports JOIN user_sports ON sports.sport_id = user_sports.sport_id WHERE user_sports.user_id = %s", (current_user.id,))
+    sport_id = cursor.fetchall()
+    
 
     return render_template(
         "mainpagelogged.html",
         result=username,
         age = user_age,
+        sport = sport_id,
     )
 
 @app.route("/get_user_photo")

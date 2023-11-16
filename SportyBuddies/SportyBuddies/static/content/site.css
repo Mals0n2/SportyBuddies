@@ -774,18 +774,36 @@ form .register-button .new-button{
     margin: 10px auto;
     border-radius: 10px;
     background-color: white;
-    font-size: 18px;
-    height: 40px;
+    font-size: 22px;
+    height: 85px;
     color: #83CEEB;
     text-align: center;
     width: 300px;
+    margin-bottom: 30px;
 }
+
+    .name-container h1 {
+      margin-bottom: -1px;
+        font-family: "Poppins",sans-serif;
+    }
 
 .small-font {
     font-size: 25px; 
     padding: 5px;
 }
 
+.smaller-circle {
+    border: 3px solid #83CEEB;
+    padding: 2px;
+    background-color: white;
+    height: 40px;
+    width: 40px;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    margin: 1px;
+
+}
 .small-circle-container {
     display: flex;
     flex-direction: column;

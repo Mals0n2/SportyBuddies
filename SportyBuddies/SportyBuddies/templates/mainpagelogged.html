@@ -1,6 +1,12 @@
 ﻿{% extends "layout.html" %}
 
 {% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Include jQuery library -->
+
 <div class="body-main">
     <div class="text-container">
         <h1>Wybierz swojego partnera do treningu!</h1>
@@ -11,15 +17,24 @@
             <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
             <div class="name-container">
                 <h1>{{result}}<span class="small-font">{{age}}</span></h1>
+                {% for icon in sport[0] %}
+                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                {% endfor %}
+                {% for icon in sport[1] %}
+                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                {% endfor %}
+                {% for icon in sport[2] %}
+                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="white-square">
             <div class="small-circle">
-                <i class="icon fas fa-check"></i>
+                <i class=" fas fa-check"></i>
             </div>
             <div class="small-circle2">
-                <i class="icon fas fa-times"></i>
+                <i class=" fas fa-times"></i>
             </div>
         </div>
 
@@ -27,8 +42,16 @@
             <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
             <div class="name-container">
                 <h1>{{result}}<span class="small-font">{{age}}</span></h1>
+                {% for icon in sport[0] %}
+                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                {% endfor %}
+                {% for icon in sport[1] %}
+                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                {% endfor %}
+                {% for icon in sport[2] %}
+                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                {% endfor %}
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
