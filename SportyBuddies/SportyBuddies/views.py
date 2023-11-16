@@ -83,6 +83,9 @@ def user_profile():
 
     cursor.execute("SELECT name FROM users WHERE user_id = %s", (current_user.id,))
     username = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT age FROM users WHERE user_id = %s", (current_user.id,))
+    user_age = cursor.fetchone()[0]
 
     cursor.execute(
         "SELECT sport_id FROM user_sports WHERE user_id = %s", (current_user.id,)
@@ -98,8 +101,27 @@ def user_profile():
         "user_profile.html",
         result=username,
         user_sports=sports,
+          age = user_age,
     )
 
+@app.route("/mainpagelogged")
+def mainpagelogged():
+    if current_user.is_authenticated == False:
+        return redirect(url_for("login"))
+
+    cursor = db.cursor()
+
+    cursor.execute("SELECT name FROM users WHERE user_id = %s", (current_user.id,))
+    username = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT age FROM users WHERE user_id = %s", (current_user.id,))
+    user_age = cursor.fetchone()[0]
+
+    return render_template(
+        "mainpagelogged.html",
+        result=username,
+        age = user_age,
+    )
 
 @app.route("/get_user_photo")
 @login_required

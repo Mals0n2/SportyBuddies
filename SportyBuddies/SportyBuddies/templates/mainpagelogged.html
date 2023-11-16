@@ -2,23 +2,29 @@
 
 {% block content %}
 <div class="body-main">
-    <div class="container-mainpage">
-        <div class="big-circle">
-            <div class="small-circle"></div>
-            <div class="small-circle"></div>
-            <div class="small-circle"></div>
+    <div class="text-container">
+        <h1>Wybierz swojego partnera do treningu!</h1>
+    </div>
+
+    <div class="circle-container">
+        <div class="circle-left">
+            <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
+            <div class="name-container">
+                <h1>{{result}}<span class="small-font">{{age}}</span></h1>
+            </div>
         </div>
 
-        <div class="square">
+        <div class="white-square">
             <div class="small-circle"></div>
-            <div class="small-circle"></div>
+            <div class="small-circle2"></div>
         </div>
 
-        <div class="big-circle">
-            <div class="small-circle"></div>
-            <div class="small-circle"></div>
-            <div class="small-circle"></div>
+        <div class="circle-right">
+            <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
+            <div class="name-container">
+                <h1>{{result}}<span class="small-font">{{age}}</span></h1>
+            </div>
         </div>
     </div>
-    </div>
+</div>
 {% endblock %}

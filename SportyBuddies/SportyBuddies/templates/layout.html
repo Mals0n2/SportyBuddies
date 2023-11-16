@@ -25,7 +25,7 @@
                 <a href="{{ url_for('home') }}" class="navbar-brand">SportyBuddies</a>
                 {% endif %}
                 {% if current_user.is_authenticated %}
-                <a href="{{ url_for('logged') }}" class="navbar-brand">SportyBuddies</a>
+                <a href="{{ url_for('mainpagelogged') }}" class="navbar-brand">SportyBuddies</a>
                 {% endif %}
             </div>
             <div class="navbar-collapse collapse">
