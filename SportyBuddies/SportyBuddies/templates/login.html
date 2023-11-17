@@ -5,21 +5,27 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <div class="login-container">
     <div class="login-wrapper">
-        <form action="#" method="post">
+        <form id="form" action="#" method="post">
+
             <h1>Zaloguj si&eogon;</h1>
-            <div class="input-box">
-                <input type="text" placeholder="Nazwa" name="username" id="username" required>
+            <div class="error2" style="font-size: 14px;">{{error}}</div>
+
+
+            <div class="input-box input-control">
+                <input type="text" placeholder="Nazwa" name="username" id="username">
                 <i class='bx bxs-user'></i>
+                <div class="error"></div>
             </div>
-            <div class="input-box">
-                <input type="password" placeholder="Has&lstrok;o" name="password" id="password" required ">
+            <div class="input-box input-control">
+                <input type="password" placeholder="Has&lstrok;o" name="password" id="password">
                 <i class='bx bxs-lock-alt'></i>
+                <div class="error"></div>
             </div>
             <div class="remember-forgot">
                 <label><input type="checkbox">Zapami&eogon;taj mnie</label>
             </div>
 
-            <input type="submit" class="btn" value="Zaloguj" id="submitBtn">
+            <button class="btn new-button" type="submit">Zaloguj</button>
             <div class="register-link">
                 <p>Nie masz konta? <a href="{{ url_for('register') }}">Zarejestruj si&eogon;</a></p>
             </div>
@@ -29,5 +35,54 @@
         </form>
     </div>
 </div>
+<script>
+    const loginForm = document.getElementById('form');
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
 
+    loginForm.addEventListener('submit', e => {
+        e.preventDefault();
+
+        validateInputs();
+    });
+
+    const setError = (element, message) => {
+        const inputBox = element.parentElement;
+        const errorDisplay = inputBox.querySelector('.error');
+
+        errorDisplay.innerText = message;
+        inputBox.classList.add('error');
+        inputBox.classList.remove('success');
+    };
+
+    const setSuccess = element => {
+        const inputBox = element.parentElement;
+        const errorDisplay = inputBox.querySelector('.error');
+
+        errorDisplay.innerText = '';
+        inputBox.classList.add('success');
+        inputBox.classList.remove('error');
+    };
+
+    const validateInputs = () => {
+        const usernameValue = username.value.trim();
+        const passwordValue = password.value.trim();
+
+        if (usernameValue === '') {
+            setError(username, 'Nazwa jest wymagana');
+        } else {
+            setSuccess(username);
+        }
+
+        if (passwordValue === '') {
+            setError(password, 'Haslo jest wymagane');
+        } else {
+            setSuccess(password);
+        }
+
+        if (document.querySelectorAll('.success').length === 2) {
+            loginForm.submit();
+        }
+    };
+</script>
 {% endblock %}
