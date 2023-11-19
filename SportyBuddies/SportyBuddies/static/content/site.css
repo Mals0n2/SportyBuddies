@@ -514,10 +514,11 @@ h1 {
     }
 
 /*Register*/
-.input-control .error {
+.input-control .error,.error2 {
     color: #ff3860;
     font-size: 9px;
     height: 13px;
+    text-align:center;
 }
 
 .register-body{

@@ -1,4 +1,5 @@
 from datetime import datetime
+from math import e
 from SportyBuddies import app
 from flask import Response, jsonify, render_template, request, redirect, url_for
 from flask_login import (
@@ -201,6 +202,21 @@ def register():
         password = request.form["password"]
 
         cursor = db.cursor()
+        
+        # check if username or email already exists
+        cursor.execute("SELECT user_id FROM users WHERE name = %s", (username,))
+        user_id = cursor.fetchone()
+        if user_id:
+            error_message = "Nazwa uzytkownika jest juz zajeta."
+            return render_template("register.html", error=error_message)
+        
+        cursor.execute("SELECT user_id FROM users WHERE email = %s", (email,))
+        user_id = cursor.fetchone()
+        if user_id:
+            error_message = "Email jest juz zajety."
+            return render_template("register.html", error=error_message)
+
+
         cursor.execute(
             "INSERT INTO users (email, password, name, age, gender, info) VALUES (%s, %s, %s, %s, %s, %s)",
             (email, password, username, age, gender, description),
@@ -233,6 +249,10 @@ def login():
             user = User(user_id[0])
             login_user(user)
             return redirect(url_for("user_profile"))
+        
+        else:
+            error_message = "Nieprawidlowa nazwa uzytkownika lub haslo."
+            return render_template("login.html", error=error_message)
 
     return render_template("login.html")
 
