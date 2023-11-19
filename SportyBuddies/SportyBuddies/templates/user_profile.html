@@ -53,7 +53,14 @@
                 });
             </script>
         </div>
-        <h1>{{result}}</h1>
+        <h1>
+            {% if gender == 'Kobieta' %}
+            <span class="female-circle"><i class="icon fas fa-venus"></i></span>
+            {% else %}
+            <span class="male-circle"><i class="icon fas fa-mars"></i></span>
+            {% endif %}
+            {{ result }}, {{ age }}
+        </h1>
         <p>
             <label for="status">Twoj Status:</label>
             <select id="status" name="status">

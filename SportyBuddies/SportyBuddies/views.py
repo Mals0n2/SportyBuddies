@@ -320,5 +320,5 @@ def submit_report():
         cursor.close()
 
         # Mo¿esz dodaæ dowolny kod obs³ugi po zapisaniu zg³oszenia, np. przekierowanie na inn¹ stronê
-        return redirect(url_for("home"))
+        return redirect(url_for("logged"))
 
