@@ -7,6 +7,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Include jQuery library -->
 
+<div class="popupbg">
+    <div class="popup">
+        <h3>Wybierz intensywnosc:</h3>
+        <section>
+            <div class="tile" style="background-color:white;">
+                <input type="radio" name="intensivity" id="1">
+                <label class="profile-label" for="1">
+                    <i class="fas fa-running"></i>
+                    <h6>Poczatkujacy</h6>
+                </label>
+            </div>
+            <div class="tile" style="background-color:white;">
+                <input type="radio" name="intensivity" id="2">
+                <label class="profile-label" for="2">
+                    <i class="fas fa-biking"></i>
+                    <h6>Srednio Zaawansowany</h6>
+                </label>
+            </div>
+            <div class="tile" style="background-color:white;">
+                <input type="radio" name="intensivity" id="3">
+                <label class="profile-label" for="3">
+                    <i class="fas fa-swimmer"></i>
+                    <h6>Profesjonalnie</h6>
+                </label>
+            </div>
+        </section>
+
+    </div>
+</div>
 <div class="profile-container">
     <div class="profile-box">
         <div class="upload">
@@ -24,14 +53,16 @@
                 });
             </script>
         </div>
-        <h1>
-            {% if gender == 'Kobieta' %}
-            <span class="female-circle"><i class="icon fas fa-venus"></i></span>
-            {% else %}
-            <span class="male-circle"><i class="icon fas fa-mars"></i></span>
-            {% endif %}
-            {{ result }}, {{ age }}
-        </h1>
+        <h1>{{result}}</h1>
+        <p>
+            <label for="status">Twoj Status:</label>
+            <select id="status" name="status">
+                <option value="">wybierz</option>
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+            </select>
+        </p>
+        <br />
         <p>Wybierz swoje zainteresowania</p>
         <div class="scrollable-container">
             <section>
@@ -152,7 +183,6 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -160,50 +190,80 @@
         var checkedCheckboxes = [];
 
         checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                checkedCheckboxes.push(this);
-            }
-        });
-
-        checkboxes.forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
                 if (this.checked) {
                     checkedCheckboxes.push(this);
-
-                    if (checkedCheckboxes.length > maxChecked) {
-                        this.checked = false;
-                        checkedCheckboxes.shift();
+                    if (checkedCheckboxes.length <= maxChecked) {
+                        showPopup();
                     }
                 } else {
                     checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+                    hidePopup();
                 }
             });
         });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('input[type="checkbox"]').change(function () {
-            var isChecked = $(this).is(":checked");
-            var sportId = $(this).data("sport-id");
 
+        function showPopup() {
+            document.querySelector('.popupbg').style.display = 'block';
+
+            // Handle radio button selection in the popup
+            var radioButtons = document.querySelectorAll('input[name="intensivity"]');
+            radioButtons.forEach(function (radioButton) {
+                radioButton.addEventListener('change', function () {
+                    var intensityValue = this.id;  // Assuming radio button IDs match intensity values
+                    checkedCheckboxes.forEach(function (checkbox) {
+                        var sportId = checkbox.getAttribute('data-sport-id');
+                        sendDataToDatabase(sportId, intensityValue);
+                    });
+                    hidePopup();
+                });
+            });
+        }
+
+        function hidePopup() {
+            document.querySelector('.popupbg').style.display = 'none';
+        }
+
+        function sendDataToDatabase(sportId, intensityValue) {
             // Send an AJAX request to update the database
             $.ajax({
                 type: "POST",
                 url: "/update_user_sports",
                 data: {
                     sportId: sportId,
-                    isChecked: isChecked
+                    intensity: intensityValue
                 },
                 success: function (data) {
                     // Handle the response if needed
                 }
             });
+        }
+    });
+        document.addEventListener('DOMContentLoaded', function () {
+        var statusSelect = document.getElementById('status');
+
+            statusSelect.addEventListener('change', function () {
+                if (statusSelect.value != "") {
+                    var selectedStatus = statusSelect.value;
+                    sendStatusToDatabase(selectedStatus);
+                }
         });
+
+        function sendStatusToDatabase(status) {
+            // Send an AJAX request to update the user's status in the database
+            $.ajax({
+                type: "POST",
+                url: "/update_user_status",
+                data: {
+                    status: status
+                },
+                success: function (data) {
+                    // Handle the response if needed
+                }
+            });
+        }
     });
 </script>
-
-
 
 
 

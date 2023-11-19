@@ -9,6 +9,8 @@ from flask_login import (
     current_user,
 )
 import mysql.connector
+from datetime import datetime
+from flask import request
 
 
 db = mysql.connector.connect(
@@ -90,6 +92,9 @@ def user_profile():
     cursor.execute("SELECT gender FROM users WHERE user_id = %s", (current_user.id,))
     user_gender = cursor.fetchone()[0]
 
+    cursor.execute("SELECT status FROM users WHERE user_id = %s", (current_user.id,))
+    user_status = cursor.fetchone()[0]
+
     cursor.execute(
         "SELECT sport_id FROM user_sports WHERE user_id = %s", (current_user.id,)
     )
@@ -105,7 +110,8 @@ def user_profile():
         result=username,
         user_sports=sports,
           age = user_age,
-          gender = user_gender
+          gender = user_gender,
+          status = user_status
     )
 
 @app.route("/mainpagelogged")
@@ -146,24 +152,39 @@ def get_user_photo():
 @app.route("/update_user_sports", methods=["POST"])
 def update_user_sports():
     if request.method == "POST":
-        sport_id = request.form.get("sportId")
-        is_checked = request.form.get("isChecked")
+        sport_ids = request.form.getlist("sportIds[]")
+        intensity = request.form.get("intensity")
 
         cursor = db.cursor()
-        if is_checked == "true":
+
+        # Usuwanie istniej¹cych wpisów dla danego u¿ytkownika
+        cursor.execute("DELETE FROM user_sports WHERE user_id = %s", (current_user.id,))
+
+        # Dodawanie nowych wpisów
+        for sport_id in sport_ids:
             cursor.execute(
-                "INSERT INTO user_sports (user_id,sport_id) VALUES (%s,%s)",
-                (current_user.id, sport_id),
-            )
-        else:
-            cursor.execute(
-                "DELETE FROM user_sports WHERE user_id = %s AND sport_id=%s",
-                (current_user.id, sport_id),
+                "INSERT INTO user_sports (user_id, sport_id, intensity) VALUES (%s, %s, %s)",
+                (current_user.id, sport_id, intensity),
             )
 
         db.commit()
         cursor.close()
         return jsonify({"status": "success"})
+@app.route("/update_user_status", methods=["POST"])
+@login_required
+def update_user_status():
+    if request.method == "POST":
+        status = request.form.get("status")
+
+        cursor = db.cursor()
+        cursor.execute(
+            "UPDATE users SET status=%s WHERE user_id=%s", (status, current_user.id)
+        )
+        db.commit()
+        cursor.close()
+
+        return jsonify({"status": "success"})
+
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -248,3 +269,36 @@ def about():
         year=datetime.now().year,
         message="Your application description page.",
     )
+
+@app.route("/bug_report")
+def bug_report():
+    
+    if current_user.is_authenticated == False:
+        return redirect(url_for("login"))
+    return render_template(
+        "bug_report.html",
+        title="Zgloszenie Problemow",
+        year=datetime.now().year,
+        message="Your application description page.",
+    )
+@app.route("/submit_report", methods=["POST"])
+@login_required
+def submit_report():
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+        user_id = current_user.id
+        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        cursor = db.cursor()
+        cursor.execute(
+            "INSERT INTO reports (user_id, date, title, `desc`) VALUES (%s, %s, %s, %s)",
+            (user_id, date, title, description),
+        )
+        db.commit()
+        cursor.close()
+
+        # Mo¿esz dodaæ dowolny kod obs³ugi po zapisaniu zg³oszenia, np. przekierowanie na inn¹ stronê
+        return redirect(url_for("home"))
+

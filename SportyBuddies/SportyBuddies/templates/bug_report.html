@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<div class="login-container">
+    <div class="login-wrapper">
+        <form id="form" action="/submit_report" method="post">
+            <div class="user-details">
+                <h1>Zglos swoj problem</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Tytul zgloszenia" name="title" id="title" required>
+                </div>
+                <div class="input-box-register" style="width:100%">
+                    <textarea  placeholder="Tu opisz swoj problem" name="description" id="description" required "></textarea>
+                </div>
+
+                <input type="submit" class="btn" value="Wyslij" id="submitBtn">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -32,6 +32,8 @@
                 <ul class="nav navbar-nav">
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt" style="color: white;"></i></a></li>
+
+                    <li><a href="{{ url_for('bug_report') }}"><i class="fa-regular fa-bug" style="color: white;"></i></a></li>
                     {% endif %}
                     <li><a href="{{ url_for('user_profile') }}"><i class="fas fa-user" style="color: white;"></i></a></li>
                 </ul>
