@@ -158,10 +158,8 @@ def update_user_sports():
 
         cursor = db.cursor()
 
-        # Usuwanie istniej¹cych wpisów dla danego u¿ytkownika
         cursor.execute("DELETE FROM user_sports WHERE user_id = %s", (current_user.id,))
 
-        # Dodawanie nowych wpisów
         for sport_id in sport_ids:
             cursor.execute(
                 "INSERT INTO user_sports (user_id, sport_id, intensity) VALUES (%s, %s, %s)",
@@ -319,6 +317,5 @@ def submit_report():
         db.commit()
         cursor.close()
 
-        # Mo¿esz dodaæ dowolny kod obs³ugi po zapisaniu zg³oszenia, np. przekierowanie na inn¹ stronê
         return redirect(url_for("logged"))
 
