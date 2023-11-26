@@ -338,5 +338,5 @@ def submit_report():
         cursor.close()
 
         # Mo�esz doda� dowolny kod obs�ugi po zapisaniu zg�oszenia, np. przekierowanie na inn� stron�
-        return redirect(url_for("home"))
+        return redirect(url_for("logged"))
 
