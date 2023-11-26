@@ -191,51 +191,73 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        var maxChecked = 3;
-        var checkedCheckboxes = [];
+    //document.addEventListener('DOMContentLoaded', function () {
+    //    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    //    var maxChecked = 3;
+    //    var checkedCheckboxes = [];
 
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    checkedCheckboxes.push(this);
-                    if (checkedCheckboxes.length <= maxChecked) {
-                        showPopup();
-                    }
-                } else {
-                    checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+    //    checkboxes.forEach(function (checkbox) {
+    //        checkbox.addEventListener('change', function () {
+    //            if (this.checked) {
+    //                checkedCheckboxes.push(this);
+    //                if (checkedCheckboxes.length <= maxChecked) {
+    //                    showPopup();
+    //                }
+    //            } else {
+    //                checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+    //                hidePopup();
+    //            }
+    //        });
+    //    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var radioButtons = document.querySelectorAll('input[name="intensivity"]');
+        radioButtons.forEach(function (radioButton) {
+            radioButton.addEventListener('change', function () {
+                var intensityValue = this.id;
+                var checkedCheckbox = document.querySelector('input[name="sports"]:checked');
+                if (checkedCheckbox) {
+                    var sportId = checkedCheckbox.getAttribute('data-sport-id');
+                    sendDataToDatabase(sportId, intensityValue);
                     hidePopup();
                 }
             });
         });
+    });
 
-        function showPopup() {
-            document.querySelector('.popupbg').style.display = 'block';
+    function showPopup() {
+        document.querySelector('.popupbg').style.display = 'block';
+    }
 
-            // Handle radio button selection in the popup
-            var radioButtons = document.querySelectorAll('input[name="intensivity"]');
-            radioButtons.forEach(function (radioButton) {
-                radioButton.addEventListener('change', function () {
-                    var intensityValue = this.id;  // Assuming radio button IDs match intensity values
-                    checkedCheckboxes.forEach(function (checkbox) {
-                        var sportId = checkbox.getAttribute('data-sport-id');
-                        sendDataToDatabase(sportId, intensityValue);
-                    });
-                    hidePopup();
-                });
-            });
+    //    function showPopup() {
+    //        document.querySelector('.popupbg').style.display = 'block';
+
+    //        // Handle radio button selection in the popup
+    //        var radioButtons = document.querySelectorAll('input[name="intensivity"]');
+    //        radioButtons.forEach(function (radioButton) {
+    //            radioButton.addEventListener('change', function () {
+    //                var intensityValue = this.id;  // Assuming radio button IDs match intensity values
+    //                checkedCheckboxes.forEach(function (checkbox) {
+    //                    var sportId = checkbox.getAttribute('data-sport-id');
+    //                    sendDataToDatabase(sportId, intensityValue);
+    //                    hidePopup();
+    //                });
+    //            });
+    //        });
+    //}
+
+    function hidePopup() {
+        document.querySelector('.popupbg').style.display = 'none';
+        var checkedRadio = document.querySelector('input[name="intensivity"]:checked');
+        if (checkedRadio) {
+            checkedRadio.checked = false;
         }
-
-        function hidePopup() {
-            document.querySelector('.popupbg').style.display = 'none';
-        }
+    }
 
         function sendDataToDatabase(sportId, intensityValue) {
             // Send an AJAX request to update the database
             $.ajax({
                 type: "POST",
-                url: "/update_user_sports",
+                url: "/update_user_sports_intensity",
                 data: {
                     sportId: sportId,
                     intensity: intensityValue
@@ -244,16 +266,67 @@
                     // Handle the response if needed
                 }
             });
+            console.log("Sport ID:", sportId, "Intensity:", intensityValue);
         }
+    //});                         
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var maxChecked = 3;
+        var checkedCheckboxes = [];
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkedCheckboxes.push(this);
+            }
+        });
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkedCheckboxes.push(this);
+                    showPopup();
+                    if (checkedCheckboxes.length > maxChecked) {
+                        this.checked = false;
+                        checkedCheckboxes.shift();
+                        hidePopup();
+                    }
+                } else {
+                    checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+                }
+            });
+        });
     });
-        document.addEventListener('DOMContentLoaded', function () {
+    $(document).ready(function () {
+        $('input[type="checkbox"]').change(function () {
+            var isChecked = $(this).is(":checked");
+            var sportId = $(this).data("sport-id");
+
+            // Send an AJAX request to update the database
+            $.ajax({
+                type: "POST",
+                url: "/update_user_sports",
+                data: {
+                    sportId: sportId,
+                    isChecked: isChecked
+                },
+                success: function (data) {
+                    // Handle the response if needed
+                }
+            });
+        });
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
         var statusSelect = document.getElementById('status');
 
-            statusSelect.addEventListener('change', function () {
-                if (statusSelect.value != "") {
-                    var selectedStatus = statusSelect.value;
-                    sendStatusToDatabase(selectedStatus);
-                }
+        statusSelect.addEventListener('change', function () {
+            if (statusSelect.value != "") {
+                var selectedStatus = statusSelect.value;
+                sendStatusToDatabase(selectedStatus);
+            }
         });
 
         function sendStatusToDatabase(status) {

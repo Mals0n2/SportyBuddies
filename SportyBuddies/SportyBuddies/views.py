@@ -150,27 +150,45 @@ def get_user_photo():
     return Response(photo_data, content_type="image/jpeg")
 
 
-@app.route("/update_user_sports", methods=["POST"])
-def update_user_sports():
-    if request.method == "POST":
-        sport_ids = request.form.getlist("sportIds[]")
+@app.route("/update_user_sports_intensity", methods=["POST"])
+def update_user_sports_intensity():
+        cursor = db.cursor()
+        sport_id = request.form.get("sportId")
         intensity = request.form.get("intensity")
 
-        cursor = db.cursor()
-
-        # Usuwanie istniej¹cych wpisów dla danego u¿ytkownika
-        cursor.execute("DELETE FROM user_sports WHERE user_id = %s", (current_user.id,))
-
-        # Dodawanie nowych wpisów
-        for sport_id in sport_ids:
-            cursor.execute(
-                "INSERT INTO user_sports (user_id, sport_id, intensity) VALUES (%s, %s, %s)",
-                (current_user.id, sport_id, intensity),
+        cursor.execute(
+                "UPDATE user_sports SET intensity=%s WHERE user_id=%s AND sport_id=%s",
+                (intensity,current_user.id,sport_id),
             )
 
         db.commit()
         cursor.close()
         return jsonify({"status": "success"})
+
+
+@app.route("/update_user_sports", methods=["POST"])
+def update_user_sports():
+    if request.method == "POST":
+        is_checked = request.form.get("isChecked")
+        sport_id = request.form.get("sportId")
+
+        cursor = db.cursor()
+
+        if is_checked == "true":
+            cursor.execute(
+                "INSERT INTO user_sports (user_id,sport_id) VALUES (%s,%s)",
+                (current_user.id, sport_id),
+            )
+        else:
+            cursor.execute(
+                "DELETE FROM user_sports WHERE user_id = %s AND sport_id=%s",
+                (current_user.id, sport_id),
+            )
+
+        db.commit()
+        cursor.close()
+        return jsonify({"status": "success"})
+        
 @app.route("/update_user_status", methods=["POST"])
 @login_required
 def update_user_status():
@@ -319,6 +337,6 @@ def submit_report():
         db.commit()
         cursor.close()
 
-        # Mo¿esz dodaæ dowolny kod obs³ugi po zapisaniu zg³oszenia, np. przekierowanie na inn¹ stronê
-        return redirect(url_for("logged"))
+        # Moï¿½esz dodaï¿½ dowolny kod obsï¿½ugi po zapisaniu zgï¿½oszenia, np. przekierowanie na innï¿½ stronï¿½
+        return redirect(url_for("home"))
 
