@@ -66,11 +66,13 @@
     <Content Include="SportyBuddies\static\scripts\_references.js" />
     <Content Include="SportyBuddies\templates\about.html" />
     <Content Include="SportyBuddies\templates\contact.html" />
+    <Content Include="SportyBuddies\templates\forgot.html" />
     <Content Include="SportyBuddies\templates\index.html" />
     <Content Include="SportyBuddies\templates\layout.html" />
     <Content Include="SportyBuddies\templates\bug_report.html" />
     <Content Include="SportyBuddies\templates\login.html" />
     <Content Include="SportyBuddies\templates\mainpagelogged.html" />
+    <Content Include="SportyBuddies\templates\newpass.html" />
     <Content Include="SportyBuddies\templates\register.html" />
     <Content Include="SportyBuddies\templates\user_profile.html" />
   </ItemGroup>

@@ -1,7 +1,8 @@
 from datetime import datetime
 from math import e
 from SportyBuddies import app
-from flask import Response, jsonify, render_template, request, redirect, url_for
+from itsdangerous import URLSafeTimedSerializer, BadSignature
+from flask import Response, jsonify, render_template, request, redirect, url_for,flash
 from flask_login import (
     LoginManager,
     login_required,
@@ -10,8 +11,22 @@ from flask_login import (
     current_user,
 )
 import mysql.connector
-from datetime import datetime
-from flask import request
+from flask import Flask, render_template, request, redirect, url_for
+from flask_mail import Mail, Message
+from io import BytesIO
+from PIL import Image
+import secrets
+import requests
+
+######### MAIL ##########
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  
+app.config['MAIL_PORT'] = 465  # Port for SMTP (SSL)
+app.config['MAIL_USE_SSL'] = True  
+app.config['MAIL_USERNAME'] = 'malakatoms@gmail.com'
+app.config['MAIL_PASSWORD'] = 'rmfqrobafdztynsn'
+
+mail = Mail(app)
 
 
 db = mysql.connector.connect(
@@ -235,10 +250,25 @@ def register():
             return render_template("register.html", error=error_message)
 
 
+        
+        photo_url = "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+        response = requests.get(photo_url)
+            # Konwertuj zdjęcie do formatu BLOB
+        image = Image.open(BytesIO(response.content))
+        blob_data = BytesIO()
+        image.save(blob_data, format="JPEG")
+        photo_blob = blob_data.getvalue()
+
         cursor.execute(
-            "INSERT INTO users (email, password, name, age, gender, info) VALUES (%s, %s, %s, %s, %s, %s)",
-            (email, password, username, age, gender, description),
+            "INSERT INTO users (email, password, name, age, gender, info, photo) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (email, password, username, age, gender, description, photo_blob),
         )
+        db.commit()
+        cursor.close()
+
+        msg = Message("Pomyślna rejestracja", sender="your_email@example.com", recipients=[email])
+        msg.body = "Dziękujemy za rejestrację w SportyBuddies! Teraz możesz zalogować się na swoje konto."
+        mail.send(msg)
         db.commit()
         cursor.close()
 
@@ -339,4 +369,64 @@ def submit_report():
 
         # Mo�esz doda� dowolny kod obs�ugi po zapisaniu zg�oszenia, np. przekierowanie na inn� stron�
         return redirect(url_for("logged"))
+
+serializer = URLSafeTimedSerializer(app.secret_key)
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        
+        cursor = db.cursor()
+        select_query = "SELECT * FROM users WHERE email = %s"
+        cursor.execute(select_query, (email,))
+        user = cursor.fetchone()
+
+        if user:
+            token_data = {'email': email}
+            token = serializer.dumps(email)
+            reset_link = url_for('new_pass', token=token, _external=True)
+
+            msg = Message("Reset Password", sender="sportybuddies@wp.pl", recipients=[email])
+            msg.body = f"Kliknij w link, aby zresetowac haslo do konta: {reset_link}"
+            mail.send(msg)
+
+            flash("Link do zresetownia hasla zostal wyslany na poczte.")
+
+    return render_template('forgot.html')
+
+
+
+@app.route('/newpass/<token>', methods=['GET','POST'])
+def new_pass(token):
+    # Obsługa zmiany hasła na podstawie tokenu
+    cursor = db.cursor()
+
+    try:
+        email = serializer.loads(token, max_age=3600)  
+    except BadSignature:
+        flash("Nieprawidłowy token resetowania hasła.")
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        new_password = request.form.get('password')
+
+        update_query = "UPDATE users SET password = %s WHERE email = %s"
+        cursor.execute(update_query, (new_password, email))
+        db.commit()
+
+        flash("Hasło zostało pomyślnie zresetowane.")
+        return redirect(url_for('login'))
+
+    return render_template('newpass.html')
+
+@app.route("/newpass")
+def newpass():
+    
+    return redirect(url_for("home"))
+
+@app.route("/forgot")
+def forgot():
+ 
+    return render_template("forgot.html", title="Forgotten password", year=datetime.now().year)
 

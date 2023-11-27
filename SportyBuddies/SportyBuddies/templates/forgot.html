@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<div class="login-container">
+    <div class="login-wrapper">
+        <form action="/reset-password" method="post">
+            <h1>Przypomnij Has&lstrok;o</h1>
+            <div class="input-box">
+                <input type="email" placeholder="Email" name="email" id="email" required>
+                <i class='bx bxs-user'></i>
+            </div>
+
+
+            <input type="submit" class="btn" value="Wy&sacute;lij" id="submitBtn">
+            <div class="register-link">
+                <p>Dostaniesz od nas wiadomo&sacute;&cacute; na maila, za pomoc&aogon; kt&oacute;rej zresetujesz has&lstrok;o</p>
+                <div>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                        <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
