@@ -310,6 +310,13 @@ section {
         color: #76E4FA;
     }
 
+.location {
+    background-color: white;
+    color: #83CEEB;
+    margin-bottom: 5px;
+    border-radius: 25px;
+    padding: 3px;
+}
 .profile-label {
     display: flex;
     margin-top: 50px;
