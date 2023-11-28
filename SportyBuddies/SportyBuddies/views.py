@@ -123,11 +123,12 @@ def user_profile():
 
     return render_template(
         "user_profile.html",
-        result=username,
+        username=username,
         user_sports=sports,
-          age = user_age,
-          gender = user_gender,
-          status = user_status
+        age = user_age,
+        gender = user_gender,
+        status = user_status,
+        current_user_id=current_user.id,
     )
 
 @app.route("/mainpagelogged")
@@ -135,30 +136,53 @@ def mainpagelogged():
     if current_user.is_authenticated == False:
         return redirect(url_for("login"))
 
-    cursor = db.cursor()
-
-    cursor.execute("SELECT name FROM users WHERE user_id = %s", (current_user.id,))
-    username = cursor.fetchone()[0]
+    current_username, current_age, current_sport_icons = get_user_info_for_mainpagelogged(current_user.id)
+    if len(current_sport_icons) == 0:
+        return redirect(url_for("user_profile"))
+    matched_user_id= get_matched_user_id()
+    matched_username,matched_age, matched_sport_icons = get_user_info_for_mainpagelogged(matched_user_id)
     
-    cursor.execute("SELECT age FROM users WHERE user_id = %s", (current_user.id,))
-    user_age = cursor.fetchone()[0]
-    
-    cursor.execute("SELECT sports.iconlink FROM sports JOIN user_sports ON sports.sport_id = user_sports.sport_id WHERE user_sports.user_id = %s", (current_user.id,))
-    sport_id = cursor.fetchall()
-    
-
     return render_template(
         "mainpagelogged.html",
-        result=username,
-        age = user_age,
-        sport = sport_id,
+        current_user_id=current_user.id,
+        current_username=current_username,
+        current_age = current_age,
+        current_sport_icons = current_sport_icons,
+        matched_username=matched_username,
+        matched_age = matched_age,
+        matched_sport_icons = matched_sport_icons,
+        matched_user_id=matched_user_id
     )
 
-@app.route("/get_user_photo")
-@login_required
-def get_user_photo():
+def get_matched_user_id():
     cursor = db.cursor()
-    cursor.execute("SELECT photo FROM users WHERE user_id = %s", (current_user.id,))
+    cursor.execute("SELECT user_id FROM user_sports WHERE sport_id = (SELECT sport_id FROM user_sports WHERE user_id=%s limit 1) limit 1;", (current_user.id,))
+    user_id = cursor.fetchone()[0]
+    
+    return user_id
+
+def get_user_info_for_mainpagelogged(user_id):
+    
+    cursor = db.cursor()
+    
+    cursor.execute("SELECT name FROM users WHERE user_id = %s", (user_id,))
+    username = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT age FROM users WHERE user_id = %s", (user_id,))
+    user_age = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT sports.iconlink FROM sports JOIN user_sports ON sports.sport_id = user_sports.sport_id WHERE user_sports.user_id = %s", (user_id,))
+    sport_id = cursor.fetchall()
+    
+    return username, user_age, sport_id
+    
+
+
+@app.route("/get_user_photo/<int:user_id>")
+@login_required
+def get_user_photo(user_id):
+    cursor = db.cursor()
+    cursor.execute("SELECT photo FROM users WHERE user_id = %s", (user_id,))
     photo_data = cursor.fetchone()[0]
     cursor.close()
 
