@@ -131,6 +131,21 @@ def user_profile():
         current_user_id=current_user.id,
     )
 
+@app.route("/update_user_location", methods=["POST"])
+def update_user_location():
+    
+    data = request.get_json()
+    latitude = data.get("latitude")
+    longitude = data.get("longitude")
+    
+    cursor = db.cursor()
+    cursor.execute(
+        "UPDATE users SET latitude = %s, longitude = %s where user_id = %s", (latitude, longitude, current_user.id)
+    )
+    db.commit()
+    
+
+    
 @app.route("/mainpagelogged")
 def mainpagelogged():
     if current_user.is_authenticated == False:

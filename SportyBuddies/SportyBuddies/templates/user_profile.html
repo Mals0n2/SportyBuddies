@@ -69,6 +69,7 @@
                 <option value="offline">Offline</option>
             </select>
         </p>
+        <p>Twoja aktualna lokalizacja: <span id="locationName"></span></p>
         <br />
         <p>Wybierz swoje zainteresowania</p>
         <div class="scrollable-container">
@@ -191,6 +192,7 @@
     </div>
 </div>
 
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         if (navigator.geolocation) {
@@ -199,7 +201,8 @@
                     var latitude = position.coords.latitude;
                     var longitude = position.coords.longitude;
 
-                    sendLocationToServer(latitude, longitude);
+                    
+                    getLocationName(latitude, longitude);
                 },
                 function (error) {
                     console.error('Blad pobierania lokalizacji:', error);
@@ -209,16 +212,41 @@
             console.error('Przegladarka nie obsluguje Geolokalizacji.');
         }
 
-        function sendLocationToServer(latitude, longitude) {
+        function getLocationName(latitude, longitude) {
+            var nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
             $.ajax({
-                type: "POST",
-                url: "/update_user_location",
-                data: {
-                    latitude: latitude,
-                    longitude: longitude
-                },
+                type: 'GET',
+                url: nominatimApiUrl,
+                dataType: 'json',
                 success: function (data) {
-                    console.log("Lokalizacja zostala wyslana do serwera.");
+                    var city = data.address.city || data.address.town || data.address.village || data.address.hamlet || 'Unknown';
+                    displayLocationName(city);
+                    sendLocationToServer(latitude, longitude, city);
+                },
+                error: function (error) {
+                    console.error('Error fetching location name:', error);
+                }
+            });
+        }
+
+        function displayLocationName(locationName) {
+            
+            $('#locationName').text(locationName);
+        }
+
+        function sendLocationToServer(latitude, longitude, locationName) {
+            $.ajax({
+                type: 'POST',
+                url: '/update_user_location',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude,
+                    locationName: locationName
+                }),
+                success: function (data) {
+                    console.log('Lokalizacja zostala wyslana do serwera.');
                 },
                 error: function (error) {
                     console.error('Blad podczas wysylania lokalizacji do serwera:', error);
@@ -227,6 +255,7 @@
         }
     });
 </script>
+
 
 <script>
     //document.addEventListener('DOMContentLoaded', function () {
