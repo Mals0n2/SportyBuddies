@@ -14,17 +14,13 @@
 
     <div class="circle-container">
         <div class="circle-left">
-            <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
+            <img src="{{ url_for('get_user_photo',user_id=current_user_id) }}" class="mainpage-pic">
             <div class="name-container">
-                <h1>{{result}}<span class="small-font">{{age}}</span></h1>
-                {% for icon in sport[0] %}
-                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
-                {% endfor %}
-                {% for icon in sport[1] %}
-                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
-                {% endfor %}
-                {% for icon in sport[2] %}
-                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                <h1>{{current_username}}<span class="small-font">{{current_age}}</span></h1>
+                {% for sport_icon in current_sport_icons %}
+                    {% if sport_icon|length >= 1 %}
+                        <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -39,17 +35,13 @@
         </div>
 
         <div class="circle-right">
-            <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
+            <img src="{{ url_for('get_user_photo',user_id=matched_user_id) }}" class="mainpage-pic">
             <div class="name-container">
-                <h1>{{result}}<span class="small-font">{{age}}</span></h1>
-                {% for icon in sport[0] %}
-                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
-                {% endfor %}
-                {% for icon in sport[1] %}
-                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
-                {% endfor %}
-                {% for icon in sport[2] %}
-                <div class="smaller-circle"><i class="{{ icon }}"></i></div>
+                <h1>{{matched_username}}<span class="small-font">{{matched_age}}</span></h1>
+                {% for sport_icon in matched_sport_icons %}
+                    {% if sport_icon|length >= 1 %}
+                        <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

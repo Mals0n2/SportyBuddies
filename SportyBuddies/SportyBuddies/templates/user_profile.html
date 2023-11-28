@@ -39,7 +39,7 @@
 <div class="profile-container">
     <div class="profile-box">
         <div class="upload">
-            <img src="{{ url_for('get_user_photo') }}" class="profile-pic">
+            <img src="{{ url_for('get_user_photo',user_id=current_user_id) }}" class="profile-pic">
             <div class="round">
                 <form method="POST" action="/upload_photo" enctype="multipart/form-data" id="uploadPhotoForm">
                     <input type="file" name="photo" id="photoInput">
@@ -59,7 +59,7 @@
             {% else %}
             <span class="male-circle"><i class="icon fas fa-mars"></i></span>
             {% endif %}
-            {{ result }}, {{ age }}
+            {{ username }}, {{ age }}
         </h1>
         <p>
             <label for="status">Twoj Status:</label>
@@ -255,6 +255,7 @@
                 var checkedCheckbox = document.querySelector('input[name="sports"]:checked');
                 if (checkedCheckbox) {
                     var sportId = checkedCheckbox.getAttribute('data-sport-id');
+                    debugger;
                     sendDataToDatabase(sportId, intensityValue);
                     hidePopup();
                 }
