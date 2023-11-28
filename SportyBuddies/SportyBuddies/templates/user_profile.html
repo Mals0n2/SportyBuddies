@@ -190,6 +190,44 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    sendLocationToServer(latitude, longitude);
+                },
+                function (error) {
+                    console.error('Blad pobierania lokalizacji:', error);
+                }
+            );
+        } else {
+            console.error('Przegladarka nie obsluguje Geolokalizacji.');
+        }
+
+        function sendLocationToServer(latitude, longitude) {
+            $.ajax({
+                type: "POST",
+                url: "/update_user_location",
+                data: {
+                    latitude: latitude,
+                    longitude: longitude
+                },
+                success: function (data) {
+                    console.log("Lokalizacja zostala wyslana do serwera.");
+                },
+                error: function (error) {
+                    console.error('Blad podczas wysylania lokalizacji do serwera:', error);
+                }
+            });
+        }
+    });
+</script>
+
 <script>
     //document.addEventListener('DOMContentLoaded', function () {
     //    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -253,22 +291,22 @@
         }
     }
 
-        function sendDataToDatabase(sportId, intensityValue) {
-            // Send an AJAX request to update the database
-            $.ajax({
-                type: "POST",
-                url: "/update_user_sports_intensity",
-                data: {
-                    sportId: sportId,
-                    intensity: intensityValue
-                },
-                success: function (data) {
-                    // Handle the response if needed
-                }
-            });
-            console.log("Sport ID:", sportId, "Intensity:", intensityValue);
-        }
-    //});                         
+    function sendDataToDatabase(sportId, intensityValue) {
+        // Send an AJAX request to update the database
+        $.ajax({
+            type: "POST",
+            url: "/update_user_sports_intensity",
+            data: {
+                sportId: sportId,
+                intensity: intensityValue
+            },
+            success: function (data) {
+                // Handle the response if needed
+            }
+        });
+        console.log("Sport ID:", sportId, "Intensity:", intensityValue);
+    }
+    //});
 
     document.addEventListener('DOMContentLoaded', function () {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
