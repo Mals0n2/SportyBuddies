@@ -75,6 +75,7 @@
     <Content Include="SportyBuddies\templates\newpass.html" />
     <Content Include="SportyBuddies\templates\register.html" />
     <Content Include="SportyBuddies\templates\user_profile.html" />
+    <Content Include="SportyBuddies\templates\chat.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
