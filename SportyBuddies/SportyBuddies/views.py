@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask_socketio import SocketIO, emit
 from math import e
 from SportyBuddies import app
 from itsdangerous import URLSafeTimedSerializer, BadSignature
@@ -23,8 +24,8 @@ import requests
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  
 app.config['MAIL_PORT'] = 465  # Port for SMTP (SSL)
 app.config['MAIL_USE_SSL'] = True  
-app.config['MAIL_USERNAME'] = 'malakatoms@gmail.com'
-app.config['MAIL_PASSWORD'] = 'rmfqrobafdztynsn'
+app.config['MAIL_USERNAME'] = 'infosportybuddies@gmail.com'
+app.config['MAIL_PASSWORD'] = 'htysutkbluguliwy'
 
 mail = Mail(app)
 
@@ -397,6 +398,8 @@ class Messages:
         self.receiver_id = receiver_id
         self.content = content
         self.timestamp = timestamp
+        
+socketio = SocketIO(app)
         
 @app.route("/chat", defaults={'receiver_id': None}, methods=['GET', 'POST'])
 @app.route("/chat/<int:receiver_id>", methods=['GET', 'POST'])

@@ -36,7 +36,7 @@
             e.preventDefault();
             var content = $('#message-input').val();
             $.post(window.location.href, { content: content }, function () {
-                location.reload(); // Odśwież stronę po wysłaniu wiadomości
+                location.reload();
             });
         });
     });
