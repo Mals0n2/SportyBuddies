@@ -1,29 +1,39 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-<select id="selected_user" name="selected_user">
-    <option value="" selected disabled>Wybierz użytkownika</option>
-    {% for user in users %}
-    <option value="{{ user.user_id }}">{{ user.name }}</option>
-    {% endfor %}
-</select>
-
-<div id="chat-container">
-    <div id="message-container">
-        {% for message in messages %}
-        <div class="message">
-            <strong>{{ message.sender_name }}</strong>: {{ message.content }}
-        </div>
-        {% endfor %}
+<div class="chat-container">
+    <div class="select-user">
+        <select id="selected_user" name="selected_user">
+            <option value="" selected disabled>Wybierz użytkownika</option>
+            {% for user in users %}
+            {% if user.user_id not in selected_users %}
+            <option value="{{ user.user_id }}">{{ user.name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
     </div>
 
-    <form id="message-form" method="post">
-        <textarea id="message-input" name="content" placeholder="Napisz wiadomość"></textarea>
-        <input type="submit" value="Wyślij">
-    </form>
-</div>
+    <div class="last-message">
+        <p>masno</p>
+    </div>
 
+    <div class="chat-container-user">
+        <div class="message-container" id="messageContainer">
+            {% for message in messages %}
+            <div class="message">
+                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <form class="message-form" method="post">
+            <div class="textarea-container">
+                <textarea class="message-input" name="content" placeholder="Napisz wiadomość"></textarea>
+                <input type="submit" class="submit-button" value="Wyślij">
+            </div>
+        </form>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -39,6 +49,27 @@
                 location.reload();
             });
         });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function scrollToBottom() {
+            var messageContainer = document.getElementById("messageContainer");
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+        scrollToBottom();
+
+        function addNewMessage(senderName, content) {
+            var messageContainer = document.getElementById("messageContainer");
+            var newMessage = document.createElement("div");
+            newMessage.className = "message";
+            newMessage.innerHTML = '<strong class="chat-size">' + senderName + '</strong>: ' + content;
+            messageContainer.appendChild(newMessage);
+
+            scrollToBottom();
+        }
+
     });
 </script>
 

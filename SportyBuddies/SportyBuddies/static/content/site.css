@@ -15,12 +15,6 @@ body {
     padding-right: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
 
 /* styles for validation helpers */
 .field-validation-error {
@@ -845,8 +839,99 @@ form .register-button .new-button{
     z-index: 999;
 }
 
+/*Chat*/
+.chat-container{
+    text-align: center;
+    margin: auto;
+    margin-top: 30px;
+    width: 70%;
+    height: 80vh;
+    background-color: #83CEEB;
+    border-radius: 20px;
+}
+
+.select-user{
+    width: 100%;
+    padding: 40px;
+}
+
+.last-message {
+    width: 25%;
+    float: left;
+    height: 75%;
+    background-color: white;
+    border-radius: 10px;
+    margin: 10px;
+    margin-bottom: 10px;
+}
+
+.chat-container-user {
+    float: right;
+    width: 70%;
+    height: 75%;
+    background-color: white;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-container {
+    color: black;
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 10px
+}
+
+.message {
+    margin: 10px;
+    padding: 3px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.message-input {
+    padding: 10px;
+    border-radius: 20px;
+    resize: none;
+    width: 111%;
+    margin: auto;
+}
+
+.chat-size {
+    font-size: 15px;
+    text-align: left;
+}
+
+.message-form {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    width: 500px;
+}
 
 
+.textarea-container {
+    position: relative;
+}
 
+.message-input {
+    padding: 10px;
+    border-radius: 20px;
+    resize: none;
+    width: calc(111% - 20px); /* Szerokoœæ textarea minus padding po obu stronach */
+    margin: auto;
+}
 
-
+.submit-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #83CEEB;
+    color: white;
+    cursor: pointer;
+}
