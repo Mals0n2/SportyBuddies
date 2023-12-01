@@ -856,27 +856,57 @@ form .register-button .new-button{
 }
 
 .last-message {
+    border: solid 3px white;
+    opacity: 0.7;
     width: 25%;
     float: left;
     height: 75%;
-    background-color: white;
     border-radius: 10px;
     margin: 10px;
     margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
 }
 
+    .last-message::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #76E4FA;
+        filter: blur(10px);
+        z-index: -1;
+    }
+
 .chat-container-user {
+    opacity: 0.7;
+    border: solid 3px white;
     float: right;
     width: 70%;
     height: 75%;
-    background-color: white;
     margin-right: 10px;
     margin-top: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
 }
+
+    .chat-container-user::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #76E4FA;
+        filter: blur(10px);
+        z-index: -1;
+    }
 
 .message-container {
     color: black;
@@ -892,13 +922,6 @@ form .register-button .new-button{
     font-size: 15px;
 }
 
-.message-input {
-    padding: 10px;
-    border-radius: 20px;
-    resize: none;
-    width: 111%;
-    margin: auto;
-}
 
 .chat-size {
     font-size: 15px;
@@ -906,7 +929,8 @@ form .register-button .new-button{
 }
 
 .message-form {
-    margin-top: 20px;
+    position: relative;
+    padding: 2px;
     margin-bottom: 5px;
     width: 500px;
 }
@@ -917,21 +941,29 @@ form .register-button .new-button{
 }
 
 .message-input {
+    margin-top: 800px;
+    border: solid 1px white;
+    background-color: #83CEEB;
     padding: 10px;
     border-radius: 20px;
     resize: none;
-    width: calc(111% - 20px); /* Szerokoœæ textarea minus padding po obu stronach */
     margin: auto;
+    padding: 10px;
+    border-radius: 20px;
+    resize: none;
+    width: 111%;
 }
 
 .submit-button {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: -20px;
     transform: translateY(-50%);
     padding: 10px;
     border-radius: 20px;
-    background-color: #83CEEB;
+    background-color: #76E4FA;
     color: white;
     cursor: pointer;
+    border: solid 1px white;
+
 }
