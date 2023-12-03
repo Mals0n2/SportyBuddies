@@ -665,4 +665,33 @@ def admin_panel():
     else:
         return render_template("admin_panel.html", title="Panel Admina", year=datetime.now().year)
 
+@app.route("/display_users")
+@login_required
+def display_users():
+    if not current_user.is_authenticated or not current_user.is_admin:
+        return redirect(url_for("logged"))
 
+    cursor = db.cursor()
+    cursor.execute("SELECT user_id, name, email FROM users")
+    users = cursor.fetchall()
+    cursor.close()
+
+    return render_template("display_users.html", users=users)
+
+@app.route("/delete_user/<int:user_id>")
+@login_required
+def delete_selected_user(user_id):
+    if not current_user.is_authenticated or not current_user.is_admin:
+        return redirect(url_for("logged"))
+
+    cursor = db.cursor()
+
+    # Delete associated records from user_sports table
+    cursor.execute("DELETE FROM user_sports WHERE user_id = %s", (user_id,))
+    # Delete user from the users table
+    cursor.execute("DELETE FROM users WHERE user_id = %s", (user_id,))
+
+    db.commit()
+    cursor.close()
+
+    return redirect(url_for("display_users"))

@@ -9,15 +9,9 @@
 
 <div class="profile-container">
     <div class="profile-box">
-        
-        <h1>
-            {% if gender == 'Kobieta' %}
-            <span class="female-circle"><i class="icon fas fa-venus"></i></span>
-            {% else %}
-            <span class="male-circle"><i class="icon fas fa-mars"></i></span>
-            {% endif %}
-            {{ username }}, {{ age }}
-        </h1>
+        <h2>Welcome to the Admin Panel</h2>
+        <p>Manage users:</p>
+        <a href="{{ url_for('display_users') }}">Display Users</a>
     </div>
 </div>
 

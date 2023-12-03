@@ -67,6 +67,7 @@
     <Content Include="SportyBuddies\templates\about.html" />
     <Content Include="SportyBuddies\templates\admin_panel.html" />
     <Content Include="SportyBuddies\templates\contact.html" />
+    <Content Include="SportyBuddies\templates\display_users.html" />
     <Content Include="SportyBuddies\templates\forgot.html" />
     <Content Include="SportyBuddies\templates\index.html" />
     <Content Include="SportyBuddies\templates\layout.html" />
