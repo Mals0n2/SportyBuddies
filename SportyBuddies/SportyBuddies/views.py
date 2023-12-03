@@ -1,4 +1,5 @@
 from datetime import datetime
+from re import A, S
 from flask_socketio import SocketIO, emit
 from math import e
 from SportyBuddies import app
@@ -18,6 +19,7 @@ from io import BytesIO
 from PIL import Image
 import secrets
 import requests
+import math
 
 ######### MAIL ##########
 
@@ -37,6 +39,8 @@ app.secret_key = "secret"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+already_matched_users=0
 
 
 class User:
@@ -126,6 +130,7 @@ def user_profile():
         if i > 0:
             sports[i - 1] = i
 
+    cursor.close()
     return render_template(
         "user_profile.html",
         username=username,
@@ -148,20 +153,32 @@ def update_user_location():
         "UPDATE users SET latitude = %s, longitude = %s where user_id = %s", (latitude, longitude, current_user.id)
     )
     db.commit()
+    cursor.close()
     
 
-    
+@app.route("/mainpagelogged/<int:next_match>")
 @app.route("/mainpagelogged")
-def mainpagelogged():
+def mainpagelogged(next_match=0):
     if current_user.is_authenticated == False:
         return redirect(url_for("login"))
+    
+    global already_matched_users
+    
+    if next_match==1:
+        already_matched_users+=1
+        
 
-    current_username, current_age, current_sport_icons = get_user_info_for_mainpagelogged(current_user.id)
+    current_username, current_age, current_sport_icons, current_latitude, current_longitude = get_user_info_for_mainpagelogged(current_user.id)
     if len(current_sport_icons) == 0:
         return redirect(url_for("user_profile"))
     matched_user_id= get_matched_user_id()
-    matched_username,matched_age, matched_sport_icons = get_user_info_for_mainpagelogged(matched_user_id)
+    matched_username,matched_age, matched_sport_icons,matched_latitude, matched_longitude = get_user_info_for_mainpagelogged(matched_user_id)
     
+    #get distance
+    distance = haversine(current_latitude, current_longitude, matched_latitude, matched_longitude)
+    distance_string = f"{round(distance)} km"
+    
+
     return render_template(
         "mainpagelogged.html",
         current_user_id=current_user.id,
@@ -171,14 +188,81 @@ def mainpagelogged():
         matched_username=matched_username,
         matched_age = matched_age,
         matched_sport_icons = matched_sport_icons,
-        matched_user_id=matched_user_id
+        matched_user_id=matched_user_id,
+        distance=distance_string
     )
+
+def haversine(lat1, lon1, lat2, lon2):
+    # Konwersja stopni na radiany
+    lat1, lon1, lat2, lon2 = map(float, [lat1, lon1, lat2, lon2])
+    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+    # Różnice między szerokościami i długościami geograficznymi
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+
+    # Obliczanie odległości przy użyciu formuły haversine
+    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    R = 6371  # Promień Ziemi w kilometrach. Można użyć 3958.8 dla mil morskich.
+    distance = R * c
+
+    return distance
+
 
 def get_matched_user_id():
     cursor = db.cursor()
-    cursor.execute("SELECT user_id FROM user_sports WHERE sport_id = (SELECT sport_id FROM user_sports WHERE user_id=%s limit 1) limit 1;", (current_user.id,))
+    
+    #get current user sport ids
+    cursor.execute("SELECT sport_id FROM user_sports WHERE user_id=%s;", (current_user.id,))
+    current_sport_ids_from_db=cursor.fetchall()
+    print(current_sport_ids_from_db)
+    current_sport_ids=[]
+    for sport_id in current_sport_ids_from_db:
+        current_sport_ids.append(sport_id[0])
+    print(current_sport_ids)
+    
+    # Convert list to tuple
+    current_sport_ids_tuple = tuple(current_sport_ids)
+
+    # Format tuple for SQL IN clause
+    formatted_sport_ids = ', '.join(['%s'] * len(current_sport_ids_tuple))
+
+    # Use formatted tuple in SQL statement
+    cursor.execute(f"SELECT user_id FROM user_sports WHERE sport_id IN ({formatted_sport_ids}) AND user_id != %s;", (*current_sport_ids_tuple, current_user.id))
+    matched_users_ids_by_sport_from_db=cursor.fetchall()
+    print(matched_users_ids_by_sport_from_db)
+    matched_users_ids_by_sport=[]
+    for user_id in matched_users_ids_by_sport_from_db:
+        matched_users_ids_by_sport.append(user_id[0])
+    print(matched_users_ids_by_sport)
+
+    #calculate distance and get closest user
+    cursor.execute("SELECT latitude FROM users WHERE user_id = %s", (current_user.id,))
+    current_latitude = cursor.fetchone()[0]
+    cursor.execute("SELECT longitude FROM users WHERE user_id = %s", (current_user.id,))
+    current_longitude = cursor.fetchone()[0]
+    
+    matched_users_sorted_by_distance=[]
+    for user_id in matched_users_ids_by_sport:
+        cursor.execute("SELECT latitude FROM users WHERE user_id = %s", (user_id,))
+        matched_latitude = cursor.fetchone()[0]
+        cursor.execute("SELECT longitude FROM users WHERE user_id = %s", (user_id,))
+        matched_longitude = cursor.fetchone()[0]
+        distance = haversine(current_latitude, current_longitude, matched_latitude, matched_longitude)
+        matched_users_sorted_by_distance.append((user_id,distance))
+        matched_users_sorted_by_distance.sort(key=lambda x: x[1])
+        
+    print(matched_users_sorted_by_distance)
+
+    global already_matched_users
+    if already_matched_users >= len(matched_users_sorted_by_distance):
+        already_matched_users = 0
+
+    #get closest user from database
+    cursor.execute("SELECT user_id FROM users WHERE user_id = %s", (matched_users_sorted_by_distance[already_matched_users][0],))
     user_id = cursor.fetchone()[0]
     
+    cursor.close()
     return user_id
 
 def get_user_info_for_mainpagelogged(user_id):
@@ -194,7 +278,15 @@ def get_user_info_for_mainpagelogged(user_id):
     cursor.execute("SELECT sports.iconlink FROM sports JOIN user_sports ON sports.sport_id = user_sports.sport_id WHERE user_sports.user_id = %s", (user_id,))
     sport_id = cursor.fetchall()
     
-    return username, user_age, sport_id
+    #get distance
+    cursor.execute("SELECT latitude FROM users WHERE user_id = %s", (user_id,))
+    latitude = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT longitude FROM users WHERE user_id = %s", (user_id,))
+    longitude = cursor.fetchone()[0]
+    
+    cursor.close()
+    return username, user_age, sport_id,latitude, longitude
     
 
 
@@ -202,6 +294,7 @@ def get_user_info_for_mainpagelogged(user_id):
 @login_required
 def get_user_photo(user_id):
     cursor = db.cursor()
+    cursor.reset()
     cursor.execute("SELECT photo FROM users WHERE user_id = %s", (user_id,))
     photo_data = cursor.fetchone()[0]
     cursor.close()
@@ -211,18 +304,18 @@ def get_user_photo(user_id):
 
 @app.route("/update_user_sports_intensity", methods=["POST"])
 def update_user_sports_intensity():
-        cursor = db.cursor()
-        sport_id = request.form.get("sportId")
-        intensity = request.form.get("intensity")
+    cursor = db.cursor()
+    sport_id = request.form.get("sportId")
+    intensity = request.form.get("intensity")
 
-        cursor.execute(
-                "UPDATE user_sports SET intensity=%s WHERE user_id=%s AND sport_id=%s",
-                (intensity,current_user.id,sport_id),
-            )
+    cursor.execute(
+         "UPDATE user_sports SET intensity=%s WHERE user_id=%s AND sport_id=%s",
+                    (intensity,current_user.id,sport_id),
+    )
 
-        db.commit()
-        cursor.close()
-        return jsonify({"status": "success"})
+    db.commit()
+    cursor.close()
+    return jsonify({"status": "success"})
 
 
 @app.route("/update_user_sports", methods=["POST"])
@@ -343,10 +436,14 @@ def login():
             if user_data[1] >= 3:
                 user.is_admin = True
             login_user(user)
+            global already_matched_users
+            already_matched_users=0
             return redirect(url_for("user_profile"))
         else:
             error_message = "Nieprawidłowa nazwa użytkownika lub hasło."
             return render_template("login.html", error=error_message)
+        
+        
 
     return render_template("login.html")
 
@@ -491,6 +588,7 @@ def reset_password():
         select_query = "SELECT * FROM users WHERE email = %s"
         cursor.execute(select_query, (email,))
         user = cursor.fetchone()
+        cursor.close()
 
         if user:
             token_data = {'email': email}
@@ -510,7 +608,6 @@ def reset_password():
 @app.route('/newpass/<token>', methods=['GET','POST'])
 def new_pass(token):
     # Obsługa zmiany hasła na podstawie tokenu
-    cursor = db.cursor()
 
     try:
         email = serializer.loads(token, max_age=3600)  
@@ -522,8 +619,10 @@ def new_pass(token):
         new_password = request.form.get('password')
 
         update_query = "UPDATE users SET password = %s WHERE email = %s"
+        cursor = db.cursor()
         cursor.execute(update_query, (new_password, email))
         db.commit()
+        cursor.close()
 
         flash("Hasło zostało pomyślnie zresetowane.")
         return redirect(url_for('login'))
@@ -552,7 +651,7 @@ def delete_user():
     cursor.execute("DELETE FROM users WHERE user_id = %s", (current_user.id,))
     
     db.commit()
-    
+    cursor.close()
     # Log the user out after deletion
     logout_user()
     return redirect(url_for("home"))

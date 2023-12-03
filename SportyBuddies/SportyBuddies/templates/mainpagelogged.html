@@ -26,18 +26,22 @@
         </div>
 
         <div class="white-square">
-            <div class="small-circle">
-                <i class=" fas fa-check"></i>
-            </div>
-            <div class="small-circle2">
-                <i class=" fas fa-times"></i>
-            </div>
+            <a href="{{ url_for('mainpagelogged',next_match=1) }}">
+                <div class="small-circle">
+                    <i class=" fas fa-check"></i>
+                </div>
+            </a>
+            <a href="#">
+                <div class="small-circle2">
+                    <i class=" fas fa-times"></i>
+                </div>
+            </a>
         </div>
 
         <div class="circle-right">
             <img src="{{ url_for('get_user_photo',user_id=matched_user_id) }}" class="mainpage-pic">
             <div class="name-container">
-                <h1>{{matched_username}}<span class="small-font">{{matched_age}}</span></h1>
+                <h1>{{matched_username}}<span class="small-font">{{matched_age}}, {{distance}}</span></h1>
                 {% for sport_icon in matched_sport_icons %}
                     {% if sport_icon|length >= 1 %}
                         <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
