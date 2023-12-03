@@ -65,6 +65,7 @@
     <Content Include="SportyBuddies\static\scripts\respond.min.js" />
     <Content Include="SportyBuddies\static\scripts\_references.js" />
     <Content Include="SportyBuddies\templates\about.html" />
+    <Content Include="SportyBuddies\templates\admin_panel.html" />
     <Content Include="SportyBuddies\templates\contact.html" />
     <Content Include="SportyBuddies\templates\forgot.html" />
     <Content Include="SportyBuddies\templates\index.html" />

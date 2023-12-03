@@ -58,19 +58,23 @@ class User:
     def get_id(self):
         return str(self.id)
 
-
+   
 @login_manager.user_loader
 def load_user(user_id):
     cursor = db.cursor()
 
-    cursor.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
-    user = cursor.fetchone()
+    cursor.execute("SELECT user_id, rank FROM users WHERE user_id = %s", (user_id,))
+    user_data = cursor.fetchone()
 
     cursor.close()
-    if user:
-        return User(user[0])
+    if user_data:
+        user = User(user_data[0])
+        if user_data[1] >= 3:
+            user.is_admin = True
+        else:
+            user.is_admin = False
+        return user
     return None
-
 
 @app.route("/upload_photo", methods=["POST"])
 def upload_photo():
@@ -328,21 +332,24 @@ def login():
 
         cursor = db.cursor()
         cursor.execute(
-            "SELECT user_id FROM users WHERE name = %s AND password = %s",
+            "SELECT user_id, rank FROM users WHERE name = %s AND password = %s",
             (username, password),
         )
-        user_id = cursor.fetchone()
+        user_data = cursor.fetchone()
         cursor.close()
-        if user_id:
-            user = User(user_id[0])
+
+        if user_data:
+            user = User(user_data[0])
+            if user_data[1] >= 3:
+                user.is_admin = True
             login_user(user)
             return redirect(url_for("user_profile"))
-        
         else:
-            error_message = "Nieprawidlowa nazwa uzytkownika lub haslo."
+            error_message = "Nieprawidłowa nazwa użytkownika lub hasło."
             return render_template("login.html", error=error_message)
 
     return render_template("login.html")
+
 
 
 @app.route("/logout")
@@ -549,3 +556,14 @@ def delete_user():
     # Log the user out after deletion
     logout_user()
     return redirect(url_for("home"))
+
+
+@app.route("/admin_panel")
+@login_required
+def admin_panel():
+    if not current_user.is_authenticated or not current_user.is_admin:
+        return redirect(url_for("logged"))
+    else:
+        return render_template("admin_panel.html", title="Panel Admina", year=datetime.now().year)
+
+
