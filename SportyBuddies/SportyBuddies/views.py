@@ -534,3 +534,18 @@ def forgot():
     return render_template("forgot.html", title="Forgotten password", year=datetime.now().year)
 
 
+@app.route("/delete_user")
+@login_required
+def delete_user():
+    cursor = db.cursor()
+    
+    # Delete associated records from user_sports table
+    cursor.execute("DELETE FROM user_sports WHERE user_id = %s", (current_user.id,))
+    # Delete user from the users table
+    cursor.execute("DELETE FROM users WHERE user_id = %s", (current_user.id,))
+    
+    db.commit()
+    
+    # Log the user out after deletion
+    logout_user()
+    return redirect(url_for("home"))
