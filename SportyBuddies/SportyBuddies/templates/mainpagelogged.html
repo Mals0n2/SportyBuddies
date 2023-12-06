@@ -7,6 +7,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Include jQuery library -->
 
+<style>
+    /* Styl dla opisu zdjęcia profilowego */
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-description {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+        border-radius: 35%;
+        text-align: center;
+        display: none; /* Ukryj opis na początku */
+    }
+
+    .profile-picture-container:hover .profile-description {
+        display: block; /* Wyświetl opis po najechaniu kursorem */
+    }
+</style>
+
 <div class="body-main">
     <div class="text-container">
         <h1>Wybierz swojego partnera do treningu!</h1>
@@ -18,9 +42,9 @@
             <div class="name-container">
                 <h1>{{current_username}}<span class="small-font">{{current_age}}</span></h1>
                 {% for sport_icon in current_sport_icons %}
-                    {% if sport_icon|length >= 1 %}
-                        <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
-                    {% endif %}
+                {% if sport_icon|length >= 1 %}
+                <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -39,15 +63,20 @@
         </div>
 
         <div class="circle-right">
-            <img src="{{ url_for('get_user_photo',user_id=matched_user_id) }}" class="mainpage-pic">
+            <div class="profile-picture-container">
+                <div class="profile-description">{{ current_info }}</div>
+                <img src="{{ url_for('get_user_photo',user_id=matched_user_id)  }} " class="mainpage-pic">
+
+            </div>
             <div class="name-container">
                 <h1>{{matched_username}}<span class="small-font">{{matched_age}}, {{distance}}</span></h1>
                 {% for sport_icon in matched_sport_icons %}
-                    {% if sport_icon|length >= 1 %}
-                        <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
-                    {% endif %}
+                {% if sport_icon|length >= 1 %}
+                <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
+                {% endif %}
                 {% endfor %}
+
+            </div>
             </div>
         </div>
-    </div>
     {% endblock %}

@@ -9,6 +9,24 @@
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #2980b9;
+            }
+
+
+    </style>
 
 </head>
 
@@ -35,9 +53,15 @@
 
                     <li><a href="{{ url_for('bug_report') }}"><i class="fa-regular fa-flag" style="color: white;"></i></a></li>
 
-                    <li><a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments"  style="color: white;"></i></a></li>
+                    <li><a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments" style="color: white;"></i></a></li>
                     {% endif %}
                     <li><a href="{{ url_for('user_profile') }}"><i class="fas fa-user" style="color: white;"></i></a></li>
+                    <li>
+                        <button onclick="copyLink()">Poleć nas!</button>
+
+                        <!-- Wyświetlany link -->
+                        <input type="text" value="http://localhost:5555/" id="linkInput" style="display:none">
+                    </li>
                 </ul>
             </div>
         </div>
@@ -50,6 +74,21 @@
             <p>&copy; {{ year }} - SportyBuddies</p>
         </footer>
     </div>
+    <script>
+        function copyLink() {
+            // Pobierz element input z linkiem
+            var linkInput = document.getElementById("linkInput");
+
+            // Wyświetl input, skopiuj jego zawartość i ukryj go z powrotem
+            linkInput.style.display = "block";
+            linkInput.select();
+            document.execCommand("copy");
+            linkInput.style.display = "none";
+
+            // Możesz również poinformować użytkownika o skopiowaniu linku
+            alert("Link został skopiowany!");
+        }
+    </script>
 
     <script src="/static/scripts/jquery-1.10.2.js"></script>
     <script src="/static/scripts/bootstrap.js"></script>

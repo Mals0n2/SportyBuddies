@@ -168,11 +168,11 @@ def mainpagelogged(next_match=0):
         already_matched_users+=1
         
 
-    current_username, current_age, current_sport_icons, current_latitude, current_longitude = get_user_info_for_mainpagelogged(current_user.id)
+    current_username, current_age, current_sport_icons, current_latitude, current_longitude, current_info = get_user_info_for_mainpagelogged(current_user.id)
     if len(current_sport_icons) == 0:
         return redirect(url_for("user_profile"))
     matched_user_id= get_matched_user_id()
-    matched_username,matched_age, matched_sport_icons,matched_latitude, matched_longitude = get_user_info_for_mainpagelogged(matched_user_id)
+    matched_username,matched_age, matched_sport_icons,matched_latitude, matched_longitude, current_info = get_user_info_for_mainpagelogged(matched_user_id)
     
     #get distance
     distance = haversine(current_latitude, current_longitude, matched_latitude, matched_longitude)
@@ -189,7 +189,8 @@ def mainpagelogged(next_match=0):
         matched_age = matched_age,
         matched_sport_icons = matched_sport_icons,
         matched_user_id=matched_user_id,
-        distance=distance_string
+        distance=distance_string,
+        current_info=current_info
     )
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -284,9 +285,12 @@ def get_user_info_for_mainpagelogged(user_id):
     
     cursor.execute("SELECT longitude FROM users WHERE user_id = %s", (user_id,))
     longitude = cursor.fetchone()[0]
+
+    cursor.execute("SELECT info FROM users WHERE user_id = %s", (user_id,))
+    info = cursor.fetchone()[0]
     
     cursor.close()
-    return username, user_age, sport_id,latitude, longitude
+    return username, user_age, sport_id,latitude, longitude, info
     
 
 
@@ -433,6 +437,16 @@ def login():
 
         if user_data:
             user = User(user_data[0])
+
+            username = request.form["username"]
+            cursor = db.cursor()
+            cursor.execute(
+            "UPDATE `users` SET `status` = 'online' WHERE name = %s",
+            (username,)
+        )
+            db.commit()
+            cursor.close()
+
             if user_data[1] >= 3:
                 user.is_admin = True
             login_user(user)
@@ -505,6 +519,54 @@ class Messages:
         
 socketio = SocketIO(app)
         
+#@app.route("/chat", defaults={'receiver_id': None}, methods=['GET', 'POST'])
+#@app.route("/chat/<int:receiver_id>", methods=['GET', 'POST'])
+#def chat(receiver_id):
+#    if not current_user.is_authenticated:
+#        return redirect(url_for("mainpagelogged"))
+
+#    users = None
+#    messages = None
+
+#    with mysql.connector.connect(host="localhost", user="root", passwd="", database="sportybuddies") as db:
+#        with db.cursor(dictionary=True) as cursor:
+#            cursor.execute("SELECT user_id, name FROM users WHERE user_id != %s", (current_user.id,))
+#            users = cursor.fetchall()
+
+#            if receiver_id is not None:
+#                try:
+#                    if request.method == 'POST':
+#                        content = request.form.get('content')
+#                        timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+#                        cursor.execute(
+#                            "INSERT INTO messages (sender_id, receiver_id, content, timestamp) VALUES (%s, %s, %s, %s)",
+#                            (current_user.id, receiver_id, content, timestamp)
+#                        )
+#                        db.commit()
+
+#                    cursor.execute("""
+#                    SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp
+#                    FROM messages
+#                    JOIN users ON messages.sender_id = users.user_id
+#                    WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s)
+#                    ORDER BY messages.timestamp
+
+#                    """,(current_user.id, receiver_id, receiver_id, current_user.id))
+#                    messages = [Messages(**msg) for msg in cursor.fetchall()]
+
+#                finally:
+#                    cursor.close()
+
+#    messages = messages if messages is not None else []
+
+#    return render_template(
+#        "chat.html",
+#        title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
+#        year=datetime.now().year,
+#        users=users,
+#        messages=messages,
+#        receiver_id=receiver_id,
+#    )
 @app.route("/chat", defaults={'receiver_id': None}, methods=['GET', 'POST'])
 @app.route("/chat/<int:receiver_id>", methods=['GET', 'POST'])
 def chat(receiver_id):
@@ -514,34 +576,24 @@ def chat(receiver_id):
     users = None
     messages = None
 
-    with mysql.connector.connect(host="localhost", user="root", passwd="", database="sportybuddies") as db:
-        with db.cursor(dictionary=True) as cursor:
-            cursor.execute("SELECT user_id, name FROM users WHERE user_id != %s", (current_user.id,))
-            users = cursor.fetchall()
+    cursor=db.cursor(dictionary=True)
+    cursor.execute("SELECT user_id, name FROM users WHERE user_id != %s", (current_user.id,))
+    users = cursor.fetchall()
 
-            if receiver_id is not None:
-                try:
-                    if request.method == 'POST':
-                        content = request.form.get('content')
-                        timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-                        cursor.execute(
+    if receiver_id is not None:
+        if request.method == 'POST':
+            content = request.form.get('content')
+            timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+            cursor.execute(
                             "INSERT INTO messages (sender_id, receiver_id, content, timestamp) VALUES (%s, %s, %s, %s)",
                             (current_user.id, receiver_id, content, timestamp)
                         )
-                        db.commit()
+            db.commit()
 
-                    cursor.execute("""
-                    SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp
-                    FROM messages
-                    JOIN users ON messages.sender_id = users.user_id
-                    WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s)
-                    ORDER BY messages.timestamp
+        cursor.execute("SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp FROM messages JOIN users ON messages.sender_id = users.user_id WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s) ORDER BY messages.timestamp",(current_user.id, receiver_id, receiver_id, current_user.id))
+        messages = [Messages(**msg) for msg in cursor.fetchall()]
 
-                    """,(current_user.id, receiver_id, receiver_id, current_user.id))
-                    messages = [Messages(**msg) for msg in cursor.fetchall()]
-
-                finally:
-                    cursor.close()
+        cursor.close()
 
     messages = messages if messages is not None else []
 
@@ -553,8 +605,6 @@ def chat(receiver_id):
         messages=messages,
         receiver_id=receiver_id,
     )
-
-
 
 @app.route("/submit_report", methods=["POST"])
 @login_required

@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+﻿{% extends "layout.html" %}
 
 {% block content %}
 <!--Font-->
@@ -62,16 +62,12 @@
             {{ username }}, {{ age }}
         </h1>
         <p>
-            <label for="status">Twoj Status:</label>
-            <select id="status" name="status">
-                <option value="">wybierz</option>
-                <option value="online">Online</option>
-                <option value="offline">Offline</option>
-            </select>
+            <label for="status">Twoj Status: Online</label>
+
         </p>
         <div class="location">
-        <p>Twoja aktualna lokalizacja: <br /><span style="color: #83CEEB; font-size: 30px;"id="locationName"></span></p>
-         </div>
+            <p>Twoja aktualna lokalizacja: <br /><span style="color: #83CEEB; font-size: 30px;" id="locationName"></span></p>
+        </div>
         <p>Wybierz swoje zainteresowania</p>
         <div class="scrollable-container">
             <section>
@@ -190,7 +186,9 @@
                 </div>
             </section>
         </div>
+
     </div>
+
 </div>
 
 
