@@ -519,54 +519,6 @@ class Messages:
         
 socketio = SocketIO(app)
         
-#@app.route("/chat", defaults={'receiver_id': None}, methods=['GET', 'POST'])
-#@app.route("/chat/<int:receiver_id>", methods=['GET', 'POST'])
-#def chat(receiver_id):
-#    if not current_user.is_authenticated:
-#        return redirect(url_for("mainpagelogged"))
-
-#    users = None
-#    messages = None
-
-#    with mysql.connector.connect(host="localhost", user="root", passwd="", database="sportybuddies") as db:
-#        with db.cursor(dictionary=True) as cursor:
-#            cursor.execute("SELECT user_id, name FROM users WHERE user_id != %s", (current_user.id,))
-#            users = cursor.fetchall()
-
-#            if receiver_id is not None:
-#                try:
-#                    if request.method == 'POST':
-#                        content = request.form.get('content')
-#                        timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-#                        cursor.execute(
-#                            "INSERT INTO messages (sender_id, receiver_id, content, timestamp) VALUES (%s, %s, %s, %s)",
-#                            (current_user.id, receiver_id, content, timestamp)
-#                        )
-#                        db.commit()
-
-#                    cursor.execute("""
-#                    SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp
-#                    FROM messages
-#                    JOIN users ON messages.sender_id = users.user_id
-#                    WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s)
-#                    ORDER BY messages.timestamp
-
-#                    """,(current_user.id, receiver_id, receiver_id, current_user.id))
-#                    messages = [Messages(**msg) for msg in cursor.fetchall()]
-
-#                finally:
-#                    cursor.close()
-
-#    messages = messages if messages is not None else []
-
-#    return render_template(
-#        "chat.html",
-#        title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
-#        year=datetime.now().year,
-#        users=users,
-#        messages=messages,
-#        receiver_id=receiver_id,
-#    )
 @app.route("/chat", defaults={'receiver_id': None}, methods=['GET', 'POST'])
 @app.route("/chat/<int:receiver_id>", methods=['GET', 'POST'])
 def chat(receiver_id):
