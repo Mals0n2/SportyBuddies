@@ -29,6 +29,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="runserver.py" />
+    <Compile Include="SportyBuddies\database.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SportyBuddies\mail.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SportyBuddies\models.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SportyBuddies\utils.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SportyBuddies\__init__.py" />
     <Compile Include="SportyBuddies\views.py" />
   </ItemGroup>

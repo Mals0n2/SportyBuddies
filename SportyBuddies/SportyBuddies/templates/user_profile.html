@@ -200,7 +200,7 @@
                     var latitude = position.coords.latitude;
                     var longitude = position.coords.longitude;
 
-                    
+
                     getLocationName(latitude, longitude);
                 },
                 function (error) {
@@ -230,7 +230,7 @@
         }
 
         function displayLocationName(locationName) {
-            
+
             $('#locationName').text(locationName);
         }
 
@@ -257,24 +257,6 @@
 
 
 <script>
-    //document.addEventListener('DOMContentLoaded', function () {
-    //    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    //    var maxChecked = 3;
-    //    var checkedCheckboxes = [];
-
-    //    checkboxes.forEach(function (checkbox) {
-    //        checkbox.addEventListener('change', function () {
-    //            if (this.checked) {
-    //                checkedCheckboxes.push(this);
-    //                if (checkedCheckboxes.length <= maxChecked) {
-    //                    showPopup();
-    //                }
-    //            } else {
-    //                checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
-    //                hidePopup();
-    //            }
-    //        });
-    //    });
     document.addEventListener('DOMContentLoaded', function () {
         var radioButtons = document.querySelectorAll('input[name="intensivity"]');
         radioButtons.forEach(function (radioButton) {
@@ -294,23 +276,6 @@
     function showPopup() {
         document.querySelector('.popupbg').style.display = 'block';
     }
-
-    //    function showPopup() {
-    //        document.querySelector('.popupbg').style.display = 'block';
-
-    //        // Handle radio button selection in the popup
-    //        var radioButtons = document.querySelectorAll('input[name="intensivity"]');
-    //        radioButtons.forEach(function (radioButton) {
-    //            radioButton.addEventListener('change', function () {
-    //                var intensityValue = this.id;  // Assuming radio button IDs match intensity values
-    //                checkedCheckboxes.forEach(function (checkbox) {
-    //                    var sportId = checkbox.getAttribute('data-sport-id');
-    //                    sendDataToDatabase(sportId, intensityValue);
-    //                    hidePopup();
-    //                });
-    //            });
-    //        });
-    //}
 
     function hidePopup() {
         document.querySelector('.popupbg').style.display = 'none';
@@ -335,7 +300,6 @@
         });
         console.log("Sport ID:", sportId, "Intensity:", intensityValue);
     }
-    //});
 
     document.addEventListener('DOMContentLoaded', function () {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
