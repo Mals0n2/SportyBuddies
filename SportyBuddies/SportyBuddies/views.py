@@ -10,6 +10,7 @@ from flask_login import (
     current_user,
 )
 from flask import render_template, request, redirect, url_for
+from SportyBuddies.matching import get_matched_user_and_distance,on_profile_change
 from SportyBuddies.models import *
 from SportyBuddies.database import *
 from SportyBuddies.utils import *
@@ -20,12 +21,8 @@ app.secret_key = "secret"
 
 serializer = URLSafeTimedSerializer(app.secret_key)
 
-
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-already_matched_users = 0
-global matched_user
 
 
 @login_manager.user_loader
@@ -74,10 +71,28 @@ def upload_photo():
     return redirect(url_for("user_profile"))
 
 
+@app.route("/get_user_photo")
+@login_required
+def get_user_photo():
+    photo_data = current_user.photo
+
+    return Response(photo_data, content_type="image/jpeg")
+
+
+@app.route("/get_matched_user_photo")
+@login_required
+def get_matched_user_photo():
+    photo_data = matched_user.photo
+
+    return Response(photo_data, content_type="image/jpeg")
+
+
 @app.route("/user_profile")
 def user_profile():
     if current_user.is_authenticated == False:
         return redirect(url_for("login"))
+
+    error_message = request.args.get("error", "")
 
     user_sports = get_user_sport_ids(current_user.id)
     user_sports = process_user_sports(user_sports)
@@ -90,6 +105,7 @@ def user_profile():
         gender=current_user.gender,
         status=current_user.status,
         age=current_user.age,
+        error=error_message,
     )
 
 
@@ -106,29 +122,30 @@ def handle_user_location_update():
 
 @app.route("/mainpagelogged/<int:next_match>")
 @app.route("/mainpagelogged")
-def mainpagelogged(next_match=0):
+def mainpagelogged(next_match=None):
     if current_user.is_authenticated == False:
         return redirect(url_for("login"))
 
-    match_users()
-    global already_matched_users
+    global matched_user
 
-    if next_match == 1:
-        already_matched_users += 1
+    if next_match is None:
+        pass
+    elif next_match == 0:
+        update_match_status(current_user.id, matched_user.id, False)
+    elif next_match == 1:
+        update_match_status(current_user.id, matched_user.id, True)
+
+    x1 = get_matched_user_and_distance(current_user)
+    if x1 is None:
+        error_message = "Nie znaleziono dla ciebie pary"
+        return redirect(url_for("user_profile", error=error_message))
+
+    matched_user, distance = x1
 
     current_sport_icons = get_sport_icons(current_user.id)
 
-    if len(current_sport_icons) == 0:
-        return redirect(url_for("user_profile"))
-
     matched_sport_icons = get_sport_icons(matched_user.id)
 
-    distance = haversine(
-        current_user.latitude,
-        current_user.longitude,
-        matched_user.latitude,
-        matched_user.longitude,
-    )
     distance_string = f"{round(distance)} km"
 
     return render_template(
@@ -137,66 +154,15 @@ def mainpagelogged(next_match=0):
         current_username=current_user.name,
         current_age=current_user.age,
         current_sport_icons=current_sport_icons,
+        current_user_photo=current_user.photo,
         matched_username=matched_user.name,
         matched_age=matched_user.age,
         matched_sport_icons=matched_sport_icons,
         matched_user_id=matched_user.id,
+        matched_user_photo=matched_user.photo,
         distance=distance_string,
         matched_info=matched_user.info,
     )
-
-
-def match_users():
-    current_sport_ids = get_user_sport_ids(current_user.id)
-
-    matched_user_ids = get_user_ids_by_sports(current_sport_ids, current_user.id)
-
-    matched_users = [get_user(user_id) for user_id in matched_user_ids]
-
-    matched_users_with_distance = [
-        (
-            user,
-            haversine(
-                current_user.latitude,
-                current_user.longitude,
-                user.latitude,
-                user.longitude,
-            ),
-        )
-        for user in matched_users
-    ]
-
-    matched_users_sorted_by_distance = sorted(
-        matched_users_with_distance, key=lambda x: x[1]
-    )
-
-    global already_matched_users
-    if already_matched_users >= len(matched_users_with_distance):
-        already_matched_users = 0
-
-    global matched_user
-
-    matched_user = matched_users_sorted_by_distance[already_matched_users][0]
-
-    return matched_user
-
-
-def get_user_info_for_mainpagelogged(user_id):
-    user = get_user(user_id)
-    sport_icons = get_sport_icons(user_id)
-
-    return user.name, user.age, sport_icons, user.latitude, user.longitude, user.info
-
-
-@app.route("/get_user_photo/<int:user_id>")
-@login_required
-def get_user_photo(user_id):
-    if user_id == current_user.id:
-        photo_data = current_user.photo
-    else:
-        photo_data = matched_user.photo
-
-    return Response(photo_data, content_type="image/jpeg")
 
 
 @app.route("/update_user_sports_intensity", methods=["POST"])
@@ -216,6 +182,7 @@ def handle_user_sports_update():
         is_checked = request.form.get("isChecked")
 
         update_user_sports(current_user.id, sport_id, is_checked)
+        on_profile_change(current_user)
 
         return jsonify({"status": "success"})
 
@@ -381,7 +348,7 @@ def forgot():
 @app.route("/admin_panel")
 @login_required
 def admin_panel():
-    if current_user.rank < 3:
+    if current_user.id != 1:
         return redirect(url_for("user_profile"))
     else:
         return render_template(
@@ -392,7 +359,7 @@ def admin_panel():
 @app.route("/display_users")
 @login_required
 def display_users():
-    if current_user.rank < 3:
+    if current_user.id != 1:
         return redirect(url_for("user_profile"))
 
     users = get_all_users()
@@ -412,7 +379,7 @@ def handle_user_delete():
 @app.route("/delete_user/<int:user_id>")
 @login_required
 def delete_selected_user(user_id):
-    if current_user.rank < 3:
+    if current_user.id != 1:
         return redirect(url_for("user_profile"))
 
     delete_user(user_id)

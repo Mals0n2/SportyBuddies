@@ -35,6 +35,9 @@
     <Compile Include="SportyBuddies\mail.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SportyBuddies\matching.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SportyBuddies\models.py">
       <SubType>Code</SubType>
     </Compile>

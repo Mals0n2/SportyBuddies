@@ -38,8 +38,9 @@
 </div>
 <div class="profile-container">
     <div class="profile-box">
+        <div class="error2" style="font-size: 14px;">{{error}}</div>
         <div class="upload">
-            <img src="{{ url_for('get_user_photo',user_id=current_user_id) }}" class="profile-pic">
+            <img src="{{ url_for('get_user_photo') }}" class="profile-pic">
             <div class="round">
                 <form method="POST" action="/upload_photo" enctype="multipart/form-data" id="uploadPhotoForm">
                     <input type="file" name="photo" id="photoInput">

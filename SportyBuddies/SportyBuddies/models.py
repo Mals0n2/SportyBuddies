@@ -11,7 +11,6 @@ class User:
         info,
         status,
         photo,
-        rank,
         latitude,
         longitude,
     ):
@@ -24,7 +23,6 @@ class User:
         self.info = info
         self.status = status
         self.photo = photo
-        self.rank = rank
         self.latitude = latitude
         self.longitude = longitude
 
@@ -76,3 +74,11 @@ class Messages:
         self.receiver_id = receiver_id
         self.content = content
         self.timestamp = timestamp
+
+
+class Matches:
+    def __init__(self, id, user_id, matched_user_id, status):
+        self.id = id
+        self.user_id = user_id
+        self.matched_user_id = matched_user_id
+        self.status = status

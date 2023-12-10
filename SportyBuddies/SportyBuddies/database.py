@@ -1,6 +1,6 @@
 from datetime import datetime
 import mysql.connector
-from .models import User
+from .models import MatchedUser, Matches, User
 
 db = mysql.connector.connect(
     host="localhost", user="root", passwd="", database="sportybuddies"
@@ -12,8 +12,23 @@ def get_user(user_id):
         cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         user_data = cursor.fetchall()
 
+        if user_data:
+            user = User(*user_data[0])
+            return user
+
+    return None
+
+
+def get_matched_user(user_id):
+    with db.cursor() as cursor:
+        cursor.execute(
+            "SELECT user_id,name,age,gender,info,status,photo,latitude,longitude FROM users WHERE user_id = %s",
+            (user_id,),
+        )
+        user_data = cursor.fetchall()
+
     if user_data:
-        user = User(*user_data[0])
+        user = MatchedUser(*user_data[0])
         return user
 
     return None
@@ -67,10 +82,8 @@ def get_user_ids_by_sports(sport_ids, user_id):
             (*sport_ids_tuple, user_id),
         )
         users_data = cursor.fetchall()
-        matched_users_ids = []
-        for user_id in users_data:
-            matched_users_ids.append(user_id[0])
-    return matched_users_ids
+        matched_user_ids = set(user_id[0] for user_id in users_data)
+    return matched_user_ids
 
 
 def get_sport_icons(user_id):
@@ -198,3 +211,38 @@ def get_all_users():
         cursor.execute("SELECT user_id, name, email FROM users")
         users = cursor.fetchall()
     return users
+
+
+def insert_match(user_id, matched_user_id):
+    with db.cursor() as cursor:
+        cursor.execute(
+            "INSERT INTO matches (user_id, matched_user_id) VALUES (%s, %s)",
+            (user_id, matched_user_id),
+        )
+        db.commit()
+
+
+def get_all_matches(user_id):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT * FROM matches WHERE user_id = %s", (user_id,))
+        matches = cursor.fetchall()
+
+        if matches:
+            matches = [Matches(*match) for match in matches]
+            return matches
+    return None
+
+
+def delete_user_matches(user_id):
+    with db.cursor() as cursor:
+        cursor.execute("DELETE FROM matches WHERE user_id = %s", (user_id,))
+        db.commit()
+
+
+def update_match_status(user_id, matched_user_id, status):
+    with db.cursor() as cursor:
+        cursor.execute(
+            "UPDATE matches SET status = %s WHERE user_id = %s AND matched_user_id = %s",
+            (status, user_id, matched_user_id),
+        )
+        db.commit()
