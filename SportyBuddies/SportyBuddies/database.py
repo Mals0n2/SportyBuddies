@@ -27,7 +27,7 @@ def get_user(user_id):
 
 
 def get_matched_user(user_id):
-    with db.cursor() as cursor:
+    with get_cursor() as cursor:
         cursor.execute(
             "SELECT user_id,name,age,gender,info,status,photo,latitude,longitude FROM users WHERE user_id = %s",
             (user_id,),
