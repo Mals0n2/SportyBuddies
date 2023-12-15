@@ -21,9 +21,6 @@
         {% endfor %}
     </div>
 
-
-
-
     <div class="chat-container-user">
         <div class="message-container" id="messageContainer">
             {% for message in messages %}
@@ -33,7 +30,7 @@
             {% endfor %}
         </div>
 
-        <form class="message-form" method="post">
+        <form class="message-form" id="messageForm">
             <div class="textarea-container">
                 <textarea class="message-input" name="content" placeholder="Napisz wiadomość"></textarea>
                 <input type="submit" class="submit-button" value="Wyślij">
@@ -43,32 +40,22 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.select-user .user').click(function () {
-            var selectedUserId = $(this).data('user-id');
-            window.location.href = '/chat/' + selectedUserId;
-        });
-
-        $('.message-form').submit(function (e) {
-            e.preventDefault();
-            var content = $('.message-input').val();
-            $.post(window.location.href, { content: content }, function () {
-                location.reload();
-            });
-        });
-    });
-</script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
         function scrollToBottom() {
             var messageContainer = document.getElementById("messageContainer");
             messageContainer.scrollTop = messageContainer.scrollHeight;
         }
         scrollToBottom();
 
-        function addNewMessage(senderName, content) {
+        // Pobierz nazwę zalogowanego użytkownika z serwera i przekaż ją do skryptu JavaScript
+        var currentUserName = "{{ current_user.name }}";
+
+        // Zaktualizowana funkcja do dodawania nowych wiadomości
+        window.addNewMessage = function (senderName, content) {
             var messageContainer = document.getElementById("messageContainer");
             var newMessage = document.createElement("div");
             newMessage.className = "message";
@@ -76,7 +63,33 @@
             messageContainer.appendChild(newMessage);
 
             scrollToBottom();
-        }
+        };
+
+        $('.select-user .user').click(function () {
+            var selectedUserId = $(this).data('user-id');
+            window.location.href = '/chat/' + selectedUserId;
+        });
+
+        $('#messageForm').submit(function (e) {
+            e.preventDefault();
+            var content = $('.message-input').val();
+
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: { content: content },
+                success: function () {
+                    // Usuń to miejsce, aby uniknąć podwójnego dodawania wiadomości
+                    // addNewMessage(currentUserName, content);
+                    $('.message-input').val('');
+                }
+            });
+        });
+
+        socket.on('message', function (data) {
+            // Zaktualizuj interfejs użytkownika po otrzymaniu wiadomości
+            addNewMessage(data.sender_name, data.content);
+        });
     });
 </script>
 
