@@ -262,9 +262,6 @@ def bug_report():
         message="Your application description page.",
     )
 
-@socketio.on('message')
-def handle_message(data):
-    emit('message', data, room=data['receiver_id'])
 
 @app.route("/chat", defaults={"receiver_id": None}, methods=["GET", "POST"])
 @app.route("/chat/<int:receiver_id>", methods=["GET", "POST"])
@@ -279,7 +276,8 @@ def chat(receiver_id):
         if request.method == "POST":
             content = request.form.get("content")
             insert_message(current_user.id, receiver_id, content)
-            # Dodaj emitowanie wiadomości do SocketIO
+
+            # Emit message to SocketIO
             socketio.emit('message', {'sender_name': current_user.name, 'content': content, 'receiver_id': receiver_id})
 
         senders, messages = get_messages(current_user.id, receiver_id)
@@ -299,7 +297,7 @@ def chat(receiver_id):
 
 if __name__ == "__main__":
     socketio.run(app)
-
+    
 @app.route("/submit_report", methods=["POST"])
 @login_required
 def submit_report():

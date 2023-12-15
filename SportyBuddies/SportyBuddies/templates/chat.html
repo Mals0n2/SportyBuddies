@@ -51,10 +51,10 @@
         }
         scrollToBottom();
 
-        // Pobierz nazwę zalogowanego użytkownika z serwera i przekaż ją do skryptu JavaScript
+        
         var currentUserName = "{{ current_user.name }}";
 
-        // Zaktualizowana funkcja do dodawania nowych wiadomości
+        
         window.addNewMessage = function (senderName, content) {
             var messageContainer = document.getElementById("messageContainer");
             var newMessage = document.createElement("div");
@@ -79,15 +79,14 @@
                 url: window.location.href,
                 data: { content: content },
                 success: function () {
-                    // Usuń to miejsce, aby uniknąć podwójnego dodawania wiadomości
-                    // addNewMessage(currentUserName, content);
+             
                     $('.message-input').val('');
                 }
             });
         });
 
         socket.on('message', function (data) {
-            // Zaktualizuj interfejs użytkownika po otrzymaniu wiadomości
+           
             addNewMessage(data.sender_name, data.content);
         });
     });
