@@ -848,11 +848,23 @@ form .register-button .new-button{
     height: 80vh;
     background-color: #83CEEB;
     border-radius: 20px;
+    padding: 10px;
 }
 
-.select-user{
-    width: 100%;
+.select-user {
+    border-radius: 20px;
+    margin: auto;
+    background-color: white;
+    width: 95%;
     padding: 40px;
+    color: black;
+    text-align: center;
+}
+
+.user {
+    align-items: center;
+    display: inline-block;
+    cursor: pointer;
 }
 
 .last-message {
@@ -941,7 +953,7 @@ form .register-button .new-button{
 }
 
 .message-input {
-    margin-top: 800px;
+    top: 50%;
     border: solid 1px white;
     background-color: #83CEEB;
     padding: 10px;
@@ -954,6 +966,11 @@ form .register-button .new-button{
     width: 111%;
 }
 
+.message-input textarea {
+    color: white;
+}
+
+
 .submit-button {
     position: absolute;
     top: 50%;
@@ -961,9 +978,9 @@ form .register-button .new-button{
     transform: translateY(-50%);
     padding: 10px;
     border-radius: 20px;
-    background-color: #76E4FA;
-    color: white;
+    background-color: white;
+    color: #76E4FA;
     cursor: pointer;
-    border: solid 1px white;
+    border: solid 1px #76E4FA;
 
 }

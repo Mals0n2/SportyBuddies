@@ -3,19 +3,26 @@
 {% block content %}
 <div class="chat-container">
     <div class="select-user">
-        <select id="selected_user" name="selected_user">
-            <option value="" selected disabled>Wybierz użytkownika</option>
-            {% for user in users %}
-            {% if user.user_id not in selected_users %}
-            <option value="{{ user.user_id }}">{{ user.name }}</option>
-            {% endif %}
-            {% endfor %}
-        </select>
+        {% for user in users %}
+        {% if user.user_id not in selected_users %}
+        <div class="user" data-user-id="{{ user.user_id }}">
+            {{ user.name }}
+            <img src="data:/jpeg;base64,{{ user.photo }}" />
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
 
     <div class="last-message">
-        <h1>Historia</h1>
+        {% for message in messages %}
+        <div class="user-history">
+            <p>Wiadomość od {{ messages.sender_name }}: {{ messages.content }}</p>
+        </div>
+        {% endfor %}
     </div>
+
+
+
 
     <div class="chat-container-user">
         <div class="message-container" id="messageContainer">
@@ -34,17 +41,18 @@
         </form>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#selected_user').change(function () {
-            var selectedUserId = $(this).val();
+        $('.select-user .user').click(function () {
+            var selectedUserId = $(this).data('user-id');
             window.location.href = '/chat/' + selectedUserId;
         });
 
-        $('#message-form').submit(function (e) {
+        $('.message-form').submit(function (e) {
             e.preventDefault();
-            var content = $('#message-input').val();
+            var content = $('.message-input').val();
             $.post(window.location.href, { content: content }, function () {
                 location.reload();
             });
@@ -69,7 +77,6 @@
 
             scrollToBottom();
         }
-
     });
 </script>
 

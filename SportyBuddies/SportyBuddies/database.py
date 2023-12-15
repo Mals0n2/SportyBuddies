@@ -152,7 +152,7 @@ def insert_new_user(email, password, username, age, gender, description, photo_b
 def get_users_except_current_user(current_user_id):
     cursor = db.cursor(dictionary=True)
     cursor.execute(
-        "SELECT user_id, name FROM users WHERE user_id != %s", (current_user_id,)
+        "SELECT user_id, name, photo FROM users WHERE user_id != %s", (current_user_id,)
     )
     users = cursor.fetchall()
     cursor.close()
@@ -172,6 +172,13 @@ def insert_message(sender_id, receiver_id, content):
 
 def get_messages(current_user_id, receiver_id):
     cursor = db.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT DISTINCT users.name AS sender_name FROM users JOIN messages ON users.user_id = messages.sender_id WHERE messages.receiver_id = %s",
+        (current_user_id,)
+    )
+    senders = cursor.fetchall()
+
     cursor.execute(
         "SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp FROM messages JOIN users ON messages.sender_id = users.user_id WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s) ORDER BY messages.timestamp",
         (current_user_id, receiver_id, receiver_id, current_user_id),
@@ -179,7 +186,7 @@ def get_messages(current_user_id, receiver_id):
     messages = cursor.fetchall()
     cursor.close()
 
-    return messages
+    return senders, messages
 
 
 def insert_report(title, description, user_id):

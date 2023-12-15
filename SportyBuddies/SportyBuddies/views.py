@@ -267,7 +267,7 @@ def chat(receiver_id):
     if not current_user.is_authenticated:
         return redirect(url_for("mainpagelogged"))
 
-    messages = None
+    senders, messages = None, None
     users = get_users_except_current_user(current_user.id)
 
     if receiver_id is not None:
@@ -275,8 +275,9 @@ def chat(receiver_id):
             content = request.form.get("content")
             insert_message(current_user.id, receiver_id, content)
 
-        messages = get_messages(current_user.id, receiver_id)
+        senders, messages = get_messages(current_user.id, receiver_id)
 
+    senders = senders if senders is not None else []
     messages = messages if messages is not None else []
 
     return render_template(
@@ -284,6 +285,7 @@ def chat(receiver_id):
         title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
         year=datetime.now().year,
         users=users,
+        senders=senders, 
         messages=messages,
         receiver_id=receiver_id,
     )
