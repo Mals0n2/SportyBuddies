@@ -51,10 +51,8 @@
         }
         scrollToBottom();
 
-        
         var currentUserName = "{{ current_user.name }}";
 
-        
         window.addNewMessage = function (senderName, content) {
             var messageContainer = document.getElementById("messageContainer");
             var newMessage = document.createElement("div");
@@ -74,22 +72,29 @@
             e.preventDefault();
             var content = $('.message-input').val();
 
-            $.ajax({
-                type: 'POST',
-                url: window.location.href,
-                data: { content: content },
-                success: function () {
-             
-                    $('.message-input').val('');
-                }
-            });
+            if (content.trim() !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: window.location.href,
+                    data: { content: content },
+                    success: function () {
+                        $('.message-input').val('');
+                    }
+                });
+            }
+        });
+
+        $('.message-input').keydown(function (e) {
+            // Wysłanie wiadomości po naciśnięciu klawisza Enter
+            if (e.which === 13) {
+                e.preventDefault();
+                $('#messageForm').submit();
+            }
         });
 
         socket.on('message', function (data) {
-           
             addNewMessage(data.sender_name, data.content);
         });
     });
 </script>
-
 {% endblock %}
