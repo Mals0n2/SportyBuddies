@@ -174,19 +174,45 @@ def get_messages(current_user_id, receiver_id):
     cursor = db.cursor(dictionary=True)
 
     cursor.execute(
-        "SELECT DISTINCT users.name AS sender_name FROM users JOIN messages ON users.user_id = messages.sender_id WHERE messages.receiver_id = %s",
+        "SELECT DISTINCT users.user_id, users.name AS sender_name, MAX(messages.timestamp) AS max_timestamp "
+        "FROM users "
+        "JOIN messages ON users.user_id = messages.sender_id "
+        "WHERE messages.receiver_id = %s "
+        "GROUP BY users.user_id",
         (current_user_id,)
     )
     senders = cursor.fetchall()
 
+    last_messages = []
+    for sender in senders:
+        cursor.execute(
+            "SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp "
+            "FROM messages "
+            "JOIN users ON messages.sender_id = users.user_id "
+            "WHERE (messages.receiver_id = %s AND messages.sender_id = %s) "
+            "OR (messages.sender_id = %s AND messages.receiver_id = %s) "
+            "ORDER BY messages.timestamp DESC "
+            "LIMIT 1",
+            (current_user_id, sender['user_id'], sender['user_id'], current_user_id),
+        )
+        last_message = cursor.fetchone()
+        if last_message:
+            last_messages.append(last_message)
+
+    # Fetch all messages for the current conversation
     cursor.execute(
-        "SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp FROM messages JOIN users ON messages.sender_id = users.user_id WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s) ORDER BY messages.timestamp",
+        "SELECT messages.id, messages.sender_id, users.name AS sender_name, messages.receiver_id, messages.content, messages.timestamp "
+        "FROM messages "
+        "JOIN users ON messages.sender_id = users.user_id "
+        "WHERE (messages.sender_id = %s AND messages.receiver_id = %s) OR (messages.sender_id = %s AND messages.receiver_id = %s) "
+        "ORDER BY messages.timestamp",
         (current_user_id, receiver_id, receiver_id, current_user_id),
     )
     messages = cursor.fetchall()
+
     cursor.close()
 
-    return senders, messages
+    return senders, last_messages, messages
 
 
 def insert_report(title, description, user_id):

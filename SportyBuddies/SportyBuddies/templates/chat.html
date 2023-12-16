@@ -6,17 +6,18 @@
         {% for user in users %}
         {% if user.user_id not in selected_users %}
         <div class="user" data-user-id="{{ user.user_id }}">
+            <img src="{{ user.photo }}" class="mainpage-pic">
+            <br />
             {{ user.name }}
-            <img src="data:/jpeg;base64,{{ user.photo }}" />
         </div>
         {% endif %}
         {% endfor %}
     </div>
 
     <div class="last-message">
-        {% for message in messages %}
-        <div class="user-history">
-            <p>Wiadomość od {{ messages.sender_name }}: {{ messages.content }}</p>
+          {% for message in last_messages %}
+        <div class="message">
+            <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
         </div>
         {% endfor %}
     </div>
@@ -85,7 +86,7 @@
         });
 
         $('.message-input').keydown(function (e) {
-            // Wysłanie wiadomości po naciśnięciu klawisza Enter
+            
             if (e.which === 13) {
                 e.preventDefault();
                 $('#messageForm').submit();
@@ -96,5 +97,6 @@
             addNewMessage(data.sender_name, data.content);
         });
     });
+
 </script>
 {% endblock %}

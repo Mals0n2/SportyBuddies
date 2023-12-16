@@ -269,7 +269,7 @@ def chat(receiver_id):
     if not current_user.is_authenticated:
         return redirect(url_for("mainpagelogged"))
 
-    senders, messages = None, None
+    senders, last_messages, messages = None, None, None
     users = get_users_except_current_user(current_user.id)
 
     if receiver_id is not None:
@@ -280,9 +280,10 @@ def chat(receiver_id):
             # Emit message to SocketIO
             socketio.emit('message', {'sender_name': current_user.name, 'content': content, 'receiver_id': receiver_id})
 
-        senders, messages = get_messages(current_user.id, receiver_id)
+        senders, last_messages, messages = get_messages(current_user.id, receiver_id)
 
     senders = senders if senders is not None else []
+    last_messages = last_messages if last_messages is not None else []
     messages = messages if messages is not None else []
 
     return render_template(
@@ -291,9 +292,11 @@ def chat(receiver_id):
         year=datetime.now().year,
         users=users,
         senders=senders, 
+        last_messages=last_messages,
         messages=messages,
         receiver_id=receiver_id,
     )
+
 
 if __name__ == "__main__":
     socketio.run(app)
