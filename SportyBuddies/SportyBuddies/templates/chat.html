@@ -13,10 +13,9 @@
         {% endif %}
         {% endfor %}
     </div>
-
     <div class="last-message">
-          {% for message in last_messages %}
-        <div class="message">
+        {% for message in last_messages|reverse %}
+        <div class="message" data-user-id="{{ message.sender_id }}">
             <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
         </div>
         {% endfor %}
@@ -64,9 +63,19 @@
             scrollToBottom();
         };
 
+        function handleUserSelection(userId) {
+            window.location.href = '/chat/' + userId;
+        }
+
         $('.select-user .user').click(function () {
             var selectedUserId = $(this).data('user-id');
-            window.location.href = '/chat/' + selectedUserId;
+            handleUserSelection(selectedUserId);
+        });
+
+        // Handle click event for last-messages
+        $('.last-message .message').click(function () {
+            var selectedUserId = $(this).data('user-id'); // Assuming you have user_id associated with last-messages
+            handleUserSelection(selectedUserId);
         });
 
         $('#messageForm').submit(function (e) {
@@ -86,7 +95,6 @@
         });
 
         $('.message-input').keydown(function (e) {
-            
             if (e.which === 13) {
                 e.preventDefault();
                 $('#messageForm').submit();
@@ -97,6 +105,5 @@
             addNewMessage(data.sender_name, data.content);
         });
     });
-
 </script>
 {% endblock %}

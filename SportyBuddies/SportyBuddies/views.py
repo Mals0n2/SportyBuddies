@@ -280,6 +280,7 @@ def chat(receiver_id):
             # Emit message to SocketIO
             socketio.emit('message', {'sender_name': current_user.name, 'content': content, 'receiver_id': receiver_id})
 
+    
         senders, last_messages, messages = get_messages(current_user.id, receiver_id)
 
     senders = senders if senders is not None else []
