@@ -7,7 +7,7 @@
         {% if user.user_id not in selected_users %}
         <div class="user" data-user-id="{{ user.user_id }}">
             {% if user.photo_base64 %}
-            <img src="data:image/jpeg;base64,{{ user.photo_base64 }}" class="mainpage-pic">
+            <img src="data:image/jpeg;base64,{{ user.photo_base64 }}" class="select-user-pic">
             {% else %}
             <img src="/static/default_profile.jpg" class="mainpage-pic">
             {% endif %}
@@ -17,7 +17,6 @@
         {% endif %}
         {% endfor %}
     </div>
-</div>
     <div class="last-message">
         {% for message in last_messages|reverse %}
         <div class="last-message-box">
