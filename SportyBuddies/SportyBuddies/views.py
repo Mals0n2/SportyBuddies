@@ -16,6 +16,9 @@ from SportyBuddies.database import *
 from SportyBuddies.utils import *
 from SportyBuddies.mail import *
 from flask_socketio import SocketIO, emit
+import base64
+from flask import render_template
+
 
 socketio = SocketIO(app)
 
@@ -286,6 +289,11 @@ def chat(receiver_id):
     senders = senders if senders is not None else []
     last_messages = last_messages if last_messages is not None else []
     messages = messages if messages is not None else []
+
+    for user in users:
+        if 'photo' in user and user['photo']:
+            user['photo_base64'] = base64.b64encode(user['photo']).decode('utf-8')
+
 
     return render_template(
         "chat.html",

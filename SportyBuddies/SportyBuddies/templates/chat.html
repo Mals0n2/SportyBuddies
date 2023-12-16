@@ -6,17 +6,24 @@
         {% for user in users %}
         {% if user.user_id not in selected_users %}
         <div class="user" data-user-id="{{ user.user_id }}">
-            <img src="{{ user.photo }}" class="mainpage-pic">
+            {% if user.photo_base64 %}
+            <img src="data:image/jpeg;base64,{{ user.photo_base64 }}" class="mainpage-pic">
+            {% else %}
+            <img src="/static/default_profile.jpg" class="mainpage-pic">
+            {% endif %}
             <br />
             {{ user.name }}
         </div>
         {% endif %}
         {% endfor %}
     </div>
+</div>
     <div class="last-message">
         {% for message in last_messages|reverse %}
-        <div class="message" data-user-id="{{ message.sender_id }}">
-            <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
+        <div class="last-message-box">
+            <div class="message" data-user-id="{{ message.sender_id }}">
+                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
+            </div>
         </div>
         {% endfor %}
     </div>
