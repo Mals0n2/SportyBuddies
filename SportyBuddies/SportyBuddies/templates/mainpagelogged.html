@@ -38,7 +38,7 @@
 
     <div class="circle-container">
         <div class="circle-left">
-            <img src="{{ url_for('get_user_photo') }}" class="mainpage-pic">
+            <img src="data:image/jpeg;base64,{{ current_user_photo }}" class="mainpage-pic">
             <div class="name-container">
                 <h1>{{current_username}}<span class="small-font">{{current_age}}</span></h1>
                 {% for sport_icon in current_sport_icons %}
@@ -65,7 +65,7 @@
         <div class="circle-right">
             <div class="profile-picture-container">
                 <div class="profile-description">{{ matched_info }}</div>
-                <img src="{{ url_for('get_matched_user_photo')  }} " class="mainpage-pic">
+                <img src="data:image/jpeg;base64,{{ matched_user_photo }}" class="mainpage-pic">
 
             </div>
             <div class="name-container">
