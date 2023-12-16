@@ -19,8 +19,8 @@
     </div>
     <div class="last-message">
         {% for message in last_messages|reverse %}
-        <div class="last-message-box">
-            <div class="message" data-user-id="{{ message.sender_id }}">
+        <div class="last-message-box" data-user-id="{{ message.sender_id }}">
+            <div class="message">
                 <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
             </div>
         </div>
@@ -78,9 +78,9 @@
             handleUserSelection(selectedUserId);
         });
 
-        // Handle click event for last-messages
-        $('.last-message .message').click(function () {
-            var selectedUserId = $(this).data('user-id'); // Assuming you have user_id associated with last-messages
+        // Handle click event for last-message-box
+        $('.last-message-box').click(function () {
+            var selectedUserId = $(this).data('user-id');
             handleUserSelection(selectedUserId);
         });
 
