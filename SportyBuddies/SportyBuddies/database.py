@@ -317,7 +317,7 @@ def set_preferences(user_id, min_age, max_age, preferred_distance, gender_prefer
     db.commit()
     
 
-def get_preferences(user_id):
+def get_user_preferences(user_id):
     cursor = db.cursor()
     cursor.execute(
         "SELECT * FROM preferences WHERE user_id = %s",

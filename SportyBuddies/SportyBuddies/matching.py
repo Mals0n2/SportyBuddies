@@ -36,11 +36,34 @@ def get_matched_user_and_distance(current_user: User):
     matched_users_sorted_by_distance = sorted(
         matched_users_and_distance, key=lambda x: x[1]
     )
-    if matched_users_sorted_by_distance == []:
+    
+    matched_users_by_preferences=filter_users_by_preferences(matched_users_sorted_by_distance,current_user.id)
+
+    if matched_users_by_preferences == []:
         return None
-    matched_user = random.choice(matched_users_sorted_by_distance)
+    matched_user = random.choice(matched_users_by_preferences)
     return matched_user
 
+
+def filter_users_by_preferences(matched_users_sorted_by_distance,user_id):
+    preferences=get_user_preferences(user_id)
+    
+    matched_users_by_distance=[]
+    for user in matched_users_sorted_by_distance:
+        if user[1]<preferences.preferred_distance:
+            matched_users_by_distance.append(user)
+            
+    matched_users_by_age=[]
+    for user in matched_users_by_distance:
+        if user[0].age>=preferences.min_age and (user[0].age<=preferences.max_age):
+            matched_users_by_age.append(user)
+            
+    matched_users_by_gender=[]
+    for user in matched_users_by_age:
+        if user[0].gender==preferences.gender_preference:
+            matched_users_by_gender.append(user)
+
+    return matched_users_by_gender
 
 def on_profile_change(current_user: User):
     current_sport_ids = get_user_sport_ids(current_user.id)
@@ -53,7 +76,3 @@ def on_profile_change(current_user: User):
     delete_user_matches(current_user.id)
     for user in matched_users:
         insert_match(current_user.id, user.id)
-
-    # matched_users_sorted_by_distance = sorted(
-    #     matched_users_with_distance, key=lambda x: x[1]
-    # )
