@@ -871,7 +871,7 @@ form .register-button .new-button{
 .last-message {
     border: solid 3px white;
     opacity: 0.7;
-    width: 35%;
+    width: 25%;
     float: left;
     height: 75%;
     border-radius: 10px;
@@ -897,7 +897,7 @@ form .register-button .new-button{
     opacity: 0.7;
     border: solid 3px white;
     float: right;
-    width: 60%;
+    width: 70%;
     height: 75%;
     margin-right: 10px;
     margin-top: 10px;
@@ -1002,4 +1002,8 @@ form .register-button .new-button{
     border-radius: 50%;
     background: #76E4FA;
     padding: 2px;
+}
+
+.block_user {
+    width: 100%;
 }

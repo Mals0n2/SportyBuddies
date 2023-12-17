@@ -266,7 +266,7 @@ def chat(receiver_id):
         if request.method == "POST":
             content = request.form.get("content")
             insert_message(current_user.id, receiver_id, content)
-
+            
             # Emit message to SocketIO
             socketio.emit(
                 "message",
@@ -285,13 +285,15 @@ def chat(receiver_id):
         if "photo" in user and user["photo"]:
             user["photo_base64"] = base64.b64encode(user["photo"]).decode("utf-8")
 
+    sorted_data = sorted(last_messages, key=lambda x: x['timestamp'], reverse=True)
+    
     return render_template(
         "chat.html",
         title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
         year=datetime.now().year,
         users=users,
         senders=senders,
-        last_messages=last_messages,
+        last_messages=sorted_data,
         messages=messages,
         receiver_id=receiver_id,
     )
