@@ -48,6 +48,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    {% if current_user.id==1 %}
+                    <li><a href="{{ url_for('admin_panel') }}"><i class="fa-regular fa-flag" style="color: black;"></i></a></li>
+                    {% endif %}
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt" style="color: white;"></i></a></li>
 

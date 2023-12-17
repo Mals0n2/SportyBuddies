@@ -337,3 +337,13 @@ def get_preferences(user_id):
         preferences = Preferences(*preferences[0])
         return preferences
     return None
+
+def block_user_db(blocker_id,blocked_id):
+    cursor = db.cursor()
+    cursor.execute(
+        "INSERT INTO blocked_users (blocker_id, blocked_id) VALUES (%s, %s)",
+        (blocker_id, blocked_id,),
+    )
+    cursor.close()
+    db.commit()
+    return None

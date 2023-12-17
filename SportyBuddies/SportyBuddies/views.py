@@ -420,8 +420,12 @@ def save_preferences():
 def display_reports():
     if current_user.id != 1:
         return redirect(url_for("user_profile"))
-    # Fetch reports from the database (you may need to modify this based on your database model)
     reports = get_all_reports()
-
-    # Render the template with the reports data
+    
     return render_template('display_reports.html', reports=reports)
+
+@app.route("/block_user/<int:user_id>/<int:block_id>")
+@login_required
+def block_user(user_id,block_id):
+    block_user_db(user_id,block_id)
+    return redirect(url_for("chat"))

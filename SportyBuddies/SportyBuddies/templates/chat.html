@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block content %}
+    {% block content %}
 <div class="chat-container">
     <div class="select-user">
         {% for user in users %}
@@ -22,6 +22,9 @@
         <div class="last-message-box" data-user-id="{{ message.sender_id }}">
             <div class="message">
                 <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
+            </div>
+            <div class="block_user" style="float:right">
+                <button><a href="{{ url_for('block_user',user_id=message.receiver_id,block_id=message.sender_id)}}">zablokuj uzytkownika</a></button>
             </div>
         </div>
         {% endfor %}
