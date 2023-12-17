@@ -406,3 +406,15 @@ def delete_selected_user(user_id):
     delete_user(user_id)
 
     return redirect(url_for("display_users"))
+
+
+@app.route('/display_reports')
+@login_required
+def display_reports():
+    if current_user.id != 1:
+        return redirect(url_for("user_profile"))
+    # Fetch reports from the database (you may need to modify this based on your database model)
+    reports = get_all_reports()
+
+    # Render the template with the reports data
+    return render_template('display_reports.html', reports=reports)

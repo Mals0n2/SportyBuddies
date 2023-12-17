@@ -260,6 +260,14 @@ def get_all_users():
     return users
 
 
+def get_all_reports():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM reports")
+    reports = cursor.fetchall()
+    cursor.close()
+    return reports
+
+
 def insert_match(user_id, matched_user_id):
     cursor = db.cursor()
     cursor.execute(

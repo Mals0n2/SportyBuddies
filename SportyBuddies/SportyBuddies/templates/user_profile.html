@@ -186,6 +186,20 @@
                     </label>
                 </div>
             </section>
+
+        </div>
+        <br />
+        <div class="delete-account" style="float:right">
+            <button onclick="confirmDelete()">Usuń konto</button>
+            <script>
+                function confirmDelete() {
+                    var isConfirmed = confirm("Czy na pewno chcesz usunąć swoje konto?");
+
+                    if (isConfirmed) {
+                        window.location.href = "/delete_user";
+                    }
+                }
+            </script>
         </div>
 
     </div>

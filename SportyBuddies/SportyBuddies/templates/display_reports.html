@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="reports-container">
+    <h2>Raporty Urzytkownikow</h2>
+    <table class="table table-bordered ">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th rowspan="2" >Description</th>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report[0] }}</td>
+                <td>{{ report[1] }}</td>
+                <td rowspan="2">{{ report[4] }}</td>
+            </tr>
+            <tr>
+                <td>{{ report[2] }}</td>
+                <td>{{ report[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
