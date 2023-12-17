@@ -156,7 +156,10 @@ def insert_new_user(email, password, username, age, gender, description, photo_b
 def get_users_except_current_user(current_user_id):
     cursor = db.cursor(dictionary=True)
     cursor.execute(
-        "SELECT user_id, name, photo FROM users WHERE user_id != %s", (current_user_id,)
+        "SELECT user_id, name, photo FROM users WHERE user_id != %s "
+        "AND user_id NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = %s) "
+        "AND %s NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = user_id) "
+        , (current_user_id,current_user_id,current_user_id,)
     )
     users = cursor.fetchall()
     cursor.close()
@@ -182,7 +185,9 @@ def get_messages(current_user_id, receiver_id):
         "FROM users "
         "JOIN messages ON users.user_id = messages.sender_id "
         "WHERE messages.receiver_id = %s "
-        "GROUP BY users.user_id",
+        "AND messages.sender_id NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = messages.receiver_id) "
+        "AND messages.receiver_id NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = messages.sender_id) "
+        "GROUP BY users.user_id;",
         (current_user_id,)
     )
     senders = cursor.fetchall()
