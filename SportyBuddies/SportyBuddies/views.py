@@ -91,12 +91,9 @@ def user_profile():
 
     return render_template(
         "user_profile.html",
+        user=current_user,
         current_user_id=current_user.id,
-        username=current_user.name,
         user_sports=user_sports,
-        gender=current_user.gender,
-        status=current_user.status,
-        age=current_user.age,
         error=error_message,
         user_photo=current_user_photo,
         preferences=preferences,
@@ -147,18 +144,13 @@ def mainpagelogged(next_match=None):
 
     return render_template(
         "mainpagelogged.html",
-        current_user_id=current_user.id,
-        current_username=current_user.name,
-        current_age=current_user.age,
+        current_user=current_user,
+        matched_user=matched_user,
         current_sport_icons=current_sport_icons,
         current_user_photo=current_user_photo,
-        matched_username=matched_user.name,
-        matched_age=matched_user.age,
         matched_sport_icons=matched_sport_icons,
-        matched_user_id=matched_user.id,
         matched_user_photo=matched_user_photo,
         distance=distance_string,
-        matched_info=matched_user.info,
     )
 
 

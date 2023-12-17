@@ -70,15 +70,15 @@
             </script>
         </div>
         <h1>
-            {% if gender == 'Kobieta' %}
+            {% if user.gender == 'Kobieta' %}
             <span class="female-circle"><i class="icon fas fa-venus"></i></span>
             {% else %}
             <span class="male-circle"><i class="icon fas fa-mars"></i></span>
             {% endif %}
-            {{ username }}, {{ age }}
+            {{ user.name }}, {{ user.age }}
         </h1>
         <p>
-            <label for="status">Twoj Status: Online</label>
+            <label for="status">Twoj Status: {{user.status}}</label>
 
         </p>
         <div class="location">
