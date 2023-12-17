@@ -297,3 +297,17 @@ def update_match_status(user_id, matched_user_id, status):
     )
     cursor.close()
     db.commit()
+    
+
+def set_preferences(user_id, min_age, max_age, preferred_distance, gender_preference):
+    cursor = db.cursor()
+    cursor.execute(
+        "DELETE FROM preferences WHERE user_id = %s",
+        (user_id,),
+    )
+    cursor.execute(
+        "INSERT INTO preferences (user_id, min_age, max_age, preferred_distance, gender_preference) VALUES (%s, %s, %s, %s, %s)",
+        (user_id, min_age, max_age, preferred_distance, gender_preference),
+    )
+    cursor.close()
+    db.commit()

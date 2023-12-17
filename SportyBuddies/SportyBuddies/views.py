@@ -401,3 +401,18 @@ def delete_selected_user(user_id):
     delete_user(user_id)
 
     return redirect(url_for("display_users"))
+
+
+@app.route('/save_preferences', methods=['POST'])
+def save_preferences():
+    if request.method == 'POST':
+        data = request.get_json()
+
+        min_age = data.get('min_age')
+        max_age = data.get('max_age')
+        preferred_distance = data.get('preferred_distance')
+        gender_preference = data.get('gender_preference')
+
+        set_preferences(current_user.id,min_age,max_age,preferred_distance,gender_preference)
+
+        return jsonify({'status': 'success'})
