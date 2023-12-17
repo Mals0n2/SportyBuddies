@@ -86,6 +86,8 @@ def user_profile():
     user_sports = get_user_sport_ids(current_user.id)
     user_sports = process_user_sports(user_sports)
     current_user_photo = base64.b64encode(current_user.photo).decode("utf-8")
+    
+    preferences=get_preferences(current_user.id)
 
     return render_template(
         "user_profile.html",
@@ -97,6 +99,7 @@ def user_profile():
         age=current_user.age,
         error=error_message,
         user_photo=current_user_photo,
+        preferences=preferences,
     )
 
 

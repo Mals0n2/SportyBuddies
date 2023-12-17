@@ -1,6 +1,6 @@
 from datetime import datetime
 import mysql.connector
-from .models import MatchedUser, Matches, User
+from .models import MatchedUser, Matches, Preferences, User
 
 db = mysql.connector.connect(
     host="localhost", user="root", passwd="", database="sportybuddies"
@@ -145,6 +145,10 @@ def insert_new_user(email, password, username, age, gender, description, photo_b
         "INSERT INTO users (email, password, name, age, gender, info, photo) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (email, password, username, age, gender, description, photo_blob),
     )
+    cursor.execute(
+            "INSERT INTO preferences (min_age, max_age, preferred_distance) VALUES (%s, %s, %s, %s)",
+            (18, 25, 50),
+        )
     cursor.close()
     db.commit()
 
@@ -311,3 +315,17 @@ def set_preferences(user_id, min_age, max_age, preferred_distance, gender_prefer
     )
     cursor.close()
     db.commit()
+    
+
+def get_preferences(user_id):
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT * FROM preferences WHERE user_id = %s",
+        (user_id,),
+    )
+    preferences = cursor.fetchall()
+    cursor.close()
+    if preferences:
+        preferences = Preferences(*preferences[0])
+        return preferences
+    return None
