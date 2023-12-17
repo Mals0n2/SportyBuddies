@@ -10,7 +10,7 @@ from flask_login import (
     current_user,
 )
 from flask import render_template, request, redirect, url_for
-from SportyBuddies.matching import get_matched_user_and_distance,on_profile_change
+from SportyBuddies.matching import get_matched_user_and_distance, on_profile_change
 from SportyBuddies.models import *
 from SportyBuddies.database import *
 from SportyBuddies.utils import *
@@ -76,22 +76,6 @@ def upload_photo():
     return redirect(url_for("user_profile"))
 
 
-@app.route("/get_user_photo")
-@login_required
-def get_user_photo():
-    photo_data = current_user.photo
-
-    return Response(photo_data, content_type="image/jpeg")
-
-
-@app.route("/get_matched_user_photo")
-@login_required
-def get_matched_user_photo():
-    photo_data = matched_user.photo
-
-    return Response(photo_data, content_type="image/jpeg")
-
-
 @app.route("/user_profile")
 def user_profile():
     if current_user.is_authenticated == False:
@@ -101,16 +85,18 @@ def user_profile():
 
     user_sports = get_user_sport_ids(current_user.id)
     user_sports = process_user_sports(user_sports)
+    current_user_photo = base64.b64encode(current_user.photo).decode("utf-8")
+    
+    preferences=get_preferences(current_user.id)
 
     return render_template(
         "user_profile.html",
+        user=current_user,
         current_user_id=current_user.id,
-        username=current_user.name,
         user_sports=user_sports,
-        gender=current_user.gender,
-        status=current_user.status,
-        age=current_user.age,
         error=error_message,
+        user_photo=current_user_photo,
+        preferences=preferences,
     )
 
 
@@ -153,20 +139,18 @@ def mainpagelogged(next_match=None):
 
     distance_string = f"{round(distance)} km"
 
+    current_user_photo = base64.b64encode(current_user.photo).decode("utf-8")
+    matched_user_photo = base64.b64encode(matched_user.photo).decode("utf-8")
+
     return render_template(
         "mainpagelogged.html",
-        current_user_id=current_user.id,
-        current_username=current_user.name,
-        current_age=current_user.age,
+        current_user=current_user,
+        matched_user=matched_user,
         current_sport_icons=current_sport_icons,
-        current_user_photo=current_user.photo,
-        matched_username=matched_user.name,
-        matched_age=matched_user.age,
+        current_user_photo=current_user_photo,
         matched_sport_icons=matched_sport_icons,
-        matched_user_id=matched_user.id,
-        matched_user_photo=matched_user.photo,
+        matched_user_photo=matched_user_photo,
         distance=distance_string,
-        matched_info=matched_user.info,
     )
 
 
@@ -275,41 +259,49 @@ def chat(receiver_id):
     senders, last_messages, messages = None, None, None
     users = get_users_except_current_user(current_user.id)
 
+    # Pobierz last-messages bez względu na wartość receiver_id
+    senders, last_messages, messages = get_messages(current_user.id, receiver_id)
+
     if receiver_id is not None:
         if request.method == "POST":
             content = request.form.get("content")
             insert_message(current_user.id, receiver_id, content)
 
             # Emit message to SocketIO
-            socketio.emit('message', {'sender_name': current_user.name, 'content': content, 'receiver_id': receiver_id})
-
-    
-        senders, last_messages, messages = get_messages(current_user.id, receiver_id)
+            socketio.emit(
+                "message",
+                {
+                    "sender_name": current_user.name,
+                    "content": content,
+                    "receiver_id": receiver_id,
+                },
+            )
 
     senders = senders if senders is not None else []
     last_messages = last_messages if last_messages is not None else []
     messages = messages if messages is not None else []
 
     for user in users:
-        if 'photo' in user and user['photo']:
-            user['photo_base64'] = base64.b64encode(user['photo']).decode('utf-8')
-
+        if "photo" in user and user["photo"]:
+            user["photo_base64"] = base64.b64encode(user["photo"]).decode("utf-8")
 
     return render_template(
         "chat.html",
         title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
         year=datetime.now().year,
         users=users,
-        senders=senders, 
+        senders=senders,
         last_messages=last_messages,
         messages=messages,
         receiver_id=receiver_id,
     )
 
 
+
 if __name__ == "__main__":
     socketio.run(app)
-    
+
+
 @app.route("/submit_report", methods=["POST"])
 @login_required
 def submit_report():
@@ -406,6 +398,21 @@ def delete_selected_user(user_id):
     delete_user(user_id)
 
     return redirect(url_for("display_users"))
+
+
+@app.route('/save_preferences', methods=['POST'])
+def save_preferences():
+    if request.method == 'POST':
+        data = request.get_json()
+
+        min_age = data.get('min_age')
+        max_age = data.get('max_age')
+        preferred_distance = data.get('preferred_distance')
+        gender_preference = data.get('gender_preference')
+
+        set_preferences(current_user.id,min_age,max_age,preferred_distance,gender_preference)
+
+        return jsonify({'status': 'success'})
 
 
 @app.route('/display_reports')

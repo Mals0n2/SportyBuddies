@@ -82,3 +82,12 @@ class Matches:
         self.user_id = user_id
         self.matched_user_id = matched_user_id
         self.status = status
+        
+class Preferences:
+    def __init__(self, user_id, min_age, max_age, preferred_distance,gender_preference):
+        self.id = id
+        self.user_id = user_id
+        self.min_age=min_age
+        self.max_age=max_age
+        self.preferred_distance=preferred_distance
+        self.gender_preference=gender_preference

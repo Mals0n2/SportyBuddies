@@ -843,30 +843,31 @@ form .register-button .new-button{
 .chat-container{
     text-align: center;
     margin: auto;
-    margin-top: 30px;
+    margin-top: 10px;
     width: 70%;
-    height: 80vh;
+    height: 90vh;
     background-color: #83CEEB;
     border-radius: 20px;
     padding: 10px;
 }
 
 .select-user {
+    overflow-x: auto;
+    white-space: nowrap;
     border-radius: 20px;
     margin: auto;
     background-color: white;
     width: 95%;
-    padding: 40px;
+    padding: 20px;
     color: black;
     text-align: center;
 }
 
 .user {
-    align-items: center;
     display: inline-block;
     cursor: pointer;
+    margin-right: 18px;
 }
-
 .last-message {
     border: solid 3px white;
     opacity: 0.7;
@@ -987,5 +988,18 @@ form .register-button .new-button{
 .last-message-box {
     color: black;
     background-color: white;
-    height: 10%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+}
+
+    .last-message-box:hover {
+        background-color: #83CEEB;
+    }
+    
+.select-user-pic {
+    width: 70px;
+    border-radius: 50%;
+    background: #76E4FA;
+    padding: 2px;
 }
