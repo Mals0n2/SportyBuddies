@@ -259,6 +259,9 @@ def chat(receiver_id):
     senders, last_messages, messages = None, None, None
     users = get_users_except_current_user(current_user.id)
 
+    # Pobierz last-messages bez względu na wartość receiver_id
+    senders, last_messages, messages = get_messages(current_user.id, receiver_id)
+
     if receiver_id is not None:
         if request.method == "POST":
             content = request.form.get("content")
@@ -273,8 +276,6 @@ def chat(receiver_id):
                     "receiver_id": receiver_id,
                 },
             )
-
-        senders, last_messages, messages = get_messages(current_user.id, receiver_id)
 
     senders = senders if senders is not None else []
     last_messages = last_messages if last_messages is not None else []
@@ -294,6 +295,7 @@ def chat(receiver_id):
         messages=messages,
         receiver_id=receiver_id,
     )
+
 
 
 if __name__ == "__main__":
@@ -411,3 +413,15 @@ def save_preferences():
         set_preferences(current_user.id,min_age,max_age,preferred_distance,gender_preference)
 
         return jsonify({'status': 'success'})
+
+
+@app.route('/display_reports')
+@login_required
+def display_reports():
+    if current_user.id != 1:
+        return redirect(url_for("user_profile"))
+    # Fetch reports from the database (you may need to modify this based on your database model)
+    reports = get_all_reports()
+
+    # Render the template with the reports data
+    return render_template('display_reports.html', reports=reports)

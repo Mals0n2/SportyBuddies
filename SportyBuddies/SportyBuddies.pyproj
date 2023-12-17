@@ -88,6 +88,7 @@
     <Content Include="SportyBuddies\templates\login.html" />
     <Content Include="SportyBuddies\templates\mainpagelogged.html" />
     <Content Include="SportyBuddies\templates\newpass.html" />
+    <Content Include="SportyBuddies\templates\display_reports.html" />
     <Content Include="SportyBuddies\templates\register.html" />
     <Content Include="SportyBuddies\templates\user_profile.html" />
     <Content Include="SportyBuddies\templates\chat.html" />
