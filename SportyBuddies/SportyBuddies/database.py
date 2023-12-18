@@ -319,13 +319,9 @@ def update_match_status(user_id, matched_user_id, status):
 def set_preferences(user_id, min_age, max_age, preferred_distance, gender_preference):
     cursor = db.cursor()
     cursor.execute(
-        "DELETE FROM preferences WHERE user_id = %s",
-        (user_id,),
-    )
-    cursor.execute(
-        "INSERT INTO preferences (user_id, min_age, max_age, preferred_distance, gender_preference) VALUES (%s, %s, %s, %s, %s)",
-        (user_id, min_age, max_age, preferred_distance, gender_preference),
-    )
+        "UPDATE preferences SET min_age=%s,max_age=%s,preferred_distance=%s,gender_preference=%s WHERE user_id=%s",
+        (min_age, max_age, preferred_distance, gender_preference,user_id),
+        )
     cursor.close()
     db.commit()
     
@@ -353,7 +349,7 @@ def block_user_db(blocker_id,blocked_id):
     db.commit()
     return None
 
-def update_user_info(info,user_id):
+def update_user_info(user_id,info):
     cursor = db.cursor()
     cursor.execute("UPDATE users SET info = %s WHERE user_id = %s", (info,user_id))
     cursor.close()
