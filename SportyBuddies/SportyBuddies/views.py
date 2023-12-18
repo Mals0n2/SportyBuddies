@@ -256,12 +256,14 @@ def chat(receiver_id):
     if not current_user.is_authenticated:
         return redirect(url_for("mainpagelogged"))
 
-    senders, last_messages, messages = None, None, None
     users = get_users_except_current_user(current_user.id)
-
-    # Pobierz last-messages bez względu na wartość receiver_id
     senders, last_messages, messages = get_messages(current_user.id, receiver_id)
 
+    valid_receiver_ids = [user['user_id'] for user in users]
+    if receiver_id is not None and receiver_id not in valid_receiver_ids:
+        flash("Invalid user selection.")
+        return redirect(url_for("chat"))
+    
     if receiver_id is not None:
         if request.method == "POST":
             content = request.form.get("content")
@@ -297,7 +299,6 @@ def chat(receiver_id):
         messages=messages,
         receiver_id=receiver_id,
     )
-
 
 
 if __name__ == "__main__":
