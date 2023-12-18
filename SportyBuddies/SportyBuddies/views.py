@@ -381,6 +381,13 @@ def display_users():
 
     return render_template("display_users.html", users=users)
 
+@app.route("/update_user_info")
+@login_required
+def handle_update_user_info():
+    info = request.form.get("info")
+    update_user_info(current_user.id,info)
+
+    return redirect(url_for("user_profile"))
 
 @app.route("/delete_user")
 @login_required

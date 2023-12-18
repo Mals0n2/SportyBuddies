@@ -196,6 +196,15 @@ body {
     justify-content: center;
 }
 
+/*User Profile*/
+.calender-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .profile-box {
     background: #83CEEB;
     text-align: center;
@@ -362,7 +371,7 @@ h1 {
 
 .scrollable-container {
     padding: 2px;
-    height: 150px;
+    max-height:300px;
     overflow-y: scroll;
 }
 
@@ -1006,4 +1015,33 @@ form .register-button .new-button{
 
 .block_user {
     width: 100%;
+}
+
+
+.calendar-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .calendar-table th, .calendar-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .calendar-table th {
+        background-color: #83CEEB;
+    }
+
+    .calendar-table input {
+        width: 100%;
+        height:75px;
+        box-sizing: border-box;
+    }
+
+#infoarea {
+    border: none;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    resize: none;
 }

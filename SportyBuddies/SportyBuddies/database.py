@@ -352,3 +352,9 @@ def block_user_db(blocker_id,blocked_id):
     cursor.close()
     db.commit()
     return None
+
+def update_user_info(info,user_id):
+    cursor = db.cursor()
+    cursor.execute("UPDATE users SET info = %s WHERE user_id = %s", (info,user_id))
+    cursor.close()
+    db.commit()

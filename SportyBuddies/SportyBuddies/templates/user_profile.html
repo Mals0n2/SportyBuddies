@@ -78,131 +78,28 @@
             {{ user.name }}, {{ user.age }}
         </h1>
         <p>
-            <label for="status">Twoj Status: {{user.status}}</label>
+            <label for="status">Twoj Status: Online</label>
 
         </p>
         <div class="location">
             <p>Twoja aktualna lokalizacja: <br /><span style="color: #83CEEB; font-size: 30px;" id="locationName"></span></p>
         </div>
-        <p>Wybierz swoje zainteresowania</p>
-        <div class="scrollable-container">
-            <section>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="running" data-sport-id="1" {% if user_sports[0] %} checked {% endif%}>
-                    <label class="profile-label" for="running">
-                        <i class="fas fa-running"></i>
-                        <h6>Bieganie</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="biking" data-sport-id="2" {% if user_sports[1] %} checked {% endif%}>
-                    <label class="profile-label" for="biking">
-                        <i class="fas fa-biking"></i>
-                        <h6>Jazda na rowerze</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="swimming" data-sport-id="3" {% if user_sports[2] %} checked {% endif%}>
-                    <label class="profile-label" for="swimming">
-                        <i class="fas fa-swimmer"></i>
-                        <h6>Plywanie</h6>
-                    </label>
-                </div>
-            </section>
-            <section>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="gym" data-sport-id="4" {% if user_sports[3] %} checked {% endif%}>
-                    <label class="profile-label" for="gym">
-                        <i class="fas fa-dumbbell"></i>
-                        <h6>Silownia</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="soccer" data-sport-id="5" {% if user_sports[4] %} checked {% endif%}>
-                    <label class="profile-label" for="soccer">
-                        <i class="fas fa-futbol"></i>
-                        <h6>Pilka nozna</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="basketball" data-sport-id="6" {% if user_sports[5] %} checked {% endif%}>
-                    <label class="profile-label" for="basketball">
-                        <i class="fas fa-basketball"></i>
-                        <h6>Koszykowka</h6>
-                    </label>
-                </div>
-            </section>
-            <section>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="volleyball" data-sport-id="7" {% if user_sports[6] %} checked {% endif%}>
-                    <label class="profile-label" for="volleyball">
-                        <i class="fas fa-volleyball"></i>
-                        <h6>Siatkowka</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="walk" data-sport-id="8" {% if user_sports[7] %} checked {% endif%}>
-                    <label class="profile-label" for="walk">
-                        <i class="fas fa-person-walking"></i>
-                        <h6>Spacer</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="bowling" data-sport-id="9" {% if user_sports[8] %} checked {% endif%}>
-                    <label class="profile-label" for="bowling">
-                        <i class="fas fa-bowling-ball"></i>
-                        <h6>Kregle</h6>
-                    </label>
-                </div>
-            </section>
-            <section>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="baseball" data-sport-id="10" {% if user_sports[9] %} checked {% endif%}>
-                    <label class="profile-label" for="baseball">
-                        <i class="fas fa-baseball-ball"></i>
-                        <h6>Baseball</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="golf" data-sport-id="11" {% if user_sports[10] %} checked {% endif%}>
-                    <label class="profile-label" for="golf">
-                        <i class="fas fa-golf-ball"></i>
-                        <h6>Golf</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="skating" data-sport-id="12" {% if user_sports[11] %} checked {% endif%}>
-                    <label class="profile-label" for="skating">
-                        <i class="fas fa-skating"></i>
-                        <h6>Lyzwy</h6>
-                    </label>
-                </div>
-            </section>
-            <section>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="skiing" data-sport-id="13" {% if user_sports[12] %} checked {% endif%}>
-                    <label class="profile-label" for="skiing">
-                        <i class="fas fa-skiing"></i>
-                        <h6>Jazda na naratach</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="snowboard" data-sport-id="14" {% if user_sports[13] %} checked {% endif%}>
-                    <label class="profile-label" for="snowboard">
-                        <i class="fas fa-snowboarding"></i>
-                        <h6>Snowboard</h6>
-                    </label>
-                </div>
-                <div class="tile">
-                    <input type="checkbox" name="sports" id="table-tennis" data-sport-id="15" {% if user_sports[14] %} checked {% endif%}>
-                    <label class="profile-label" for="table-tennis">
-                        <i class="fas fa-table-tennis"></i>
-                        <h6>Tenis stolowy</h6>
-                    </label>
-                </div>
-            </section>
+        <div class="location">
+            <p>Twój Opis: <br /><textarea name="info" id="infoarea">{{ user.info }}</textarea></p>
 
         </div>
+        <button onclick="confirmChange()">Zapisz Opis</button>
+        <script>
+            function confirmChange() {
+                var isConfirmed = confirm("Czy na pewno chcesz zmienić opis?");
+
+                if (isConfirmed) {
+                    window.location.href = "/update_user_info";
+                }
+            }
+        </script>
+        <br />
+        <br />
         <br />
         <div class="delete-account" style="float:right">
             <button onclick="confirmDelete()">Usuń konto</button>
@@ -216,243 +113,434 @@
                 }
             </script>
         </div>
+    </div>
+    <div class="profile-container">
 
+        <div class="profile-box">
+            <br />
+            <p>Wybierz swoje zainteresowania</p>
+            <br />
+            <div class="scrollable-container">
+                <section>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="running" data-sport-id="1" {% if user_sports[0] %} checked {% endif%}>
+                        <label class="profile-label" for="running">
+                            <i class="fas fa-running"></i>
+                            <h6>Bieganie</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="biking" data-sport-id="2" {% if user_sports[1] %} checked {% endif%}>
+                        <label class="profile-label" for="biking">
+                            <i class="fas fa-biking"></i>
+                            <h6>Jazda na rowerze</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="swimming" data-sport-id="3" {% if user_sports[2] %} checked {% endif%}>
+                        <label class="profile-label" for="swimming">
+                            <i class="fas fa-swimmer"></i>
+                            <h6>Plywanie</h6>
+                        </label>
+                    </div>
+                </section>
+                <section>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="gym" data-sport-id="4" {% if user_sports[3] %} checked {% endif%}>
+                        <label class="profile-label" for="gym">
+                            <i class="fas fa-dumbbell"></i>
+                            <h6>Silownia</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="soccer" data-sport-id="5" {% if user_sports[4] %} checked {% endif%}>
+                        <label class="profile-label" for="soccer">
+                            <i class="fas fa-futbol"></i>
+                            <h6>Pilka nozna</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="basketball" data-sport-id="6" {% if user_sports[5] %} checked {% endif%}>
+                        <label class="profile-label" for="basketball">
+                            <i class="fas fa-basketball"></i>
+                            <h6>Koszykowka</h6>
+                        </label>
+                    </div>
+                </section>
+                <section>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="volleyball" data-sport-id="7" {% if user_sports[6] %} checked {% endif%}>
+                        <label class="profile-label" for="volleyball">
+                            <i class="fas fa-volleyball"></i>
+                            <h6>Siatkowka</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="walk" data-sport-id="8" {% if user_sports[7] %} checked {% endif%}>
+                        <label class="profile-label" for="walk">
+                            <i class="fas fa-person-walking"></i>
+                            <h6>Spacer</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="bowling" data-sport-id="9" {% if user_sports[8] %} checked {% endif%}>
+                        <label class="profile-label" for="bowling">
+                            <i class="fas fa-bowling-ball"></i>
+                            <h6>Kregle</h6>
+                        </label>
+                    </div>
+                </section>
+                <section>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="baseball" data-sport-id="10" {% if user_sports[9] %} checked {% endif%}>
+                        <label class="profile-label" for="baseball">
+                            <i class="fas fa-baseball-ball"></i>
+                            <h6>Baseball</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="golf" data-sport-id="11" {% if user_sports[10] %} checked {% endif%}>
+                        <label class="profile-label" for="golf">
+                            <i class="fas fa-golf-ball"></i>
+                            <h6>Golf</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="skating" data-sport-id="12" {% if user_sports[11] %} checked {% endif%}>
+                        <label class="profile-label" for="skating">
+                            <i class="fas fa-skating"></i>
+                            <h6>Lyzwy</h6>
+                        </label>
+                    </div>
+                </section>
+                <section>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="skiing" data-sport-id="13" {% if user_sports[12] %} checked {% endif%}>
+                        <label class="profile-label" for="skiing">
+                            <i class="fas fa-skiing"></i>
+                            <h6>Jazda na naratach</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="snowboard" data-sport-id="14" {% if user_sports[13] %} checked {% endif%}>
+                        <label class="profile-label" for="snowboard">
+                            <i class="fas fa-snowboarding"></i>
+                            <h6>Snowboard</h6>
+                        </label>
+                    </div>
+                    <div class="tile">
+                        <input type="checkbox" name="sports" id="table-tennis" data-sport-id="15" {% if user_sports[14] %} checked {% endif%}>
+                        <label class="profile-label" for="table-tennis">
+                            <i class="fas fa-table-tennis"></i>
+                            <h6>Tenis stolowy</h6>
+                        </label>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
     </div>
 
-</div>
+    </div>
+<div class="calender-container">
+    <div class="profile-box">
+        <p><h2>Harmonogram</h2></p>
+        <br />
+
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Pon</th>
+                    <th>Wt</th>
+                    <th>Śr</th>
+                    <th>Czw</th>
+                    <th>Pią</th>
+                    <th>Sob</th>
+                    <th>Nie</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td><input type="text" placeholder="1"></td>
+                    <td><input type="text" placeholder="2"></td>
+                    <td><input type="text" placeholder="3"></td>
+                    <td><input type="text" placeholder="4"></td>
+                    <td><input type="text" placeholder="5"></td>
+                    <td><input type="text" placeholder="6"></td>
+                    <td><input type="text" placeholder="7"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="8"></td>
+                    <td><input type="text" placeholder="9"></td>
+                    <td><input type="text" placeholder="10"></td>
+                    <td><input type="text" placeholder="11"></td>
+                    <td><input type="text" placeholder="12"></td>
+                    <td><input type="text" placeholder="13"></td>
+                    <td><input type="text" placeholder="14"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="15"></td>
+                    <td><input type="text" placeholder="16"></td>
+                    <td><input type="text" placeholder="17"></td>
+                    <td><input type="text" placeholder="18"></td>
+                    <td><input type="text" placeholder="19"></td>
+                    <td><input type="text" placeholder="20"></td>
+                    <td><input type="text" placeholder="21"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="22"></td>
+                    <td><input type="text" placeholder="23"></td>
+                    <td><input type="text" placeholder="24"></td>
+                    <td><input type="text" placeholder="25"></td>
+                    <td><input type="text" placeholder="26"></td>
+                    <td><input type="text" placeholder="27"></td>
+                    <td><input type="text" placeholder="28"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="29"></td>
+                    <td><input type="text" placeholder="30"></td>
+                    <td><input type="text" placeholder="31"></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
 
 
-                    getLocationName(latitude, longitude);
-                },
-                function (error) {
-                    console.error('Blad pobierania lokalizacji:', error);
-                }
-            );
-        } else {
-            console.error('Przegladarka nie obsluguje Geolokalizacji.');
-        }
+                        getLocationName(latitude, longitude);
+                    },
+                    function (error) {
+                        console.error('Blad pobierania lokalizacji:', error);
+                    }
+                );
+            } else {
+                console.error('Przegladarka nie obsluguje Geolokalizacji.');
+            }
 
-        function getLocationName(latitude, longitude) {
-            var nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+            function getLocationName(latitude, longitude) {
+                var nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
 
-            $.ajax({
-                type: 'GET',
-                url: nominatimApiUrl,
-                dataType: 'json',
-                success: function (data) {
-                    var city = data.address.city || data.address.town || data.address.village || data.address.hamlet || 'Unknown';
-                    displayLocationName(city);
-                    sendLocationToServer(latitude, longitude, city);
-                },
-                error: function (error) {
-                    console.error('Error fetching location name:', error);
-                }
-            });
-        }
+                $.ajax({
+                    type: 'GET',
+                    url: nominatimApiUrl,
+                    dataType: 'json',
+                    success: function (data) {
+                        var city = data.address.city || data.address.town || data.address.village || data.address.hamlet || 'Unknown';
+                        displayLocationName(city);
+                        sendLocationToServer(latitude, longitude, city);
+                    },
+                    error: function (error) {
+                        console.error('Error fetching location name:', error);
+                    }
+                });
+            }
 
-        function displayLocationName(locationName) {
+            function displayLocationName(locationName) {
 
-            $('#locationName').text(locationName);
-        }
+                $('#locationName').text(locationName);
+            }
 
-        function sendLocationToServer(latitude, longitude, locationName) {
-            $.ajax({
-                type: 'POST',
-                url: '/update_user_location',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    latitude: latitude,
-                    longitude: longitude,
-                    locationName: locationName
-                }),
-                success: function (data) {
-                    console.log('Lokalizacja zostala wyslana do serwera.');
-                },
-                error: function (error) {
-                    console.error('Blad podczas wysylania lokalizacji do serwera:', error);
-                }
-            });
-        }
-    });
-</script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var radioButtons = document.querySelectorAll('input[name="intensivity"]');
-        radioButtons.forEach(function (radioButton) {
-            radioButton.addEventListener('change', function () {
-                var intensityValue = this.id;
-                var checkedCheckbox = document.querySelector('input[name="sports"]:checked');
-                if (checkedCheckbox) {
-                    var sportId = checkedCheckbox.getAttribute('data-sport-id');
-                    debugger;
-                    sendDataToDatabase(sportId, intensityValue);
-                    hidePopup();
-                }
-            });
-        });
-    });
-
-    function showPopup() {
-        document.querySelector('.popupbg').style.display = 'block';
-    }
-
-    function hidePopup() {
-        document.querySelector('.popupbg').style.display = 'none';
-        var checkedRadio = document.querySelector('input[name="intensivity"]:checked');
-        if (checkedRadio) {
-            checkedRadio.checked = false;
-        }
-    }
-
-    function sendDataToDatabase(sportId, intensityValue) {
-        // Send an AJAX request to update the database
-        $.ajax({
-            type: "POST",
-            url: "/update_user_sports_intensity",
-            data: {
-                sportId: sportId,
-                intensity: intensityValue
-            },
-            success: function (data) {
-                // Handle the response if needed
+            function sendLocationToServer(latitude, longitude, locationName) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/update_user_location',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        latitude: latitude,
+                        longitude: longitude,
+                        locationName: locationName
+                    }),
+                    success: function (data) {
+                        console.log('Lokalizacja zostala wyslana do serwera.');
+                    },
+                    error: function (error) {
+                        console.error('Blad podczas wysylania lokalizacji do serwera:', error);
+                    }
+                });
             }
         });
-        console.log("Sport ID:", sportId, "Intensity:", intensityValue);
-    }
+    </script>
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        var maxChecked = 3;
-        var checkedCheckboxes = [];
 
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                checkedCheckboxes.push(this);
-            }
-        });
-
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    checkedCheckboxes.push(this);
-                    showPopup();
-                    if (checkedCheckboxes.length > maxChecked) {
-                        this.checked = false;
-                        checkedCheckboxes.shift();
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var radioButtons = document.querySelectorAll('input[name="intensivity"]');
+            radioButtons.forEach(function (radioButton) {
+                radioButton.addEventListener('change', function () {
+                    var intensityValue = this.id;
+                    var checkedCheckbox = document.querySelector('input[name="sports"]:checked');
+                    if (checkedCheckbox) {
+                        var sportId = checkedCheckbox.getAttribute('data-sport-id');
+                        debugger;
+                        sendDataToDatabase(sportId, intensityValue);
                         hidePopup();
                     }
-                } else {
-                    checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
-                }
+                });
             });
         });
-    });
-    $(document).ready(function () {
-        $('input[type="checkbox"]').change(function () {
-            var isChecked = $(this).is(":checked");
-            var sportId = $(this).data("sport-id");
 
+        function showPopup() {
+            document.querySelector('.popupbg').style.display = 'block';
+        }
+
+        function hidePopup() {
+            document.querySelector('.popupbg').style.display = 'none';
+            var checkedRadio = document.querySelector('input[name="intensivity"]:checked');
+            if (checkedRadio) {
+                checkedRadio.checked = false;
+            }
+        }
+
+        function sendDataToDatabase(sportId, intensityValue) {
             // Send an AJAX request to update the database
             $.ajax({
                 type: "POST",
-                url: "/update_user_sports",
+                url: "/update_user_sports_intensity",
                 data: {
                     sportId: sportId,
-                    isChecked: isChecked
+                    intensity: intensityValue
                 },
                 success: function (data) {
                     // Handle the response if needed
                 }
             });
+            console.log("Sport ID:", sportId, "Intensity:", intensityValue);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var maxChecked = 3;
+            var checkedCheckboxes = [];
+
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    checkedCheckboxes.push(this);
+                }
+            });
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        checkedCheckboxes.push(this);
+                        showPopup();
+                        if (checkedCheckboxes.length > maxChecked) {
+                            this.checked = false;
+                            checkedCheckboxes.shift();
+                            hidePopup();
+                        }
+                    } else {
+                        checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+                    }
+                });
+            });
         });
-    });
+        $(document).ready(function () {
+            $('input[type="checkbox"]').change(function () {
+                var isChecked = $(this).is(":checked");
+                var sportId = $(this).data("sport-id");
+
+                // Send an AJAX request to update the database
+                $.ajax({
+                    type: "POST",
+                    url: "/update_user_sports",
+                    data: {
+                        sportId: sportId,
+                        isChecked: isChecked
+                    },
+                    success: function (data) {
+                        // Handle the response if needed
+                    }
+                });
+            });
+        });
 
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var statusSelect = document.getElementById('status');
+        document.addEventListener('DOMContentLoaded', function () {
+            var statusSelect = document.getElementById('status');
 
-        statusSelect.addEventListener('change', function () {
-            if (statusSelect.value != "") {
-                var selectedStatus = statusSelect.value;
-                sendStatusToDatabase(selectedStatus);
+            statusSelect.addEventListener('change', function () {
+                if (statusSelect.value != "") {
+                    var selectedStatus = statusSelect.value;
+                    sendStatusToDatabase(selectedStatus);
+                }
+            });
+
+            function sendStatusToDatabase(status) {
+                // Send an AJAX request to update the user's status in the database
+                $.ajax({
+                    type: "POST",
+                    url: "/update_user_status",
+                    data: {
+                        status: status
+                    },
+                    success: function (data) {
+                        // Handle the response if needed
+                    }
+                });
             }
         });
+    </script>
 
-        function sendStatusToDatabase(status) {
-            // Send an AJAX request to update the user's status in the database
+    <script>
+        // Use keyup event to capture changes as the user types
+        $('input, select').on('keyup change', function () {
+            savePreferences();
+        });
+
+        function savePreferences() {
+            // Pobierz dane z pól
+            var minAge = parseInt($('#min_age').val()) || 0;
+            var maxAge = parseInt($('#max_age').val()) || 0;
+            var preferredDistance = $('#preferred_distance').val();
+            var genderPreference = $('#gender_preference').val();
+
+            // Ogranicz wiek do zakresu od 13 do 120 lat
+            minAge = Math.max(13, Math.min(120, minAge));
+            maxAge = Math.max(13, Math.min(120, maxAge));
+
+            // Upewnij się, że max_age nie jest większe niż min_age
+            maxAge = Math.max(minAge, maxAge);
+
+            // Ogranicz preferredDistance do zakresu od 1 do 1000
+            preferredDistance = Math.max(1, Math.min(1000, preferredDistance));
+
+            // Ustaw zaktualizowane wartości w polach wejściowych
+            $('#min_age').val(minAge);
+            $('#max_age').val(maxAge);
+            $('#preferred_distance').val(preferredDistance);
+
+            // Prześlij dane do serwera za pomocą AJAX
             $.ajax({
-                type: "POST",
-                url: "/update_user_status",
-                data: {
-                    status: status
+                type: 'POST',
+                url: '/save_preferences',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    min_age: minAge,
+                    max_age: maxAge,
+                    preferred_distance: preferredDistance,
+                    gender_preference: genderPreference
+                }),
+                success: function (response) {
+                    console.log('Preferences saved successfully');
                 },
-                success: function (data) {
-                    // Handle the response if needed
+                error: function (error) {
+                    console.error('Error saving preferences');
                 }
             });
         }
-    });
-</script>
+    </script>
 
-<script>
-    // Use keyup event to capture changes as the user types
-    $('input, select').on('keyup change', function () {
-        savePreferences();
-    });
-
-    function savePreferences() {
-        // Pobierz dane z pól
-        var minAge = parseInt($('#min_age').val()) || 0;
-        var maxAge = parseInt($('#max_age').val()) || 0;
-        var preferredDistance = $('#preferred_distance').val();
-        var genderPreference = $('#gender_preference').val();
-
-        // Ogranicz wiek do zakresu od 13 do 120 lat
-        minAge = Math.max(13, Math.min(120, minAge));
-        maxAge = Math.max(13, Math.min(120, maxAge));
-
-        // Upewnij się, że max_age nie jest większe niż min_age
-        maxAge = Math.max(minAge, maxAge);
-
-        // Ogranicz preferredDistance do zakresu od 1 do 1000
-        preferredDistance = Math.max(1, Math.min(1000, preferredDistance));
-
-        // Ustaw zaktualizowane wartości w polach wejściowych
-        $('#min_age').val(minAge);
-        $('#max_age').val(maxAge);
-        $('#preferred_distance').val(preferredDistance);
-
-        // Prześlij dane do serwera za pomocą AJAX
-        $.ajax({
-            type: 'POST',
-            url: '/save_preferences',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({
-                min_age: minAge,
-                max_age: maxAge,
-                preferred_distance: preferredDistance,
-                gender_preference: genderPreference
-            }),
-            success: function (response) {
-                console.log('Preferences saved successfully');
-            },
-            error: function (error) {
-                console.error('Error saving preferences');
-            }
-        });
-    }
-</script>
-
-{% endblock %}
+    {% endblock %}
