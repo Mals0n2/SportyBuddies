@@ -92,9 +92,10 @@
         <script>
             function confirmChange() {
                 var isConfirmed = confirm("Czy na pewno chcesz zmienić opis?");
+                var userInfo = document.getElementById("infoarea").value;
 
                 if (isConfirmed) {
-                    window.location.href = "/update_user_info";
+                    window.location.href = "/update_user_info/" + userInfo;
                 }
             }
         </script>
