@@ -156,10 +156,19 @@ def insert_new_user(email, password, username, age, gender, description, photo_b
 def get_users_except_current_user(current_user_id):
     cursor = db.cursor(dictionary=True)
     cursor.execute(
-        "SELECT user_id, name, photo FROM users WHERE user_id != %s "
-        "AND user_id NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = %s) "
-        "AND %s NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = user_id) "
-        , (current_user_id,current_user_id,current_user_id,)
+       "SELECT u.user_id, u.name, u.photo FROM users u "
+    "WHERE u.user_id != %s "
+    "AND u.user_id NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = %s) "
+    "AND %s NOT IN (SELECT blocked_id FROM blocked_users WHERE blocker_id = u.user_id) "
+    "AND EXISTS ("
+    "   SELECT 1 FROM matches m1 "
+    "   WHERE m1.user_id = %s AND m1.matched_user_id = u.user_id AND m1.status = 1 "
+    ") "
+    "AND EXISTS ("
+    "   SELECT 1 FROM matches m2 "
+    "   WHERE m2.user_id = u.user_id AND m2.matched_user_id = %s AND m2.status = 1 "
+    ")",
+    (current_user_id, current_user_id, current_user_id, current_user_id, current_user_id,)
     )
     users = cursor.fetchall()
     cursor.close()
