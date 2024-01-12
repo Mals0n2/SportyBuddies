@@ -36,45 +36,6 @@
 
     </div>
 </div>
-
-<form id="preferencesForm">
-    <label for="min_age">Min Age:</label>
-    <input type="number" id="min_age" name="min_age" value="{{ preferences.min_age }}" required>
-
-    <label for="max_age">Max Age:</label>
-    <input type="number" id="max_age" name="max_age" value="{{ preferences.max_age }}" required>
-
-    <label for="preferred_distance">Enter data:</label>
-    <input type="number" id="preferred_distance" name="preferred_distance" value="{{ preferences.preferred_distance }}" required>
-
-    <label for="gender_preference">Gender Preference:</label>
-    <select id="gender_preference" name="gender_preference" required>
-        <option value="Mężczyzna" {% if preferences.gender_preference=='Mężczyzna' %} selected {% endif %}>Mezczyzna</option>
-        <option value="Kobieta" {% if preferences.gender_preference=='Kobieta' %} selected {% endif %}>Kobieta</option>
-    </select>
-
-    <button type="button" onclick="submitForm()">Submit</button>
-</form>
-<script>
-    function submitForm() {
-        var formData = new FormData(document.getElementById('preferencesForm'));
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/save_preferences', true);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = 'Result: ' + JSON.parse(xhr.responseText).result;
-            }
-        };
-
-        xhr.send(formData);
-    }
-</script>
-
-<br />
-<br />
 <div class="profile-container">
     <div class="profile-box">
         <div class="error2" style="font-size: 14px;">{{error}}</div>
@@ -142,6 +103,31 @@
     <div class="profile-container">
 
         <div class="profile-box">
+            <form id="preferencesForm">
+    Preferowany wiek
+                <br />
+    <label for="min_age">Od:</label>
+    <input type="range" id="min_age" name="min_age" min="13" max="120" value="{{ preferences.min_age }}" required>
+    <span id="min_age_display">{{ preferences.min_age }}</span>
+
+    <label for="max_age">Do:</label>
+    <input type="range" id="max_age" name="max_age" min="13" max="120" value="{{ preferences.max_age }}" required>
+    <span id="max_age_display">{{ preferences.max_age }}</span>
+    <br />
+    <label for="preferred_distance">Preferowana odległość</label>
+    <br />
+    <input type="range" id="preferred_distance" name="preferred_distance" min="1" max="500" value="{{ preferences.preferred_distance }}" style="width: 300px;" required>
+    <span id="preferred_distance_display">{{ preferences.preferred_distance }}</span> km
+    <br />
+    <label for="gender_preference">Szukam:</label>
+    <select id="gender_preference" name="gender_preference" required>
+        <option value="Mężczyzna" {% if preferences.gender_preference == 'Mężczyzna' %} selected {% endif %}>Mezczyzna</option>
+        <option value="Kobieta" {% if preferences.gender_preference == 'Kobieta' %} selected {% endif %}>Kobieta</option>
+        <option value="Wszyscy" {% if preferences.gender_preference == 'Wszyscy' %} selected {% endif %}>Wszyscy</option>
+    </select>
+    <br />
+    <button type="button" onclick="submitForm()">Zapisz</button>
+</form>
             <br />
             <p>Wybierz swoje zainteresowania</p>
             <br />
@@ -266,6 +252,7 @@
 
         </div>
     </div>
+    
 
 </div>
 <div class="calender-container">
@@ -336,187 +323,240 @@
 
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        var latitude = position.coords.latitude;
-                        var longitude = position.coords.longitude;
+    document.addEventListener('DOMContentLoaded', function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
 
 
-                        getLocationName(latitude, longitude);
-                    },
-                    function (error) {
-                        console.error('Blad pobierania lokalizacji:', error);
-                    }
-                );
-            } else {
-                console.error('Przegladarka nie obsluguje Geolokalizacji.');
-            }
+                    getLocationName(latitude, longitude);
+                },
+                function (error) {
+                    console.error('Blad pobierania lokalizacji:', error);
+                }
+            );
+        } else {
+            console.error('Przegladarka nie obsluguje Geolokalizacji.');
+        }
 
-            function getLocationName(latitude, longitude) {
-                var nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+        function getLocationName(latitude, longitude) {
+            var nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
 
-                $.ajax({
-                    type: 'GET',
-                    url: nominatimApiUrl,
-                    dataType: 'json',
-                    success: function (data) {
-                        var city = data.address.city || data.address.town || data.address.village || data.address.hamlet || 'Unknown';
-                        displayLocationName(city);
-                        sendLocationToServer(latitude, longitude, city);
-                    },
-                    error: function (error) {
-                        console.error('Error fetching location name:', error);
-                    }
-                });
-            }
+            $.ajax({
+                type: 'GET',
+                url: nominatimApiUrl,
+                dataType: 'json',
+                success: function (data) {
+                    var city = data.address.city || data.address.town || data.address.village || data.address.hamlet || 'Unknown';
+                    displayLocationName(city);
+                    sendLocationToServer(latitude, longitude, city);
+                },
+                error: function (error) {
+                    console.error('Error fetching location name:', error);
+                }
+            });
+        }
 
-            function displayLocationName(locationName) {
+        function displayLocationName(locationName) {
 
-                $('#locationName').text(locationName);
-            }
+            $('#locationName').text(locationName);
+        }
 
-            function sendLocationToServer(latitude, longitude, locationName) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/update_user_location',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        latitude: latitude,
-                        longitude: longitude,
-                        locationName: locationName
-                    }),
-                    success: function (data) {
-                        console.log('Lokalizacja zostala wyslana do serwera.');
-                    },
-                    error: function (error) {
-                        console.error('Blad podczas wysylania lokalizacji do serwera:', error);
-                    }
-                });
-            }
-        });
+        function sendLocationToServer(latitude, longitude, locationName) {
+            $.ajax({
+                type: 'POST',
+                url: '/update_user_location',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude,
+                    locationName: locationName
+                }),
+                success: function (data) {
+                    console.log('Lokalizacja zostala wyslana do serwera.');
+                },
+                error: function (error) {
+                    console.error('Blad podczas wysylania lokalizacji do serwera:', error);
+                }
+            });
+        }
+    });
 </script>
 
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var radioButtons = document.querySelectorAll('input[name="intensivity"]');
-            radioButtons.forEach(function (radioButton) {
-                radioButton.addEventListener('change', function () {
-                    var intensityValue = this.id;
-                    var checkedCheckbox = document.querySelector('input[name="sports"]:checked');
-                    if (checkedCheckbox) {
-                        var sportId = checkedCheckbox.getAttribute('data-sport-id');
-                        debugger;
-                        sendDataToDatabase(sportId, intensityValue);
-                        hidePopup();
-                    }
-                });
+    document.addEventListener('DOMContentLoaded', function () {
+        var radioButtons = document.querySelectorAll('input[name="intensivity"]');
+        radioButtons.forEach(function (radioButton) {
+            radioButton.addEventListener('change', function () {
+                var intensityValue = this.id;
+                var checkedCheckbox = document.querySelector('input[name="sports"]:checked');
+                if (checkedCheckbox) {
+                    var sportId = checkedCheckbox.getAttribute('data-sport-id');
+                    debugger;
+                    sendDataToDatabase(sportId, intensityValue);
+                    hidePopup();
+                }
             });
         });
+    });
 
-        function showPopup() {
-            document.querySelector('.popupbg').style.display = 'block';
+    function showPopup() {
+        document.querySelector('.popupbg').style.display = 'block';
+    }
+
+    function hidePopup() {
+        document.querySelector('.popupbg').style.display = 'none';
+        var checkedRadio = document.querySelector('input[name="intensivity"]:checked');
+        if (checkedRadio) {
+            checkedRadio.checked = false;
         }
+    }
 
-        function hidePopup() {
-            document.querySelector('.popupbg').style.display = 'none';
-            var checkedRadio = document.querySelector('input[name="intensivity"]:checked');
-            if (checkedRadio) {
-                checkedRadio.checked = false;
+    function sendDataToDatabase(sportId, intensityValue) {
+        // Send an AJAX request to update the database
+        $.ajax({
+            type: "POST",
+            url: "/update_user_sports_intensity",
+            data: {
+                sportId: sportId,
+                intensity: intensityValue
+            },
+            success: function (data) {
+                // Handle the response if needed
             }
-        }
+        });
+        console.log("Sport ID:", sportId, "Intensity:", intensityValue);
+    }
 
-        function sendDataToDatabase(sportId, intensityValue) {
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var maxChecked = 3;
+        var checkedCheckboxes = [];
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkedCheckboxes.push(this);
+            }
+        });
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkedCheckboxes.push(this);
+                    showPopup();
+                    if (checkedCheckboxes.length > maxChecked) {
+                        this.checked = false;
+                        checkedCheckboxes.shift();
+                        hidePopup();
+                    }
+                } else {
+                    checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('input[type="checkbox"]').change(function () {
+            var isChecked = $(this).is(":checked");
+            var sportId = $(this).data("sport-id");
+
             // Send an AJAX request to update the database
             $.ajax({
                 type: "POST",
-                url: "/update_user_sports_intensity",
+                url: "/update_user_sports",
                 data: {
                     sportId: sportId,
-                    intensity: intensityValue
+                    isChecked: isChecked
                 },
                 success: function (data) {
                     // Handle the response if needed
                 }
             });
-            console.log("Sport ID:", sportId, "Intensity:", intensityValue);
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            var maxChecked = 3;
-            var checkedCheckboxes = [];
-
-            checkboxes.forEach(function (checkbox) {
-                if (checkbox.checked) {
-                    checkedCheckboxes.push(this);
-                }
-            });
-
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    if (this.checked) {
-                        checkedCheckboxes.push(this);
-                        showPopup();
-                        if (checkedCheckboxes.length > maxChecked) {
-                            this.checked = false;
-                            checkedCheckboxes.shift();
-                            hidePopup();
-                        }
-                    } else {
-                        checkedCheckboxes.splice(checkedCheckboxes.indexOf(this), 1);
-                    }
-                });
-            });
         });
-        $(document).ready(function () {
-            $('input[type="checkbox"]').change(function () {
-                var isChecked = $(this).is(":checked");
-                var sportId = $(this).data("sport-id");
-
-                // Send an AJAX request to update the database
-                $.ajax({
-                    type: "POST",
-                    url: "/update_user_sports",
-                    data: {
-                        sportId: sportId,
-                        isChecked: isChecked
-                    },
-                    success: function (data) {
-                        // Handle the response if needed
-                    }
-                });
-            });
-        });
+    });
 
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var statusSelect = document.getElementById('status');
+    document.addEventListener('DOMContentLoaded', function () {
+        var statusSelect = document.getElementById('status');
 
-            statusSelect.addEventListener('change', function () {
-                if (statusSelect.value != "") {
-                    var selectedStatus = statusSelect.value;
-                    sendStatusToDatabase(selectedStatus);
-                }
-            });
-
-            function sendStatusToDatabase(status) {
-                // Send an AJAX request to update the user's status in the database
-                $.ajax({
-                    type: "POST",
-                    url: "/update_user_status",
-                    data: {
-                        status: status
-                    },
-                    success: function (data) {
-                        // Handle the response if needed
-                    }
-                });
+        statusSelect.addEventListener('change', function () {
+            if (statusSelect.value != "") {
+                var selectedStatus = statusSelect.value;
+                sendStatusToDatabase(selectedStatus);
             }
         });
-</script>
 
+        function sendStatusToDatabase(status) {
+            // Send an AJAX request to update the user's status in the database
+            $.ajax({
+                type: "POST",
+                url: "/update_user_status",
+                data: {
+                    status: status
+                },
+                success: function (data) {
+                    // Handle the response if needed
+                }
+            });
+        }
+    });
+</script>
+<script>
+    var minAgeRange = document.getElementById('min_age');
+    var maxAgeRange = document.getElementById('max_age');
+    var preferredDistanceRange = document.getElementById('preferred_distance');
+    var minAgeDisplay = document.getElementById('min_age_display');
+    var maxAgeDisplay = document.getElementById('max_age_display');
+    var preferredDistanceDisplay = document.getElementById('preferred_distance_display');
+
+    function updateMinAgeDisplay() {
+        minAgeDisplay.innerHTML = minAgeRange.value;
+    }
+
+    function updateMaxAgeDisplay() {
+        maxAgeDisplay.innerHTML = maxAgeRange.value;
+    }
+
+    function updatePreferredDistanceDisplay() {
+        preferredDistanceDisplay.innerHTML = preferredDistanceRange.value;
+    }
+
+    minAgeRange.addEventListener('input', function () {
+        if (parseInt(minAgeRange.value) > parseInt(maxAgeRange.value)) {
+            minAgeRange.value = maxAgeRange.value;
+        }
+        updateMinAgeDisplay();
+    });
+
+    maxAgeRange.addEventListener('input', function () {
+        if (parseInt(maxAgeRange.value) < parseInt(minAgeRange.value)) {
+            maxAgeRange.value = minAgeRange.value;
+        }
+        updateMaxAgeDisplay();
+    });
+
+    preferredDistanceRange.addEventListener('input', function () {
+        updatePreferredDistanceDisplay();
+    });
+
+    function submitForm() {
+        var formData = new FormData(document.getElementById('preferencesForm'));
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save_preferences', true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = 'Result: ' + JSON.parse(xhr.responseText).result;
+            }
+        };
+
+        xhr.send(formData);
+    }
+</script>
     {% endblock %}
