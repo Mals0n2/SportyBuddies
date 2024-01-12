@@ -25,10 +25,10 @@
         {% for message in last_messages %}
         <div class="last-message-box" data-user-id="{{ message.sender_id }}">
             <div class="message">
-                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
+                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content | truncate(10, True, '...') }}
             </div>
-            <div  style="float:right">
-                <button class="block_user"><a href="{{ url_for('block_user',user_id=message.receiver_id,block_id=message.sender_id)}}">block</a></button>
+            <div style="float:right">
+                <button class="block_user"><a href="{{ url_for('block_user', user_id=message.receiver_id, block_id=message.sender_id) }}">block</a></button>
             </div>
         </div>
         {% endfor %}
