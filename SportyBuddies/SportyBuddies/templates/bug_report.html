@@ -13,6 +13,7 @@
                 </div>
                 <div class="bug-report" style="width:100%">
                     <textarea placeholder="Tutaj opisz problem, kt&#243ry napotka&#322e&#347" name="description" id="description" required></textarea>
+                    <p id="charCount" style="text-align: right; color: white;"></p>
                 </div>
 
                 <input type="submit" class="btn" value="Wy&#347lij" id="submitBtn">
@@ -20,5 +21,17 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('description').addEventListener('input', function () {
+        var charCount = this.value.length;
+        document.getElementById('charCount').innerText = charCount + "/200";
+
+        if (charCount > 200) {
+            this.value = this.value.slice(0, 200);
+            document.getElementById('charCount').innerText = "200/200";
+        }
+    });
+</script>
 
 {% endblock %}

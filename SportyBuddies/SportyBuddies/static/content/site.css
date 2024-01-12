@@ -867,6 +867,7 @@ form .register-button .new-button{
     margin: auto;
     background-color: white;
     width: 95%;
+    height: 130px;
     padding: 20px;
     color: black;
     text-align: center;
@@ -1058,7 +1059,7 @@ form .register-button .new-button{
     transition: all 0.3s ease;
     color: black;
     font-weight: 100;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
     .bug-report textarea textarea:focus {
@@ -1088,4 +1089,10 @@ form .register-button .new-button{
     }
 ::placeholder {
     color: #83CEEB; 
+}
+
+.chat-without {
+    font-size: 30px;
+    color: #76E4FA;
+    margin-top: 25px;
 }

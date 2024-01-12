@@ -3,6 +3,7 @@
     {% block content %}
 <div class="chat-container">
     <div class="select-user">
+        {% if users %}
         {% for user in users %}
         {% if user.user_id not in selected_users %}
         <div class="user" data-user-id="{{ user.user_id }}">
@@ -16,6 +17,9 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% else %}
+        <p class="chat-without">Nie masz jeszcze Swojej pary</p>
+        {% endif %}
     </div>
     <div class="last-message">
         {% for message in last_messages %}
