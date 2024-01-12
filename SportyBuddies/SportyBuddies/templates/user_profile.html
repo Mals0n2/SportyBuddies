@@ -23,7 +23,7 @@
                 <label class="profile-label" for="2">
                     <i class="fas fa-biking"></i>
                     <h6>Srednio Zaawansowany</h6>
-                </label>
+                </label>c
             </div>
             <div class="tile" style="background-color:white;">
                 <input type="radio" name="intensivity" id="3">
@@ -36,19 +36,43 @@
 
     </div>
 </div>
-<label for="min_age">Min Age:</label>
-<input type="number" id="min_age" value="{{ preferences.min_age }}" required>
-<label for="max_age">Max Age:</label>
-<input type="number" id="max_age" value="{{ preferences.max_age }}" required>
 
-<label for="preferred_distance">Preferred Distance:</label>
-<input type="number" id="preferred_distance" value="{{ preferences.preferred_distance }}" required>
+<form id="preferencesForm">
+    <label for="min_age">Min Age:</label>
+    <input type="number" id="min_age" name="min_age" value="{{ preferences.min_age }}" required>
 
-<label for="gender_preference">Gender Preference:</label>
-<select id="gender_preference" required>
-    <option value="Mężczyzna" {% if preferences.gender_preference=='Mężczyzna' %}selected{% endif %}>Mezczyzna</option>
-    <option value="Kobieta" {% if preferences.gender_preference=='Kobieta' %}selected{% endif %}>Kobieta</option>
-</select>
+    <label for="max_age">Max Age:</label>
+    <input type="number" id="max_age" name="max_age" value="{{ preferences.max_age }}" required>
+
+    <label for="preferred_distance">Enter data:</label>
+    <input type="number" id="preferred_distance" name="preferred_distance" value="{{ preferences.preferred_distance }}" required>
+
+    <label for="gender_preference">Gender Preference:</label>
+    <select id="gender_preference" name="gender_preference" required>
+        <option value="Mężczyzna" {% if preferences.gender_preference=='Mężczyzna' %} selected {% endif %}>Mezczyzna</option>
+        <option value="Kobieta" {% if preferences.gender_preference=='Kobieta' %} selected {% endif %}>Kobieta</option>
+    </select>
+
+    <button type="button" onclick="submitForm()">Submit</button>
+</form>
+<script>
+    function submitForm() {
+        var formData = new FormData(document.getElementById('preferencesForm'));
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save_preferences', true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = 'Result: ' + JSON.parse(xhr.responseText).result;
+            }
+        };
+
+        xhr.send(formData);
+    }
+</script>
+
 <br />
 <br />
 <div class="profile-container">
@@ -243,7 +267,7 @@
         </div>
     </div>
 
-    </div>
+</div>
 <div class="calender-container">
     <div class="profile-box">
         <p><h2>Harmonogram</h2></p>
@@ -308,10 +332,10 @@
             </tbody>
         </table>
     </div>
-    </div>
+</div>
 
 
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function () {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -372,10 +396,10 @@
                 });
             }
         });
-    </script>
+</script>
 
 
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function () {
             var radioButtons = document.querySelectorAll('input[name="intensivity"]');
             radioButtons.forEach(function (radioButton) {
@@ -493,55 +517,6 @@
                 });
             }
         });
-    </script>
-
-    <script>
-        // Use keyup event to capture changes as the user types
-        $('input, select').on('keyup change', function () {
-            savePreferences();
-        });
-
-        function savePreferences() {
-            // Pobierz dane z pól
-            var minAge = parseInt($('#min_age').val()) || 0;
-            var maxAge = parseInt($('#max_age').val()) || 0;
-            var preferredDistance = $('#preferred_distance').val();
-            var genderPreference = $('#gender_preference').val();
-
-            // Ogranicz wiek do zakresu od 13 do 120 lat
-            minAge = Math.max(13, Math.min(120, minAge));
-            maxAge = Math.max(13, Math.min(120, maxAge));
-
-            // Upewnij się, że max_age nie jest większe niż min_age
-            maxAge = Math.max(minAge, maxAge);
-
-            // Ogranicz preferredDistance do zakresu od 1 do 1000
-            preferredDistance = Math.max(1, Math.min(1000, preferredDistance));
-
-            // Ustaw zaktualizowane wartości w polach wejściowych
-            $('#min_age').val(minAge);
-            $('#max_age').val(maxAge);
-            $('#preferred_distance').val(preferredDistance);
-
-            // Prześlij dane do serwera za pomocą AJAX
-            $.ajax({
-                type: 'POST',
-                url: '/save_preferences',
-                contentType: 'application/json;charset=UTF-8',
-                data: JSON.stringify({
-                    min_age: minAge,
-                    max_age: maxAge,
-                    preferred_distance: preferredDistance,
-                    gender_preference: genderPreference
-                }),
-                success: function (response) {
-                    console.log('Preferences saved successfully');
-                },
-                error: function (error) {
-                    console.error('Error saving preferences');
-                }
-            });
-        }
-    </script>
+</script>
 
     {% endblock %}

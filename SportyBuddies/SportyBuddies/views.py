@@ -412,17 +412,14 @@ def delete_selected_user(user_id):
 
 @app.route('/save_preferences', methods=['POST'])
 def save_preferences():
-    if request.method == 'POST':
-        data = request.get_json()
+    min_age = request.form.get('min_age')
+    max_age = request.form.get('max_age')
+    preferred_distance = request.form.get('preferred_distance')
+    gender_preference = request.form.get('gender_preference')
 
-        min_age = data.get('min_age')
-        max_age = data.get('max_age')
-        preferred_distance = data.get('preferred_distance')
-        gender_preference = data.get('gender_preference')
+    set_preferences(current_user.id,min_age,max_age,preferred_distance,gender_preference)
 
-        set_preferences(current_user.id,min_age,max_age,preferred_distance,gender_preference)
-
-        return jsonify({'status': 'success'})
+    return jsonify(result=min_age)
 
 
 @app.route('/display_reports')
