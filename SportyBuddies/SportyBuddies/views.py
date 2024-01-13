@@ -250,24 +250,24 @@ def bug_report():
     )
 
 
-@app.route("/chat/<int:receiver_id_arg>", methods=["GET", "POST"])
-@app.route("/chat", methods=["GET", "POST"])
-def chat(receiver_id_arg = None):
+@app.route("/chat", defaults={"receiver_id": None}, methods=["GET", "POST"])
+@app.route("/chat/<int:receiver_id>", methods=["GET", "POST"])
+def chat(receiver_id):
     if not current_user.is_authenticated:
         return redirect(url_for("mainpagelogged"))
 
     users = get_users_except_current_user(current_user.id)
-    senders, last_messages, messages = get_messages(current_user.id, receiver_id_arg)
+    senders, last_messages, messages = get_messages(current_user.id, receiver_id)
 
     valid_receiver_ids = [user['user_id'] for user in users]
-    if receiver_id_arg is not None and receiver_id_arg not in valid_receiver_ids:
+    if receiver_id is not None and receiver_id not in valid_receiver_ids:
         flash("Invalid user selection.")
         return redirect(url_for("chat"))
     
-    if receiver_id_arg is not None:
+    if receiver_id is not None:
         if request.method == "POST":
             content = request.form.get("content")
-            insert_message(current_user.id, receiver_id_arg, content)
+            insert_message(current_user.id, receiver_id, content)
             
             # Emit message to SocketIO
             socketio.emit(
@@ -275,7 +275,7 @@ def chat(receiver_id_arg = None):
                 {
                     "sender_name": current_user.name,
                     "content": content,
-                    "receiver_id": receiver_id_arg,
+                    "receiver_id": receiver_id,
                 },
             )
 
@@ -286,24 +286,18 @@ def chat(receiver_id_arg = None):
     for user in users:
         if "photo" in user and user["photo"]:
             user["photo_base64"] = base64.b64encode(user["photo"]).decode("utf-8")
-            
-    x=None
 
     sorted_data = sorted(last_messages, key=lambda x: x['timestamp'], reverse=True)
-    if sorted_data:
-        if receiver_id_arg == None:
-            return redirect(url_for("chat", receiver_id_arg=sorted_data[0]['sender_id']))
-        x=sorted_data[0]['sender_id']
-
+    
     return render_template(
         "chat.html",
-        title="Chat Room" if receiver_id_arg is not None else "Chat SportyBuddies",
+        title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
         year=datetime.now().year,
         users=users,
         senders=senders,
         last_messages=sorted_data,
-        messages=messages if messages is not [] else sorted_data,
-        receiver_id=receiver_id_arg,
+        messages=messages,
+        receiver_id=receiver_id if receiver_id is not None else 1,
         user_id=current_user.id,
     )
 
