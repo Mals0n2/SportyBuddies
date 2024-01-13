@@ -9,6 +9,7 @@
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/9cec9d4d88.js" crossorigin="anonymous"></script>
     <style>
 
         button {
@@ -24,8 +25,6 @@
             button:hover {
                 background-color: #2980b9;
             }
-
-
     </style>
 
 </head>
@@ -68,14 +67,18 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="container body-content" style="font-size:20px">
         {% block content %}{% endblock %}
         <hr />
         <footer>
-            <p style="float:left;">&copy; {{ year }} - SportyBuddies</p>
-
-
-            <p><a style="float:right;" href="{{ url_for('bug_report') }}"><i class="fa-regular fa-flag" style="color: white;"></i> Zlos Blad</a></p>
+            <p style="float:left;">
+                &copy; {{ year }} - SportyBuddies
+                <a href="{{ url_for('home') }}"><i class="fa fa-instagram" aria-hidden="true"> </i></a>
+                <a href="{{ url_for('home') }}"><i class="fa fa-facebook-official" aria-hidden="true"> </i></a>
+            </p>
+            {% if current_user.is_authenticated %}
+            <p><a style="float:right;" href="{{ url_for('bug_report') }}"><i class="fa-regular fa-flag" style="color: white;"></i> Z&#322;o&#347; B&#322;&#261;d</a></p>
+            {% endif %}
         </footer>
     </div>
     <script>

@@ -51,6 +51,9 @@ a {
        /* color: #76E4FA;*/
         color: white;
     }
+    a:hover{
+        color:white;
+    }
 
 body {
     background-color: #76E4FA;
