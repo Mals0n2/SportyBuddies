@@ -54,8 +54,6 @@
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt" style="color: white;"></i></a></li>
 
-                    <li><a href="{{ url_for('bug_report') }}"><i class="fa-regular fa-flag" style="color: white;"></i></a></li>
-
                     <li><a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments" style="color: white;"></i></a></li>
                     {% endif %}
                     <li><a href="{{ url_for('user_profile') }}"><i class="fas fa-user" style="color: white;"></i></a></li>
@@ -74,7 +72,10 @@
         {% block content %}{% endblock %}
         <hr />
         <footer>
-            <p>&copy; {{ year }} - SportyBuddies</p>
+            <p style="float:left;">&copy; {{ year }} - SportyBuddies</p>
+
+
+            <p><a style="float:right;" href="{{ url_for('bug_report') }}"><i class="fa-regular fa-flag" style="color: white;"></i> Zlos Blad</a></p>
         </footer>
     </div>
     <script>
