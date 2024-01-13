@@ -33,7 +33,9 @@
         {% endfor %}
     </div>
 
+    
     <div class="chat-container-user">
+        
         <div class="message-container" id="messageContainer">
             <div class="block-user">
                 <a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}"><i style="padding: 10px; color: #00ffff" class="fa-solid fa-ban"></i></a>
@@ -53,6 +55,7 @@
             </div>
         </form>
     </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
