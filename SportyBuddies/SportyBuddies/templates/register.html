@@ -56,6 +56,7 @@
                 <div class="input-box-register">
                     <span class="details">Opis</span>
                     <textarea placeholder="Powiedz nam co&sacute; o Sobie" name="description" id="description"></textarea>
+                    <p id="charCount" style="text-align: right; color: white;"></p>
                 </div>
 
                 <div class="register-button">
@@ -66,7 +67,17 @@
         </form>
     </div>
 </div>
+<script>
+    document.getElementById('description').addEventListener('input', function () {
+        var charCount = this.value.length;
+        document.getElementById('charCount').innerText = charCount + "/200";
 
+        if (charCount > 200) {
+            this.value = this.value.slice(0, 200);
+            document.getElementById('charCount').innerText = "200/200";
+        }
+    });
+</script>
 <script>
     const form = document.getElementById('form');
     const username = document.getElementById('username');
