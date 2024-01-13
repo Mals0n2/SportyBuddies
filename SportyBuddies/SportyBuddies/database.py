@@ -43,6 +43,7 @@ def get_user_id_by_credentials(username, password):
         "SELECT password FROM users WHERE name = %s",
         (username,),
     )
+    user_data = None
     password1 = cursor.fetchone()[0]
     if check_password_hash(password1,password):
         cursor.execute(
@@ -374,3 +375,6 @@ def update_user_info(user_id,info):
     cursor.execute("UPDATE users SET info = %s WHERE user_id = %s", (info,user_id))
     cursor.close()
     db.commit()
+
+def hash_user_password_all():
+    
