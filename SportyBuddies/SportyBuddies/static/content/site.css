@@ -1097,3 +1097,11 @@ form .register-button .new-button{
     color: #76E4FA;
     margin-top: 25px;
 }
+
+.block-user{
+    margin: auto;
+    height: 30px;
+    border-radius: 10px;
+    width: 40%;
+    background-color: white;
+}

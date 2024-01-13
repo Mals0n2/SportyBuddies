@@ -35,7 +35,10 @@
 
     <div class="chat-container-user">
         <div class="message-container" id="messageContainer">
-            <button class="block_user"><a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}">block</a></button>
+            <div class="block-user">
+                <a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}"><i style="padding: 10px; color: #00ffff" class="fa-solid fa-ban"></i></a>
+                <i style="color: #00ffff" class="fa-regular fa-thumbs-down"></i>
+            </div>
             {% for message in messages %}
             <div class="message">
                 <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
