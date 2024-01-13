@@ -1,6 +1,8 @@
 from datetime import datetime
 import mysql.connector
 from .models import MatchedUser, Matches, Preferences, User
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 db = mysql.connector.connect(
     host="localhost", user="root", passwd="", database="sportybuddies"
@@ -38,10 +40,16 @@ def get_matched_user(user_id):
 def get_user_id_by_credentials(username, password):
     cursor = db.cursor()
     cursor.execute(
-        "SELECT user_id FROM users WHERE name = %s AND password = %s",
-        (username, password),
+        "SELECT password FROM users WHERE name = %s",
+        (username,),
     )
-    user_data = cursor.fetchall()
+    password1 = cursor.fetchone()[0]
+    if check_password_hash(password1,password):
+        cursor.execute(
+            "SELECT user_id FROM users WHERE name = %s",
+            (username,),
+        )
+        user_data = cursor.fetchall()
     cursor.close()
 
     return user_data[0][0] if user_data else None
@@ -141,13 +149,14 @@ def check_existing_user(username, email):
 
 def insert_new_user(email, password, username, age, gender, description, photo_blob):
     cursor = db.cursor()
+    password=generate_password_hash(password)
     cursor.execute(
         "INSERT INTO users (email, password, name, age, gender, info, photo) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (email, password, username, age, gender, description, photo_blob),
     )
     cursor.execute(
-            "INSERT INTO preferences (min_age, max_age, preferred_distance) VALUES (%s, %s, %s, %s)",
-            (18, 25, 50),
+            "INSERT INTO preferences (min_age, max_age, preferred_distance, gender_preference) VALUES (%s, %s, %s, %s)",
+            (18, 25, 50,'Wszyscy',),
         )
     cursor.close()
     db.commit()
