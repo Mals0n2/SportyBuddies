@@ -1,60 +1,11 @@
-{% extends "layout.html" %}
+/* BEGIN EXTERNAL SOURCE */
 
-    {% block content %}
-<div class="chat-container">
-    <div class="select-user">
-        {% if users %}
-        {% for user in users %}
-        {% if user.user_id not in selected_users %}
-        <div class="user" data-user-id="{{ user.user_id }}">
-            {% if user.photo_base64 %}
-            <img src="data:image/jpeg;base64,{{ user.photo_base64 }}" class="select-user-pic">
-            {% else %}
-            <img src="/static/default_profile.jpg" class="mainpage-pic">
-            {% endif %}
-            <br />
-            {{ user.name }}
-        </div>
-        {% endif %}
-        {% endfor %}
-        {% else %}
-        <p class="chat-without">Nie masz jeszcze Swojej pary</p>
-        {% endif %}
-    </div>
-    <div class="last-message">
-        {% for message in last_messages %}
-        <div class="last-message-box" data-user-id="{{ message.sender_id }}">
-            <div class="message">
-                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content | truncate(10, True, '...') }}
-            </div>
-            <div style="float:right">
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
 
-    <div class="chat-container-user">
-        <div class="message-container" id="messageContainer">
-            <button class="block_user"><a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}">block</a></button>
-            {% for message in messages %}
-            <div class="message">
-                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content }}
-            </div>
-            {% endfor %}
-        </div>
+/* END EXTERNAL SOURCE */
+/* BEGIN EXTERNAL SOURCE */
 
-        <form class="message-form" id="messageForm">
-            <div class="textarea-container">
-                <textarea class="message-input" name="content" placeholder="Napisz wiadomość"></textarea>
-                <input type="submit" class="submit-button" value="Wyślij">
-            </div>
-        </form>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
-<script>
     document.addEventListener("DOMContentLoaded", function () {
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -118,5 +69,5 @@
             addNewMessage(data.sender_name, data.content);
         });
     });
-</script>
-{% endblock %}
+
+/* END EXTERNAL SOURCE */

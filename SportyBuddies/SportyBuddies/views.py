@@ -297,7 +297,8 @@ def chat(receiver_id):
         senders=senders,
         last_messages=sorted_data,
         messages=messages,
-        receiver_id=receiver_id,
+        receiver_id=receiver_id if receiver_id is not None else 1,
+        user_id=current_user.id,
     )
 
 
