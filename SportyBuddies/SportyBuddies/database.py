@@ -154,9 +154,11 @@ def insert_new_user(email, password, username, age, gender, description, photo_b
         "INSERT INTO users (email, password, name, age, gender, info, photo) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (email, password, username, age, gender, description, photo_blob),
     )
+    cursor.execute("SELECT user_id FROM users WHERE email = %s", (email,))
+    user_id = cursor.fetchone()[0]
     cursor.execute(
-            "INSERT INTO preferences (min_age, max_age, preferred_distance, gender_preference) VALUES (%s, %s, %s, %s)",
-            (18, 25, 50,'Wszyscy',),
+            "INSERT INTO preferences (user_id, min_age, max_age, preferred_distance, gender_preference) VALUES (%s, %s, %s, %s, %s)",
+            (user_id,18, 25, 50,'Wszyscy',),
         )
     cursor.close()
     db.commit()
