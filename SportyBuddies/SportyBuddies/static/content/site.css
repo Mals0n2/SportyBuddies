@@ -745,6 +745,7 @@ form .register-button .new-button{
     font-size: 55px;
     width: 80px;
     height: 80px;
+    position: relative;
     background-color: white;
     color: #00FF7F;
     text-align: center;
@@ -753,7 +754,30 @@ form .register-button .new-button{
     margin-bottom: 5px;
     margin-top: 30px;
     border: 3px solid #83CEEB;
+    transition: transform 0.4s;
 }
+
+    .small-circle::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #70F67D;
+        opacity: 0.05;
+        border-radius: inherit;
+        z-index: -1;
+        transition: opacity 0.4s;
+    }
+
+    .small-circle:hover::before {
+        opacity: 0.4;
+    }
+
+    .small-circle:hover {
+        transform: scale(1.2);
+    }
 
 .small-circle2 {
     font-size: 55px;
@@ -767,7 +791,32 @@ form .register-button .new-button{
     margin-bottom: 30px;
     margin-top: 30px;
     border: 3px solid #83CEEB;
+    transition: transform 0.4s;
+    position: relative;
 }
+
+    .small-circle2::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #FF6666;
+        opacity: 0.05;
+        border-radius: inherit;
+        z-index: -1;
+        transition: opacity 0.4s;
+    }
+
+    .small-circle2:hover::before {
+        opacity: 0.4;
+    }
+
+    .small-circle2:hover {
+        transform: scale(1.2);
+    }
+
 
 .white-square {
     margin-top: 55px;
