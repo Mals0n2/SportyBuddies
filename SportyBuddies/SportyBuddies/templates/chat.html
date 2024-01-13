@@ -21,6 +21,7 @@
         <p class="chat-without">Nie masz jeszcze Swojej pary</p>
         {% endif %}
     </div>
+    {% if last_messages %}
     <div class="last-message">
         {% for message in last_messages %}
         <div class="last-message-box" data-user-id="{{ message.sender_id }}">
@@ -53,6 +54,7 @@
             </div>
         </form>
     </div>
+    {% endif %}
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
