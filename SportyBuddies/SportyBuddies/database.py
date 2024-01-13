@@ -375,6 +375,3 @@ def update_user_info(user_id,info):
     cursor.execute("UPDATE users SET info = %s WHERE user_id = %s", (info,user_id))
     cursor.close()
     db.commit()
-
-def hash_user_password_all():
-    
