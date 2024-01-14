@@ -53,7 +53,7 @@ def login():
             login_user(user)
             return redirect(url_for("user_profile"))
         else:
-            error_message = "Nieprawidłowa nazwa użytkownika lub hasło."
+            error_message = "Nieprawidlowa nazwa uzytkownika lub haslo."
             return render_template("login.html", error=error_message)
 
     return render_template("login.html")
@@ -208,11 +208,11 @@ def register():
         user_id_by_username, user_id_by_email = check_existing_user(username, email)
 
         if user_id_by_username:
-            error_message = "Nazwa użytkownika jest już zajęta."
+            error_message = "Nazwa uzytkownika jest juz zajeta."
             return render_template("register.html", error=error_message)
 
         if user_id_by_email:
-            error_message = "Email jest już zajęty."
+            error_message = "Email jest juz zajety."
             return render_template("register.html", error=error_message)
 
         photo_url = "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg"
@@ -238,16 +238,7 @@ def home():
     return render_template("index.html", title="Home Page", year=datetime.now().year)
 
 
-@app.route("/bug_report")
-def bug_report():
-    if current_user.is_authenticated == False:
-        return redirect(url_for("login"))
-    return render_template(
-        "bug_report.html",
-        title="Zgloszenie Problemow",
-        year=datetime.now().year,
-        message="Your application description page.",
-    )
+
 
 
 @app.route("/chat", defaults={"receiver_id": None}, methods=["GET", "POST"])
@@ -305,19 +296,6 @@ def chat(receiver_id):
 if __name__ == "__main__":
     socketio.run(app)
 
-
-@app.route("/submit_report", methods=["POST"])
-@login_required
-def submit_report():
-    if request.method == "POST":
-        title = request.form.get("title")
-        description = request.form.get("description")
-
-        submit_report(title, description, current_user.id)
-
-        return redirect(url_for("user_profile"))
-
-
 @app.route("/reset-password", methods=["GET", "POST"])
 def reset_password():
     if request.method == "POST":
@@ -336,14 +314,14 @@ def new_pass(token):
     try:
         email = serializer.loads(token, max_age=3600)
     except BadSignature:
-        flash("Nieprawidłowy token resetowania hasła.")
+        flash("Nieprawidlowy token resetowania hasla.")
         return redirect(url_for("login"))
 
     if request.method == "POST":
         new_password = request.form.get("password")
         update_user_password(email, new_password)
 
-        flash("Hasło zostało pomyślnie zresetowane.")
+        flash("Haslo zostalo pomyslnie zresetowane.")
 
         return redirect(url_for("login"))
 
@@ -437,3 +415,50 @@ def display_reports():
 def block_user(user_id,block_id):
     block_user_db(user_id,block_id)
     return redirect(url_for("chat"))
+
+
+@app.route("/bug_report")
+def bug_report():
+    if current_user.is_authenticated == False:
+        return redirect(url_for("login"))
+    return render_template(
+        "bug_report.html",
+        title="Zgloszenie Problemow",
+        year=datetime.now().year,
+    )
+
+
+@app.route("/submit_report", methods=["POST"])
+@login_required
+def submit_report():
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+
+        insert_report(title, description, current_user.id)
+
+        return redirect(url_for("user_profile"))
+
+
+@app.route("/user_report/<int:user_id>", methods=["GET","POST"])
+@login_required
+def user_report(user_id):
+    if current_user.is_authenticated == False:
+        return redirect(url_for("login"))
+    
+    if request.method == "POST":
+        title = request.form.get("topic")
+        description = request.form.get("description")
+
+        insert_user_report(title, description, current_user.id,user_id)
+
+        return redirect(url_for("user_profile"))
+    
+    user=get_user(user_id)
+
+    return render_template(
+        "user_report.html",
+        title="Zglos uzytkownika",
+        year=datetime.now().year,
+        user=user,
+    )

@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<div class="login-container">
+    <div class="login-wrapper">
+        <form id="form" action="{{ url_for('user_report', user_id=user.id) }}" method="post">
+            <div class="user-details">
+                <h1>Zg&#322;o&#347; uzytkownika {{user.name}}</h1>
+                <div class="input-box">
+                    <label for="topic">Wybierz temat zgloszenia:</label>
+                    <select name="topic" id="topic" required>
+                        <option value="harassment">Nekanie</option>
+                        <option value="fake_account">Falszywe konto</option>
+                        <option value="inappropriate_content">Nieodpowiednia tresc</option>
+                        <option value="spam">Spam</option>
+                        <option value="impersonation">Podszywanie sie</option>
+                        <option value="violence_threats">Zagrozenia przemoca</option>
+                        <option value="privacy_concerns">Problemy z prywatnoscia</option>
+                        <option value="other">Inny (prosze okresclic ponizej)</option>
+                    </select>
+                </div>
+                <div class="bug-report" style="width:100%">
+                    <textarea placeholder="Tutaj dodaj opis zgloszenia" name="description" id="description" required></textarea>
+                    <p id="charCount" style="text-align: right; color: white;"></p>
+                </div>
+
+                <input type="submit" class="btn" value="Wy&#347lij" id="submitBtn">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('description').addEventListener('input', function () {
+        var charCount = this.value.length;
+        document.getElementById('charCount').innerText = charCount + "/200";
+
+        if (charCount > 200) {
+            this.value = this.value.slice(0, 200);
+            document.getElementById('charCount').innerText = "200/200";
+        }
+    });
+</script>
+
+{% endblock %}

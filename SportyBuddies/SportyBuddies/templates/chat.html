@@ -37,7 +37,7 @@
         <div class="message-container" id="messageContainer">
             <div class="block-user">
                 <a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}"><i style="padding: 10px; color: #00ffff" class="fa-solid fa-ban"></i></a>
-                <i style="color: #00ffff" class="fa-regular fa-thumbs-down"></i>
+                <a href="{{ url_for('user_report', user_id=receiver_id) }}"><i style="color: #00ffff" class="fa-regular fa-thumbs-down"></i></a>
             </div>
             {% for message in messages %}
             <div class="message">
