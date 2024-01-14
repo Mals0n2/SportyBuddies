@@ -8,9 +8,9 @@
         <form id="form" action="{{ url_for('user_report', user_id=user.id) }}" method="post">
             <div class="user-details">
                 <h1>Zg&#322;o&#347; uzytkownika {{user.name}}</h1>
-                <div class="input-box">
-                    <label for="topic">Wybierz temat zgloszenia:</label>
-                    <select name="topic" id="topic" required>
+                <div class="input-box" style="width:100%">
+                    <label style="color:white;" for="topic">Wybierz temat zgloszenia:</label>
+                    <select style="width:100%" name="topic" id="topic" required>
                         <option value="harassment">Nekanie</option>
                         <option value="fake_account">Falszywe konto</option>
                         <option value="inappropriate_content">Nieodpowiednia tresc</option>

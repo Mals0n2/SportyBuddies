@@ -414,6 +414,15 @@ def display_reports():
     
     return render_template('display_reports.html', reports=reports)
 
+@app.route('/display_user_reports')
+@login_required
+def display_user_reports():
+    if current_user.id != 1:
+        return redirect(url_for("user_profile"))
+    user_reports = get_all_user_reports()
+    
+    return render_template('display_user_reports.html', user_reports=user_reports)
+
 @app.route("/block_user/<int:user_id>/<int:block_id>")
 @login_required
 def block_user(user_id,block_id):

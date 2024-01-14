@@ -80,6 +80,8 @@
     <Content Include="SportyBuddies\static\scripts\respond.min.js" />
     <Content Include="SportyBuddies\static\scripts\_references.js" />
     <Content Include="SportyBuddies\templates\admin_panel.html" />
+    <Content Include="SportyBuddies\templates\display_user_reports.html" />
+    <Content Include="SportyBuddies\templates\display_reports.html" />
     <Content Include="SportyBuddies\templates\user_report.html" />
     <Content Include="SportyBuddies\templates\display_users.html" />
     <Content Include="SportyBuddies\templates\forgot.html" />
@@ -89,7 +91,6 @@
     <Content Include="SportyBuddies\templates\login.html" />
     <Content Include="SportyBuddies\templates\mainpagelogged.html" />
     <Content Include="SportyBuddies\templates\newpass.html" />
-    <Content Include="SportyBuddies\templates\display_reports.html" />
     <Content Include="SportyBuddies\templates\register.html" />
     <Content Include="SportyBuddies\templates\user_profile.html" />
     <Content Include="SportyBuddies\templates\chat.html" />

@@ -7,20 +7,22 @@
         <thead class="th">
             <tr>
                 <th>ID</th>
-                <th>User ID</th>
+                <th>Reporter ID</th>
+                <th>Reported ID</th>
                 <th>Tytu&#322;</th>
                 <th>Opis</th>
                 <th>Data</th>
             </tr>
         </thead>
         <tbody class="tb-dark">
-            {% for report in reports %}
+            {% for user_report in user_reports %}
             <tr>
-                <td>{{ report[0] }}</td>
-                <td>{{ report[1] }}</td>
-                <td>{{ report[3] }}</td>
-                <td>{{ report[4] }}</td>
-                <td>{{ report[2] }}</td>
+                <td>{{ user_report[0] }}</td>
+                <td>{{ user_report[1] }}</td>
+                <td>{{ user_report[2] }}</td>
+                <td>{{ user_report[3] }}</td>
+                <td>{{ user_report[4] }}</td>
+                <td>{{ user_report[5] }}</td>
             </tr>
             {% endfor %}
         </tbody>
