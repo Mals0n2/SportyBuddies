@@ -53,7 +53,7 @@ def login():
             login_user(user)
             return redirect(url_for("user_profile"))
         else:
-            error_message = "Nieprawidłowa nazwa użytkownika lub hasło."
+            error_message = "Nieprawidlowa nazwa uzytkownika lub haslo."
             return render_template("login.html", error=error_message)
 
     return render_template("login.html")
@@ -208,11 +208,11 @@ def register():
         user_id_by_username, user_id_by_email = check_existing_user(username, email)
 
         if user_id_by_username:
-            error_message = "Nazwa użytkownika jest już zajęta."
+            error_message = "Nazwa uzytkownika jest juz zajeta."
             return render_template("register.html", error=error_message)
 
         if user_id_by_email:
-            error_message = "Email jest już zajęty."
+            error_message = "Email jest juz zajety."
             return render_template("register.html", error=error_message)
 
         photo_url = "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg"
@@ -238,36 +238,27 @@ def home():
     return render_template("index.html", title="Home Page", year=datetime.now().year)
 
 
-@app.route("/bug_report")
-def bug_report():
-    if current_user.is_authenticated == False:
-        return redirect(url_for("login"))
-    return render_template(
-        "bug_report.html",
-        title="Zgloszenie Problemow",
-        year=datetime.now().year,
-        message="Your application description page.",
-    )
 
 
-@app.route("/chat", defaults={"receiver_id": None}, methods=["GET", "POST"])
-@app.route("/chat/<int:receiver_id>", methods=["GET", "POST"])
-def chat(receiver_id):
+
+@app.route("/chat/<int:receiver_id_arg>", methods=["GET", "POST"])
+@app.route("/chat", methods=["GET", "POST"])
+def chat(receiver_id_arg = None):
     if not current_user.is_authenticated:
         return redirect(url_for("mainpagelogged"))
 
     users = get_users_except_current_user(current_user.id)
-    senders, last_messages, messages = get_messages(current_user.id, receiver_id)
+    senders, last_messages, messages = get_messages(current_user.id, receiver_id_arg)
 
     valid_receiver_ids = [user['user_id'] for user in users]
-    if receiver_id is not None and receiver_id not in valid_receiver_ids:
+    if receiver_id_arg is not None and receiver_id_arg not in valid_receiver_ids:
         flash("Invalid user selection.")
         return redirect(url_for("chat"))
     
-    if receiver_id is not None:
+    if receiver_id_arg is not None:
         if request.method == "POST":
             content = request.form.get("content")
-            insert_message(current_user.id, receiver_id, content)
+            insert_message(current_user.id, receiver_id_arg, content)
             
             # Emit message to SocketIO
             socketio.emit(
@@ -275,7 +266,7 @@ def chat(receiver_id):
                 {
                     "sender_name": current_user.name,
                     "content": content,
-                    "receiver_id": receiver_id,
+                    "receiver_id": receiver_id_arg,
                 },
             )
 
@@ -286,37 +277,28 @@ def chat(receiver_id):
     for user in users:
         if "photo" in user and user["photo"]:
             user["photo_base64"] = base64.b64encode(user["photo"]).decode("utf-8")
+            
 
     sorted_data = sorted(last_messages, key=lambda x: x['timestamp'], reverse=True)
-    
+    if sorted_data:
+        if receiver_id_arg == None:
+            return redirect(url_for("chat", receiver_id_arg=sorted_data[0]['sender_id']))
+
     return render_template(
         "chat.html",
-        title="Chat Room" if receiver_id is not None else "Chat SportyBuddies",
+        title="Chat Room" if receiver_id_arg is not None else "Chat SportyBuddies",
         year=datetime.now().year,
         users=users,
         senders=senders,
         last_messages=sorted_data,
-        messages=messages,
-        receiver_id=receiver_id if receiver_id is not None else 1,
+        messages=messages if messages is not [] else sorted_data,
+        receiver_id=receiver_id_arg if receiver_id_arg is not None else 1,
         user_id=current_user.id,
     )
 
 
 if __name__ == "__main__":
     socketio.run(app)
-
-
-@app.route("/submit_report", methods=["POST"])
-@login_required
-def submit_report():
-    if request.method == "POST":
-        title = request.form.get("title")
-        description = request.form.get("description")
-
-        submit_report(title, description, current_user.id)
-
-        return redirect(url_for("user_profile"))
-
 
 @app.route("/reset-password", methods=["GET", "POST"])
 def reset_password():
@@ -336,14 +318,14 @@ def new_pass(token):
     try:
         email = serializer.loads(token, max_age=3600)
     except BadSignature:
-        flash("Nieprawidłowy token resetowania hasła.")
+        flash("Nieprawidlowy token resetowania hasla.")
         return redirect(url_for("login"))
 
     if request.method == "POST":
         new_password = request.form.get("password")
         update_user_password(email, new_password)
 
-        flash("Hasło zostało pomyślnie zresetowane.")
+        flash("Haslo zostalo pomyslnie zresetowane.")
 
         return redirect(url_for("login"))
 
@@ -437,3 +419,50 @@ def display_reports():
 def block_user(user_id,block_id):
     block_user_db(user_id,block_id)
     return redirect(url_for("chat"))
+
+
+@app.route("/bug_report")
+def bug_report():
+    if current_user.is_authenticated == False:
+        return redirect(url_for("login"))
+    return render_template(
+        "bug_report.html",
+        title="Zgloszenie Problemow",
+        year=datetime.now().year,
+    )
+
+
+@app.route("/submit_report", methods=["POST"])
+@login_required
+def submit_report():
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+
+        insert_report(title, description, current_user.id)
+
+        return redirect(url_for("user_profile"))
+
+
+@app.route("/user_report/<int:user_id>", methods=["GET","POST"])
+@login_required
+def user_report(user_id):
+    if current_user.is_authenticated == False:
+        return redirect(url_for("login"))
+    
+    if request.method == "POST":
+        title = request.form.get("topic")
+        description = request.form.get("description")
+
+        insert_user_report(title, description, current_user.id,user_id)
+
+        return redirect(url_for("user_profile"))
+    
+    user=get_user(user_id)
+
+    return render_template(
+        "user_report.html",
+        title="Zglos uzytkownika",
+        year=datetime.now().year,
+        user=user,
+    )

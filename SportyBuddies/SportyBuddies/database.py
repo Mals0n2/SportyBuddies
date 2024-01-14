@@ -245,18 +245,6 @@ def get_messages(current_user_id, receiver_id):
     return senders, last_messages, messages
 
 
-def insert_report(title, description, user_id):
-    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    cursor = db.cursor()
-    cursor.execute(
-        "INSERT INTO reports (user_id, date, title, `desc`) VALUES (%s, %s, %s, %s)",
-        (user_id, date, title, description),
-    )
-    cursor.close()
-    db.commit()
-
-
 def get_user_by_email(email):
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
@@ -373,5 +361,29 @@ def block_user_db(blocker_id,blocked_id):
 def update_user_info(user_id,info):
     cursor = db.cursor()
     cursor.execute("UPDATE users SET info = %s WHERE user_id = %s", (info,user_id))
+    cursor.close()
+    db.commit()
+
+
+def insert_report(title, description, user_id):
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    cursor = db.cursor()
+    cursor.execute(
+        "INSERT INTO reports (user_id, date, title, `desc`) VALUES (%s, %s, %s, %s)",
+        (user_id, date, title, description),
+    )
+    cursor.close()
+    db.commit()
+    
+
+def insert_user_report(title, description, reporter_id,reported_id):
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    cursor = db.cursor()
+    cursor.execute(
+        "INSERT INTO user_reports (reporter_id,reported_id,title,description,date) VALUES (%s, %s, %s, %s, %s)",
+        (reporter_id,reported_id,title,description,date),
+    )
     cursor.close()
     db.commit()
