@@ -52,6 +52,8 @@
     <Folder Include="SportyBuddies\static\" />
     <Folder Include="SportyBuddies\static\content\" />
     <Folder Include="SportyBuddies\static\fonts\" />
+    <Folder Include="SportyBuddies\static\NewFolder1\" />
+    <Folder Include="SportyBuddies\static\img\" />
     <Folder Include="SportyBuddies\static\scripts\" />
     <Folder Include="SportyBuddies\templates\" />
   </ItemGroup>
@@ -64,6 +66,12 @@
     <Content Include="SportyBuddies\static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="SportyBuddies\static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="SportyBuddies\static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="SportyBuddies\static\img\1.png" />
+    <Content Include="SportyBuddies\static\img\2.png" />
+    <Content Include="SportyBuddies\static\img\3.png" />
+    <Content Include="SportyBuddies\static\img\jayce.jpg" />
+    <Content Include="SportyBuddies\static\img\jinx.jpg" />
+    <Content Include="SportyBuddies\static\img\viktor.jpg" />
     <Content Include="SportyBuddies\static\scripts\bootstrap.js" />
     <Content Include="SportyBuddies\static\scripts\bootstrap.min.js" />
     <Content Include="SportyBuddies\static\scripts\jquery-1.10.2.intellisense.js" />
