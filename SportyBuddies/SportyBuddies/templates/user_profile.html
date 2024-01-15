@@ -37,6 +37,7 @@
     </div>
 </div>
 <div class="profile-container">
+
     <div class="profile-box">
         <div class="error2" style="font-size: 14px;">{{error}}</div>
         <div class="upload">
@@ -81,7 +82,7 @@
 
                 if (isConfirmed) {
                     window.location.href = "/update_user_info/" + userInfo;
-                }
+                
             }
         </script>
         <br />
@@ -104,13 +105,15 @@
 
         <div class="profile-box">
             <form id="preferencesForm">
-    Preferowany wiek
-                <br />
+                <h4>Preferowany wiek</h4>
+               
     <label for="min_age">Od:</label>
+                <br />
     <input type="range" id="min_age" name="min_age" min="13" max="120" value="{{ preferences.min_age }}" required>
     <span id="min_age_display">{{ preferences.min_age }}</span>
-
+                <br />
     <label for="max_age">Do:</label>
+                <br />
     <input type="range" id="max_age" name="max_age" min="13" max="120" value="{{ preferences.max_age }}" required>
     <span id="max_age_display">{{ preferences.max_age }}</span>
     <br />
@@ -126,6 +129,7 @@
         <option value="Wszyscy" {% if preferences.gender_preference == 'Wszyscy' %} selected {% endif %}>Wszyscy</option>
     </select>
     <br />
+                <br />
     <button type="button" onclick="submitForm()">Zapisz</button>
 </form>
             <br />
@@ -255,71 +259,7 @@
     
 
 </div>
-<div class="calender-container">
-    <div class="profile-box">
-        <p><h2>Harmonogram</h2></p>
-        <br />
 
-        <table class="calendar-table">
-            <thead>
-                <tr>
-                    <th>Pon</th>
-                    <th>Wt</th>
-                    <th>Śr</th>
-                    <th>Czw</th>
-                    <th>Pią</th>
-                    <th>Sob</th>
-                    <th>Nie</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <tr>
-                    <td><input type="text" placeholder="1"></td>
-                    <td><input type="text" placeholder="2"></td>
-                    <td><input type="text" placeholder="3"></td>
-                    <td><input type="text" placeholder="4"></td>
-                    <td><input type="text" placeholder="5"></td>
-                    <td><input type="text" placeholder="6"></td>
-                    <td><input type="text" placeholder="7"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" placeholder="8"></td>
-                    <td><input type="text" placeholder="9"></td>
-                    <td><input type="text" placeholder="10"></td>
-                    <td><input type="text" placeholder="11"></td>
-                    <td><input type="text" placeholder="12"></td>
-                    <td><input type="text" placeholder="13"></td>
-                    <td><input type="text" placeholder="14"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" placeholder="15"></td>
-                    <td><input type="text" placeholder="16"></td>
-                    <td><input type="text" placeholder="17"></td>
-                    <td><input type="text" placeholder="18"></td>
-                    <td><input type="text" placeholder="19"></td>
-                    <td><input type="text" placeholder="20"></td>
-                    <td><input type="text" placeholder="21"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" placeholder="22"></td>
-                    <td><input type="text" placeholder="23"></td>
-                    <td><input type="text" placeholder="24"></td>
-                    <td><input type="text" placeholder="25"></td>
-                    <td><input type="text" placeholder="26"></td>
-                    <td><input type="text" placeholder="27"></td>
-                    <td><input type="text" placeholder="28"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" placeholder="29"></td>
-                    <td><input type="text" placeholder="30"></td>
-                    <td><input type="text" placeholder="31"></td>
-
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
 
 
 <script>

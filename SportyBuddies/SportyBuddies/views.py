@@ -475,3 +475,6 @@ def user_report(user_id):
         year=datetime.now().year,
         user=user,
     )
+@app.route("/calender")
+def calender():
+    return render_template("calender.html", title="Calender", year=datetime.now().year)

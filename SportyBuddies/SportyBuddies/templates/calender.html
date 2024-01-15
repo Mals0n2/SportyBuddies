@@ -1,0 +1,173 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<style>
+
+
+    h1 {
+        margin-top: 20px;
+    }
+
+    table {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 80%;
+        max-width: 800px;
+        border: 2px solid #3498db;
+    }
+
+    th, td {
+        width: 200px;
+        height: 100px;
+        border: 1px solid #f5f5f5;
+        text-align: center;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    th {
+        background-color: #428bca;
+    }
+
+    td:hover {
+        background-color: #e0e0e0;
+    }
+
+    .event-input {
+        width: 200px;
+        margin-top: 30px;
+        margin-left: 170px;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+    .event-list {
+        margin-top: 20px;
+        width: 80%;
+        max-width: 800px;
+    }
+
+    .event-item {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #monthSelect {
+        margin-left:500px;
+    }
+</style>
+
+<body>
+
+    <h1>Harmonogram</h1>
+
+    <table id="calendar">
+
+        <input type="text" id="eventInput" class="event-input" placeholder="Dodaj wydarzenie">
+
+      
+        <select id="monthSelect" onchange="changeMonth()">
+            <option value="0">Styczeń</option>
+            <option value="1">Luty</option>
+            <option value="2">Marzec</option>
+            <option value="3">Kwiecień</option>
+            <option value="4">Maj</option>
+            <option value="5">Czerwiec</option>
+            <option value="6">Lipiec</option>
+            <option value="7">Sierpień</option>
+            <option value="8">Wrzesień</option>
+            <option value="9">Październik</option>
+            <option value="10">Listopad</option>
+            <option value="11">Grudzień</option>
+        </select>
+
+        <thead>
+            <tr>
+                <th>Nd</th>
+                <th>Pn</th>
+                <th>Wt</th>
+                <th>Śr</th>
+                <th>Cz</th>
+                <th>Pt</th>
+                <th>So</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+    </table>
+
+
+    <div id="eventList" class="event-list"></div>
+</body>
+<script>
+    const daysOfWeek = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'];
+    const currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    function generateCalendar() {
+        const calendarBody = document.getElementById("calendar-body");
+        const eventList = document.getElementById("eventList");
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        let dayCounter = 1;
+
+        calendarBody.innerHTML = "";
+        eventList.innerHTML = "";
+
+        for (let i = 0; i < 5; i++) {
+            const row = document.createElement("tr");
+
+            for (let j = 0; j < 7; j++) {
+                const cell = document.createElement("td");
+
+                if (i === 0 && j < firstDay) {
+                    cell.textContent = "";
+                } else if (dayCounter <= daysInMonth) {
+                    cell.textContent = dayCounter;
+                    cell.addEventListener("click", () => openModal(dayCounter));
+                    dayCounter++;
+                }
+
+                row.appendChild(cell);
+            }
+
+            calendarBody.appendChild(row);
+        }
+    }
+
+    function openModal(day) {
+        const eventInput = document.getElementById("eventInput");
+        const eventList = document.getElementById("eventList");
+
+        // Dodawanie wydarzenia do komórki kalendarza
+        const eventText = eventInput.value;
+        if (eventText.trim() !== "") {
+            const cell = event.target;
+            const eventItem = document.createElement("div");
+            eventItem.textContent = `${eventText}`;
+            eventList.appendChild(eventItem);
+            cell.appendChild(eventItem);
+        } else {
+            alert("Wprowadź opis wydarzenia.");
+        }
+
+        // Czyść pole tekstowe
+        eventInput.value = "";
+    }
+
+    function changeMonth() {
+        const monthSelect = document.getElementById("monthSelect");
+        currentMonth = parseInt(monthSelect.value);
+        generateCalendar();
+    }
+
+    generateCalendar();
+</script>
+
+
+    {% endblock %}

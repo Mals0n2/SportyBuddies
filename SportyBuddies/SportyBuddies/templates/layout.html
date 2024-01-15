@@ -52,7 +52,8 @@
                     {% endif %}
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt" style="color: white;"></i></a></li>
-
+                    
+                    <li><a href="{{ url_for('calender') }}"><i class="fa-regular fa-calendar" style="color: white;"></i></a></li>
                     <li><a href="{{ url_for('chat') }}"><i class="fa-solid fa-comments" style="color: white;"></i></a></li>
                     {% endif %}
                     <li><a href="{{ url_for('user_profile') }}"><i class="fas fa-user" style="color: white;"></i></a></li>

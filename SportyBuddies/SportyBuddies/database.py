@@ -393,3 +393,42 @@ def insert_user_report(title, description, reporter_id,reported_id):
     )
     cursor.close()
     db.commit()
+
+
+#def get_user_rating_from_db():
+#    try:
+#        connection = mysql.connector.connect(**db_config)
+#        cursor = connection.cursor(dictionary=True)
+
+
+#        query = "SELECT rating FROM users WHERE user_id = 1"
+#        cursor.execute(query)
+#        result = cursor.fetchone()
+
+#        return result['rating'] if result else 0
+
+#    except mysql.connector.Error as err:
+#        print(f"Error: {err}")
+#    finally:
+#        if connection.is_connected():
+#            cursor.close()
+#            connection.close()
+
+#def save_user_rating_to_db(new_rating):
+#    try:
+#        connection = mysql.connector.connect(**db_config)
+#        cursor = connection.cursor(dictionary=True)
+
+#        query = "UPDATE users SET rating = %s WHERE user_id = 1"
+#        cursor.execute(query, (new_rating,))
+#        connection.commit()
+
+#    except mysql.connector.Error as err:
+#        print(f"Error: {err}")
+#    finally:
+#        if connection.is_connected():
+#            cursor.close()
+#            connection.close()
+
+#def calculate_new_rating(current_rating, new_rating):
+#    return (current_rating + new_rating) / 2

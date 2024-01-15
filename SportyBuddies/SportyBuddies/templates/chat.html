@@ -33,11 +33,40 @@
         {% endfor %}
     </div>
 
-    
+
     <div class="chat-container-user">
-        
+
         <div class="message-container" id="messageContainer">
+            <style>
+                .stars {
+                    display: inline-block;
+                }
+
+                .fa-star {
+                    color: #ccbbbb9e;
+                    cursor: pointer;
+                }
+
+                    .fa-star:hover,
+                    .fa-star.active {
+                        color: #ffcc00;
+                    }
+                .selected {
+                    color: #ffc107; /* Żółty kolor dla zaznaczonych gwiazdek */
+                }
+
+        
+            </style>
             <div class="block-user">
+                <div style="display: inline-block;">
+                    <div class="stars" data-rating="0">
+                        <i class="fa fa-star" data-index="1"></i>
+                        <i class="fa fa-star" data-index="2"></i>
+                        <i class="fa fa-star" data-index="3"></i>
+                        <i class="fa fa-star" data-index="4"></i>
+                        <i class="fa fa-star" data-index="5"></i>
+                    </div>
+                </div>
                 <a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}"><i style="padding: 10px; color: #00ffff" class="fa-solid fa-ban"></i></a>
                 <a href="{{ url_for('user_report', user_id=receiver_id) }}"><i style="color: #00ffff" class="fa-regular fa-thumbs-down"></i></a>
             </div>
@@ -60,6 +89,27 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const starsContainer = document.querySelector(".stars");
+
+        starsContainer.addEventListener("click", function (e) {
+            if (e.target.matches(".fa-star")) {
+                const rating = parseInt(e.target.getAttribute("data-index"));
+                starsContainer.setAttribute("data-rating", rating);
+                updateStarColors(rating);
+                // Tutaj możesz wysłać żądanie do serwera Flask, aby zapisać ocenę w bazie danych
+            }
+        });
+
+        function updateStarColors(rating) {
+            const stars = starsContainer.querySelectorAll(".fa-star");
+            stars.forEach((star, index) => {
+                star.classList.toggle("selected", index < rating);
+            });
+        }
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var socket = io.connect('http://' + document.domain + ':' + location.port);
