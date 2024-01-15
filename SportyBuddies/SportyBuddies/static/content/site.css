@@ -105,7 +105,7 @@ body {
 
 .title {
     text-align: center;
-    margin: 0 auto 80px;
+    margin: 0 auto 20px;
     position: relative;
     line-height: 60px;
     color: #2c2c51;
@@ -1161,4 +1161,9 @@ form .register-button .new-button{
     width: 40%;
     background-color: white;
     display: inline-block;
+}
+
+.image-border {
+    background-color: white;
+    border-radius: 10px;
 }
