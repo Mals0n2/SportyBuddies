@@ -23,13 +23,15 @@
     </div>
     <div class="last-message">
         {% for message in last_messages %}
-        <div class="last-message-box" data-user-id="{{ message.sender_id }}">
-            <div class="message">
-                <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content | truncate(10, True, '...') }}
+        <a href="#" style="text-decoration: none;">
+            <div class="last-message-box" data-user-id="{{ message.sender_id }}">
+                <div class="message">
+                    <strong class="chat-size">{{ message.sender_name }}</strong>: {{ message.content | truncate(10, True, '...') }}
+                </div>
+                <div style="float:right">
+                </div>
             </div>
-            <div style="float:right">
-            </div>
-        </div>
+        </a>
         {% endfor %}
     </div>
 
@@ -51,11 +53,10 @@
                     .fa-star.active {
                         color: #ffcc00;
                     }
+
                 .selected {
                     color: #ffc107; /* Żółty kolor dla zaznaczonych gwiazdek */
                 }
-
-        
             </style>
             <div class="block-user">
                 <div style="display: inline-block;">
@@ -67,7 +68,9 @@
                         <i class="fa fa-star" data-index="5"></i>
                     </div>
                 </div>
-                <a href="{{ url_for('block_user', user_id=user_id, block_id=receiver_id) }}"><i style="padding: 10px; color: #00ffff" class="fa-solid fa-ban"></i></a>
+                <a href="javascript:void(0);" onclick="confirmBlock('{{ url_for("block_user", user_id=user_id, block_id=receiver_id) }}')">
+                    <i style="padding: 10px; color: #00ffff" class="fa-solid fa-ban"></i>
+                </a>
                 <a href="{{ url_for('user_report', user_id=receiver_id) }}"><i style="color: #00ffff" class="fa-regular fa-thumbs-down"></i></a>
             </div>
             {% for message in messages %}
@@ -174,5 +177,13 @@
             addNewMessage(data.sender_name, data.content);
         });
     });
+</script>
+<script>
+    function confirmBlock(url) {
+        var result = confirm("Czy na pewno chcesz zablokować tego użytkownika?");
+        if (result) {
+            window.location.href = url;
+        }
+    }
 </script>
 {% endblock %}

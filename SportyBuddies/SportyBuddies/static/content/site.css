@@ -1,9 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -48,11 +49,12 @@ a {
 }
 
     a:visited {
-       /* color: #76E4FA;*/
+        /* color: #76E4FA;*/
         color: white;
     }
-    a:hover{
-        color:white;
+
+    a:hover {
+        color: white;
     }
 
 body {
@@ -114,17 +116,39 @@ body {
 
 .col-3 {
     flex-basis: 30%;
+    border-radius: 30px;
+    color: #83CEEB;
+    background-color: white;
 }
 
     .col-3 p {
-        font-size: 20px;
+        font-size: 10px;
         margin: 12px 0;
+        color: #83CEEB;
     }
+
 
 .col-6 {
     flex-basis: 16%;
     padding: 30px;
+    color: black;
 }
+
+    .col-6 p {
+        font-size: 6px;
+    }
+
+.main-circle {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 30px;
+}
+
+    .main-circle p {
+        font-size: 10px;
+    }
 
 .col-12 {
     flex-basis: 100%;
@@ -150,7 +174,7 @@ body {
 }
 
     .how-it-works p {
-        font-size: 27px;
+        font-size: 20px;
     }
 
 /*sport-category*/
@@ -164,10 +188,13 @@ body {
     }
 
     .sport-category p {
-        font-size: 20px;
+        font-size: 10px;
         text-align: center;
     }
 
+    .sport-category i {
+        font-size: 30px;
+    }
 
 /*opinions*/
 .opinions {
@@ -189,6 +216,10 @@ body {
 
     .opinions .col-3 h3 {
         color: #2c2c51;
+    }
+
+    .opinions p {
+        font-size: 20px;
     }
 
 /*User Profile*/
@@ -218,7 +249,6 @@ body {
     position: relative;
     border-radius: 40px;
     padding: 40px;
-
 }
 
 .profile-pic {
@@ -283,42 +313,42 @@ section {
 }
 
 
-.tile input[type="checkbox"] {
-    -webkit-appearance: none;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 3px solid transparent;
-    outline: none;
-}
-
-.tile input[type="checkbox"]:after {
-    position: absolute;
-    font-family: "Font Awesome 5 Free";
-    font-weight: 400;
-    content: "\f111";
-    font-size: 12px;
-    top: 2px;
-    left: 2px;
-    color: #e2e6f3;
-}
-
-.tile input[type="checkbox"]:hover {
-    transform: scale(1.08);
-}
-
-.tile input[type="checkbox"]:checked {
-    border: 3px solid #76E4FA;
-}
-
-    .tile input[type="checkbox"]:checked:after {
-        font-weight: 900;
-        content: "\f058";
-        color: #76E4FA;
+    .tile input[type="checkbox"] {
+        -webkit-appearance: none;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        outline: none;
     }
+
+        .tile input[type="checkbox"]:after {
+            position: absolute;
+            font-family: "Font Awesome 5 Free";
+            font-weight: 400;
+            content: "\f111";
+            font-size: 12px;
+            top: 2px;
+            left: 2px;
+            color: #e2e6f3;
+        }
+
+        .tile input[type="checkbox"]:hover {
+            transform: scale(1.08);
+        }
+
+        .tile input[type="checkbox"]:checked {
+            border: 3px solid #76E4FA;
+        }
+
+            .tile input[type="checkbox"]:checked:after {
+                font-weight: 900;
+                content: "\f058";
+                color: #76E4FA;
+            }
 
 .location {
     background-color: white;
@@ -327,6 +357,7 @@ section {
     border-radius: 25px;
     padding: 3px;
 }
+
 .profile-label {
     display: flex;
     margin-top: 50px;
@@ -378,7 +409,7 @@ h1 {
 
 .scrollable-container {
     padding: 2px;
-    max-height:300px;
+    max-height: 300px;
     overflow-y: scroll;
 }
 
@@ -531,14 +562,14 @@ h1 {
     }
 
 /*Register*/
-.input-control .error,.error2 {
+.input-control .error, .error2 {
     color: #ff3860;
     font-size: 9px;
     height: 13px;
-    text-align:center;
+    text-align: center;
 }
 
-.register-body{
+.register-body {
     font-family: "Poppins", sans-serif;
     display: flex;
     height: 80vh;
@@ -556,22 +587,22 @@ h1 {
     border-radius: 10px;
 }
 
-.register-container .register-title{
-    font-size: 35px;
-    font-weight: 500;
-    color: white;
-    position: relative;
-}
+    .register-container .register-title {
+        font-size: 35px;
+        font-weight: 500;
+        color: white;
+        position: relative;
+    }
 
-.register-container .register-title::before{
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 30px;
-    background: white;
-}
+        .register-container .register-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            background: white;
+        }
 
     .register-container form .user-details {
         display: flex;
@@ -580,17 +611,19 @@ h1 {
         margin: 20px 0 12px 0;
     }
 
-form .user-details .input-box-register{
+form .user-details .input-box-register {
     margin-bottom: 15px;
     width: calc(100% / 2 - 20px);
 }
-.user-details .input-box-register .details{
+
+.user-details .input-box-register .details {
     display: block;
     color: white;
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 2px;
 }
+
 .user-details .input-box-register input {
     height: 45px;
     width: 100%;
@@ -602,12 +635,13 @@ form .user-details .input-box-register{
     border-bottom-width: 2px;
     transition: all 0.3s ease;
 }
-.user-details .input-box-register input:focus,
-.user-details .input-box-register input:valid{
-    border-color: white;
-}
 
-form .gender-details .gender-title{
+    .user-details .input-box-register input:focus,
+    .user-details .input-box-register input:valid {
+        border-color: white;
+    }
+
+form .gender-details .gender-title {
     font-size: 20px;
     font-weight: 500;
     color: white;
@@ -620,7 +654,7 @@ form .gender-details .category {
     justify-content: space-between;
 }
 
-.gender-details .category label{
+.gender-details .category label {
     display: flex;
     align-items: center;
     color: white;
@@ -643,50 +677,55 @@ form .gender-details .category {
     border-color: #53affb;
 }
 
-form input[type="radio"]{
+form input[type="radio"] {
     display: none;
 }
-form .register-button{
+
+form .register-button {
     height: 45px;
     width: 260px;
     margin: 50px;
     margin-right: 30px;
     align-items: center;
-
 }
 
-form .register-button .new-button{
-    height: 100%;
-    width: 100%;
-    outline: none;
-    color: #83CEEB;
-    border: none;
-    font-size: 18px;
-    font-weight: 700;
-    border-radius: 30px;
-    letter-spacing: 1px;
-    background: white;
-}
+    form .register-button .new-button {
+        height: 100%;
+        width: 100%;
+        outline: none;
+        color: #83CEEB;
+        border: none;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 30px;
+        letter-spacing: 1px;
+        background: white;
+    }
 
 @media (max-width: 584px) {
-    .register-container{
+    .register-container {
         max-width: 100%;
     }
-    form .user-details .input-box-register{
+
+    form .user-details .input-box-register {
         margin-bottom: 15px;
         width: 100%;
     }
+
     form .gender-details .category {
         width: 100%;
     }
+
     .register-container form .user-details {
         max-height: 300px;
         overflow-y: scroll;
     }
-    .user-details::-webkit-scrollbar{
+
+    .user-details::-webkit-scrollbar {
         width: 0;
     }
-    }
+}
+
 .user-details .input-box-register textarea {
     width: 100%;
     height: 100px;
@@ -724,6 +763,7 @@ form .register-button .new-button{
     text-align: center;
     width: 800px;
 }
+
 .mainpage-pic {
     width: 300px;
     border-radius: 50%;
@@ -837,6 +877,7 @@ form .register-button .new-button{
     justify-content: space-between;
     align-items: center;
 }
+
 .name-container {
     margin: 10px auto;
     border-radius: 10px;
@@ -850,12 +891,12 @@ form .register-button .new-button{
 }
 
     .name-container h1 {
-      margin-bottom: -1px;
+        margin-bottom: -1px;
         font-family: "Poppins",sans-serif;
     }
 
 .small-font {
-    font-size: 25px; 
+    font-size: 25px;
     padding: 5px;
 }
 
@@ -869,13 +910,14 @@ form .register-button .new-button{
     border-radius: 50%;
     text-align: center;
     margin: 1px;
-
 }
+
 .small-circle-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .popup {
     width: 400px;
     background: #83CEEB;
@@ -905,7 +947,7 @@ form .register-button .new-button{
 }
 
 /*Chat*/
-.chat-container{
+.chat-container {
     text-align: center;
     margin: auto;
     margin-top: 10px;
@@ -934,6 +976,7 @@ form .register-button .new-button{
     cursor: pointer;
     margin-right: 18px;
 }
+
 .last-message {
     border: solid 3px white;
     opacity: 0.7;
@@ -1033,9 +1076,9 @@ form .register-button .new-button{
     width: 92%;
 }
 
-.message-input textarea {
-    color: white;
-}
+    .message-input textarea {
+        color: white;
+    }
 
 
 .submit-button {
@@ -1049,7 +1092,6 @@ form .register-button .new-button{
     color: #76E4FA;
     cursor: pointer;
     border: solid 1px #76E4FA;
-
 }
 
 .last-message-box {
@@ -1063,7 +1105,7 @@ form .register-button .new-button{
     .last-message-box:hover {
         background-color: #83CEEB;
     }
-    
+
 .select-user-pic {
     width: 70px;
     border-radius: 50%;
@@ -1093,7 +1135,7 @@ form .register-button .new-button{
 
     .calendar-table input {
         width: 100%;
-        height:75px;
+        height: 75px;
         box-sizing: border-box;
     }
 
@@ -1144,8 +1186,9 @@ form .register-button .new-button{
     #description::-webkit-scrollbar-track {
         background-color: transparent;
     }
+
 ::placeholder {
-    color: #83CEEB; 
+    color: #83CEEB;
 }
 
 .chat-without {
