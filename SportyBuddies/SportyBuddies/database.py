@@ -295,9 +295,14 @@ def get_all_user_reports():
 def insert_match(user_id, matched_user_id):
     cursor = db.cursor()
     cursor.execute(
-        "INSERT INTO matches (user_id, matched_user_id) VALUES (%s, %s)",
+        "SELECT * FROM matches WHERE user_id=%s AND matched_user_id=%s",
         (user_id, matched_user_id),
     )
+    if not cursor.fetchone():
+        cursor.execute(
+            "INSERT INTO matches (user_id, matched_user_id) VALUES (%s, %s)",
+            (user_id, matched_user_id),
+        )
     cursor.close()
     db.commit()
 
@@ -316,7 +321,7 @@ def get_all_matches(user_id):
 
 def delete_user_matches(user_id):
     cursor = db.cursor()
-    cursor.execute("DELETE FROM matches WHERE user_id = %s", (user_id,))
+    cursor.execute("DELETE FROM matches WHERE user_id = %s AND status is NULL", (user_id,))
     cursor.close()
     db.commit()
 

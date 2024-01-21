@@ -10,7 +10,7 @@ from flask_login import (
     current_user,
 )
 from flask import render_template, request, redirect, url_for
-from SportyBuddies.matching import get_matched_user_and_distance, on_profile_change
+from SportyBuddies.matching import get_matched_user_and_distance, on_sports_changed
 from SportyBuddies.models import *
 from SportyBuddies.database import *
 from SportyBuddies.utils import *
@@ -126,12 +126,12 @@ def mainpagelogged(next_match=None):
     elif next_match == 1:
         update_match_status(current_user.id, matched_user.id, True)
 
-    x1 = get_matched_user_and_distance(current_user)
-    if x1 is None:
+    matched_user_and_distance = get_matched_user_and_distance(current_user)
+    if matched_user_and_distance is None:
         error_message = "Nie znaleziono dla ciebie pary"
         return redirect(url_for("user_profile", error=error_message))
 
-    matched_user, distance = x1
+    matched_user, distance = matched_user_and_distance
 
     current_sport_icons = get_sport_icons(current_user.id)
 
@@ -171,7 +171,7 @@ def handle_user_sports_update():
         is_checked = request.form.get("isChecked")
 
         update_user_sports(current_user.id, sport_id, is_checked)
-        on_profile_change(current_user)
+        on_sports_changed(current_user)
 
         return jsonify({"status": "success"})
 

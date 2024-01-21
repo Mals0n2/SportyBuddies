@@ -35,13 +35,13 @@ def get_matched_user_and_distance(current_user: User):
     ]
     matched_users_sorted_by_distance = sorted(
         matched_users_and_distance, key=lambda x: x[1]
-    )
-    
+    )    
+
     matched_users_by_preferences=filter_users_by_preferences(matched_users_sorted_by_distance,current_user.id)
 
     if matched_users_by_preferences == []:
         return None
-    matched_user = random.choice(matched_users_by_preferences)
+    matched_user = matched_users_by_preferences[0]
     return matched_user
 
 
@@ -50,7 +50,7 @@ def filter_users_by_preferences(matched_users_sorted_by_distance,user_id):
     
     matched_users_by_distance=[]
     for user in matched_users_sorted_by_distance:
-        if user[1]<preferences.preferred_distance:
+        if user[1]<=preferences.preferred_distance:
             matched_users_by_distance.append(user)
             
     matched_users_by_age=[]
@@ -60,12 +60,13 @@ def filter_users_by_preferences(matched_users_sorted_by_distance,user_id):
             
     matched_users_by_gender=[]
     for user in matched_users_by_age:
-        if user[0].gender==preferences.gender_preference:
+        p=get_user_preferences(user[0].id)
+        if preferences.gender_preference==user[0].gender or preferences.gender_preference=="Wszyscy":
             matched_users_by_gender.append(user)
 
     return matched_users_by_gender
 
-def on_profile_change(current_user: User):
+def on_sports_changed(current_user: User):
     current_sport_ids = get_user_sport_ids(current_user.id)
     if current_sport_ids == []:
         delete_user_matches(current_user.id)
