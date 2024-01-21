@@ -39,7 +39,7 @@
 <div class="profile-container">
 
     <div class="profile-box">
-        <div class="error2" style="font-size: 14px;">{{error}}</div>
+        <div class="error2" style="position:relative;z-index:3;font-size: 14px;">{{error}}</div>
         <div class="upload">
             <img src="data:image/jpeg;base64,{{ user_photo }}" class="profile-pic">
             <div class="round">
@@ -119,8 +119,10 @@
     <br />
     <label for="preferred_distance">Preferowana odległość</label>
     <br />
-    <input type="range" id="preferred_distance" name="preferred_distance" min="1" max="500" value="{{ preferences.preferred_distance }}" style="width: 300px;" required>
-    <span id="preferred_distance_display">{{ preferences.preferred_distance }}</span> km
+    <div style="width:357px">
+        <input type="range" id="preferred_distance" name="preferred_distance" min="1" max="500" value="{{ preferences.preferred_distance }}" style="width: 300px;" required>
+        <span id="preferred_distance_display">{{ preferences.preferred_distance }}</span> km
+    </div>
     <br />
     <label for="gender_preference">Szukam:</label>
     <select id="gender_preference" name="gender_preference" required>
