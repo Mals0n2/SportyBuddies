@@ -256,6 +256,7 @@ def get_user_by_email(email):
 
 def update_user_password(email, password):
     cursor = db.cursor()
+    password=generate_password_hash(password)
     cursor.execute("UPDATE users SET password = %s WHERE email = %s", (password, email))
     cursor.close()
     db.commit()
