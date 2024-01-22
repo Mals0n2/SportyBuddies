@@ -40,9 +40,9 @@
                 </button>
                 <a href="{{ url_for('home') }}" class="navbar-brand">SportyBuddies</a>
             </div>
-            {% if current_user.is_authenticated %}
-            <a href="{{ url_for('mainpagelogged') }}" class="navbar-brand">Szukaj partnera</a>
-            {% endif %}
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('mainpagelogged') }}" class="navbar-brand" style="padding-left: 220px">Szukaj partnera</a>
+                {% endif %}
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     {% if current_user.id==1 %}

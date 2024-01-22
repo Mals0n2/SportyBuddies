@@ -58,7 +58,7 @@
     }
 
     #monthSelect {
-        margin-left:500px;
+        margin-left: 500px;
     }
 </style>
 
@@ -70,7 +70,7 @@
 
         <input type="text" id="eventInput" class="event-input" placeholder="Dodaj wydarzenie">
 
-      
+
         <select id="monthSelect" onchange="changeMonth()">
             <option value="0">Styczeń</option>
             <option value="1">Luty</option>
@@ -106,14 +106,31 @@
 <script>
     const daysOfWeek = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'];
     const currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
+    let currentMonth = currentDate.getMonth() + 1;
     let currentYear = currentDate.getFullYear();
 
-    function generateCalendar() {
+    async function generateSampleEventsForDay(dayId, cell) {
+        try {
+            const response = await fetch(`/get_events?dayId=${encodeURIComponent(dayId)}`);
+            const data = await response.json();
+
+            if (data.success) {
+                for (const event of data.events) {
+                    const eventItem = document.createElement("div");
+                    eventItem.textContent = event.event_text;
+                    cell.appendChild(eventItem);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching events:", error);
+        }
+    }
+
+    async function generateCalendar() {
         const calendarBody = document.getElementById("calendar-body");
         const eventList = document.getElementById("eventList");
-        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
         let dayCounter = 1;
 
         calendarBody.innerHTML = "";
@@ -128,8 +145,13 @@
                 if (i === 0 && j < firstDay) {
                     cell.textContent = "";
                 } else if (dayCounter <= daysInMonth) {
+                    const dayId = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${dayCounter.toString().padStart(2, '0')}`;
                     cell.textContent = dayCounter;
-                    cell.addEventListener("click", () => openModal(dayCounter));
+                    cell.setAttribute("id", dayId);
+
+                    // Dodaj przykładowe wydarzenia do komórki z bazy danych
+                    await generateSampleEventsForDay(dayId, cell);
+
                     dayCounter++;
                 }
 
@@ -140,14 +162,14 @@
         }
     }
 
-    function openModal(day) {
+    function openModal(dayId) {
         const eventInput = document.getElementById("eventInput");
         const eventList = document.getElementById("eventList");
 
         // Dodawanie wydarzenia do komórki kalendarza
         const eventText = eventInput.value;
         if (eventText.trim() !== "") {
-            const cell = event.target;
+            const cell = document.getElementById(dayId);
             const eventItem = document.createElement("div");
             eventItem.textContent = `${eventText}`;
             eventList.appendChild(eventItem);
@@ -168,6 +190,8 @@
 
     generateCalendar();
 </script>
+
+
 
 
     {% endblock %}
