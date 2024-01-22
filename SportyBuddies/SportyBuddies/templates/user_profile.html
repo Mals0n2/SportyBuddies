@@ -77,12 +77,23 @@
         <button onclick="confirmChange()">Zapisz Opis</button>
         <script>
             function confirmChange() {
-                var isConfirmed = confirm("Czy na pewno chcesz zmienić opis?");
-                var userInfo = document.getElementById("infoarea").value;
+                var userInfoElement = document.getElementById("infoarea");
 
-                if (isConfirmed) {
-                    window.location.href = "/update_user_info/" + userInfo;
-                
+                if (userInfoElement) {
+                    var userInfo = userInfoElement.value;
+
+                    if (userInfo.trim() !== "") {
+                        var isConfirmed = confirm("Czy na pewno chcesz zmienić opis?");
+
+                        if (isConfirmed) {
+                            window.location.href = "/update_user_info/" + userInfo;
+                        }
+                    } else {
+                        alert("Opis nie może być pusty.");
+                    }
+                } else {
+                    alert("Nie znaleziono elementu o id 'infoarea'.");
+                }
             }
         </script>
         <br />
@@ -109,12 +120,12 @@
                
     <label for="min_age">Od:</label>
                 <br />
-    <input type="range" id="min_age" name="min_age" min="13" max="120" value="{{ preferences.min_age }}" required>
+    <input type="range" id="min_age" name="min_age" min="18" max="80" value="{{ preferences.min_age }}" required>
     <span id="min_age_display">{{ preferences.min_age }}</span>
                 <br />
     <label for="max_age">Do:</label>
                 <br />
-    <input type="range" id="max_age" name="max_age" min="13" max="120" value="{{ preferences.max_age }}" required>
+    <input type="range" id="max_age" name="max_age" min="18" max="80" value="{{ preferences.max_age }}" required>
     <span id="max_age_display">{{ preferences.max_age }}</span>
     <br />
     <label for="preferred_distance">Preferowana odległość</label>

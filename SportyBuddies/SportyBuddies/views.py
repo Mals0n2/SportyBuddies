@@ -1,4 +1,4 @@
-from datetime import datetime
+﻿from datetime import datetime
 from SportyBuddies import app
 from itsdangerous import BadSignature, URLSafeTimedSerializer
 from flask import Response, jsonify, render_template, request, redirect, url_for, flash
@@ -478,3 +478,28 @@ def user_report(user_id):
 @app.route("/calender")
 def calender():
     return render_template("calender.html", title="Calender", year=datetime.now().year)
+
+@app.route('/get_events', methods=['GET'])
+def get_events():
+    try:
+        # Generowanie przykładowych danych
+        sample_events = generate_sample_events()
+        
+        day_id = request.args.get('dayId')
+        events = sample_events.get(day_id, [])
+
+        return jsonify({'success': True, 'events': events})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+def generate_sample_events():
+    sample_events = {}
+
+    for i in range(1, 6):
+        for j in range(1, 8):
+            day_id = f'2024-01-{i:02d}-{j:02d}'
+            events = [{'event_text': f'Przykładowe wydarzenie {random.randint(1, 100)}'} for _ in range(random.randint(0, 3))]
+            sample_events[day_id] = events
+
+    return sample_events
