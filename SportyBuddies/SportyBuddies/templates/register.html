@@ -158,10 +158,10 @@
             setSuccess(password2);
         }
 
-        if (ageValue === '' || isNaN(ageValue) || ageValue < 13) {
-            setError(document.getElementById('age'), 'Musisz miec conajmniej 13 lat');
+        if (ageValue === '' || isNaN(ageValue) || ageValue < 18) {
+            setError(document.getElementById('age'), 'Musisz miec conajmniej 18 lat');
         } else {
-            if (ageValue > 120) {
+            if (ageValue > 80) {
                 setError(document.getElementById('age'), 'Podany wiek jest nieprawidlowy');
             } else {
                 setSuccess(document.getElementById('age'));
