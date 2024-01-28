@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 db = mysql.connector.connect(
-    host="localhost", user="root", passwd="", database="sportybuddies"
+    host="sql11.freemysqlhosting.net", user="sql11680319", passwd="QwHkINbsnl", database="sql11680319"
 )
 
 
